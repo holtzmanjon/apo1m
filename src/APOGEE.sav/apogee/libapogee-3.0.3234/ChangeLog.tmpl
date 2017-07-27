@@ -1,0 +1,61 @@
+ChangeLog for libapogee.so and Apogee.dll
+
+Apogee.dll DLL_MAJOR.DLL_MINOR.BUILDBOT_BUILD_NUM.SVN_GLOBAL_REV - libapogee  MAJOR_NUM.MINOR_NUM.SVN_GLOBAL_REV
+=============================================================
+* Full Aspen camera support
+* Bug fixes resolve error with guard code that ensures camera is in a
+good state after CloseConnection 
+
+Apogee.dll 5.3.393.2528 - libapogee  3.0.2528
+=============================================================
+* Added support for 29050MLD9
+* Updates to support AltaF cameras, including fan controls
+* Added support for switching between single and dual readout on Kodak Ascents
+* Implementation completed for AltaU serial ports
+* Added configuration files
+* Added the pyLibapogee subpackage to the autotools make system
+* Added the jLibapogee subpackage to the autotools make system
+* Bug fixes for connecting to AltaE cameras
+* Bug fix that causes PRISM to crash on camera connection with v5.0-2 software
+* Resolved an issue with IR pre-flash
+
+Apogee.dll 5.2.284.2020 - libapogee  2.1.2020
+=============================================================
+* Issue resolved with connecting two different cameras to two different applications
+* Updates to support AltaF cameras
+* Fixed issue related to switching camera speeds when there is high column binning
+* Resolved an issues with Ascent filter wheel report the incorrect status
+* Fixed mismapping of USB filter wheel information
+* Added ListUsbDevices property to the ICamDiscover COM interface
+
+Apogee.dll 5.1.268.1931 - libapogee  2.1.1931
+=============================================================
+* Bug fixed that caused errors during asymmetrical image binning on Alta cameras
+* Fixed issue with VARIANT_BOOLs with VB in the COM ICamera2 interface
+* Fixed a shutter state issue that caused MicroManager to crash when setting 12bit mode
+* Fixed issues that causes MicroManager to crash when connecting to Ascent cameras
+
+Apogee.dll 5.0.257.1859 - libapogee  2.1.1859
+=============================================================
+ * Initial release of the new cross platform library
+ * This release contains full support for AltaE, AltaU, and Ascent cameras
+    and USB standalone and Ascent compact filter wheels.
+ * This release does not contain support for AltaU serial ports.  This functionality is
+    schedule to be implemented in the next release.
+
+=============================================================
+CONTACT INFORMATION
+=============================================================
+Technical Support:
+email: support@ccd.com
+tel: 916-218-7450, extension 205
+hours: 9am to 5pm PST
+
+General Sales:	
+email: team@ccd.com
+
+Apogee Imaging Systems Inc.
+151 N. Sunrise Road, Suite 902
+Roseville, California 95661 
+http://www.ccd.com
+

@@ -1,0 +1,31 @@
+{
+  This script park the telescope mount.
+  Beware the action is immediate and without confirmation message!
+}
+
+var ok,parked: boolean;
+    arg: TStringList;
+    r: string;
+begin
+
+  // telescope connected?
+  GetB('TELESCOPE_CONNECTED',ok);
+  if not ok then begin
+    logMsg('Telescope not connected!');
+    exit;
+  end;
+
+  // get park status
+  GetB('TELESCOPE_PARKED',parked);
+
+  if parked then begin
+    logMsg('Telescope already parked');
+  end
+  else begin
+    getSl('STRL1',arg);
+    arg.clear;
+    arg.add('ON');
+    r:=cmdArg('TELESCOPE_PARK',arg);
+    if r<>msgOK then logMsg('Telescope park: '+r);
+  end;
+end.

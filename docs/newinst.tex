@@ -1,0 +1,190 @@
+\documentclass{report}[12pt]
+
+\usepackage{epsfig}
+\usepackage{html}
+
+\textwidth=8in
+\textheight=10in
+
+\hoffset=-1.7in
+\voffset=-1in
+
+\epsfxsize 7in 
+
+\begin{document}
+
+\begin{LARGE}
+\begin{center}
+NMSU 1 meter telescope : instrumentation mounted on Nasmyth rotator port
+\end{center}
+\end{LARGE}
+
+\vskip 0.5in
+
+\noindent \textit{Rough} sketch of system (dimensions in inches)
+
+
+\begin{latexonly}
+\epsfbox{1m.eps}
+\end{latexonly}
+\begin{htmlonly}
+\begin{rawhtml}
+<IMG SRC=1m.gif WIDTH=100%>
+\end{rawhtml}
+\end{htmlonly}
+
+\noindent Notes on the telescope
+
+\begin{itemize}
+\item Telescope is a Ritchey-Chretien design and produces an F/6.06 beam.
+
+\item Entire unit of instrumentation mounted on Nasmyth port rotates as
+telescope moves around in the sky. Consequently, weight distribution should 
+not be extremely unbalanced, although some degree of imbalance is acceptable.
+
+\end{itemize}
+
+\noindent Notes on the elements
+
+\begin{itemize}
+\item CCD/shutter
+
+\begin{itemize}
+\item Use existing unit.
+
+\item Location of detector (focal plane) is 1.125 inch behind mounting surface
+
+\item Detector size is about 1 inch square (i.e. 0.7 inch maximum radial extent)
+
+\item Unit mounts into mounting surface with small circular protrusion, of
+dimensions ... There is a mounting lip around this protrusion, and mounting
+fixtures should be designed to allow relatively easy removal and installation
+allowing for repeatable and very stable positioning.
+
+\end{itemize}
+
+\item Filter wheel
+\begin{itemize}
+
+\item Design goal is 1 inch thickness for approximately 6 inch diameter 
+around optical axis. Entire filter wheel will probably be significantly
+larger than this, and outside of this 3 inch radius circle, something 
+(e.g., a motor) could protrude back towards the focal plane.
+
+\item Back plate must accept protrusion from CCD/shutter assembly. Allow
+for possibility in future of new CCD/shutter and, hence, replacing, the
+back plate of the filter wheel.
+
+\item Filter wheel itself should allow 6 3x3 inch square filters. Filters
+not to be more than 8mm thick. 
+
+\item Alternate filter wheel should be constructed for 2x2 inch square filters,
+holding as many as possible. Obviously, centers of 2x2 and 3x3 inch filters
+must be the same.
+
+\item Preferred design for loading filters: filters fit into separate cells
+and are held in by small recessed screws pressing against rubber pad mounted
+against 2 sides of filter. These filter cells would be roughly 0.5 inches
+larger per side than filters themselves. Filter cells then mount into
+filter wheel and secured in some fashion.
+
+\item Filter wheel positions must be repeatable to approximately 10 microns
+(is this reasonable?).
+
+\item Filter wheel motion must be driven by a motor which is computer
+controllable by a PC.
+
+\item Filter wheel position must be encoded in a fashion which is computer
+readable.
+
+\item Filter wheel must be light-tight, and there must be no direct path
+for light to pass through unit except through the filter. Beware of
+glancing edges.
+
+\end{itemize}
+
+\item Guide box
+\begin{itemize}
+\item Total width of guide box is 10.75 inches including back and front
+plates. (This assumes design focal plane location. If this is determined
+to be in error, width of guide box might change. Consequently, it's best
+to have design of internal guider unit as thin as possible.)
+
+\item Entire assembly to be as stiff as possible to minimize flexure when
+rotating on rotator.
+
+\item Mount at rotator is 20 inches diameter. For about 4 inches back from
+this mounting point, nothing can extend more than approximately 11 inches
+radially from center. Further back, there are no radial space constraints.
+
+\item Guide assembly to be mounted on the rear of the box, as close as
+possible to the focal plane. Mounting to rear is preferred to minimize
+differential flexure between guider and science image planes.
+
+\item Location of guider pickoff mirror as close to on-axis as possible
+without vignetting beam to science instrument. My calculation suggests
+center of guider pickoff 1-1.25 inches off axis, depending on exactly
+how far pickoff is located from the focal plane. Guider pickoff should
+be aligned parallel to rows/columns of science detector to allow mirror
+to come as close as possible to optical axis without vignetting.
+
+\item Guider assembly needs to be constructed considering how best to
+minimize scattered light off the assembly and into the science camera.
+
+\item Spectrasource camera to be used as guider detector is already
+purchased and must be incorporated into design. Dimensions of Spectrasource
+camera are ...
+
+\item Relative position of guide camera to CCD camera must be extremely
+stable ($<$ 10 microns over 90 degree rotation of entire assembly).
+
+\item Spectrasource camera to be mounted into existing focus mechanism,
+which is computer controllable and encoded. (A smaller unit may be available
+if current unit dominates current design width.)
+
+\item Possible need to include mounting structure between guider pickoff
+and guider CCD for off-axis astigmatism corrector.
+\end{itemize}
+
+\item Bearing baffle
+\begin{itemize}
+\item Purpose of baffle is to block light glancing off inside of bearing
+surface. Baffle should have opening with radius 2.25 inches to achieve
+this. A hole of this size should comfortably allow the full beam from the
+science instrument. It may vignette the guider slightly.
+
+\end{itemize}
+
+\item Nasmyth baffle
+\begin{itemize}
+\item Purpose of baffle is to block light coming from around the tertiary.
+
+\item Baffle location is constrained so as not to fall into main beam to
+primary mirror. 
+
+\item It is not possible to construct a baffle which blocks all light from
+around tertiary mirror without vignetting beam to science instrument (slightly)
+and guider camera (significantly). Choose compromise size which will 
+block all light with appropriately constructed tertiary baffle. Estimated
+size of baffle opening is 2.75 inches radius, but final size TBD (also
+depends on design and construction of new tertiary baffle).
+\end{itemize}
+
+\item Tertiary mirror/baffle
+\begin{itemize}
+\item Tertiary mirror center is 40.875 inches from focal plane (design
+distance).
+
+\item Tertiary mirror baffle should be constructed to obstruct any light
+from around tertiary to have direct path to science focal plane.
+Specifications ...
+
+\item Tertiary mirror baffle must have obscuration above the mirror to
+prevent tertiary from seeing around the secondary mirror. Specifications
+...
+
+\end{itemize}
+
+
+\end{itemize}
+\end{document}

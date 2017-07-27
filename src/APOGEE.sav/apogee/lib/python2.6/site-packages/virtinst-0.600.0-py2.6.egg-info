@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: virtinst
+Version: 0.600.0
+Summary: Virtual machine installation
+Home-page: http://virt-manager.org
+Author: Jeremy Katz, Daniel Berrange, Cole Robinson
+Author-email: crobinso@redhat.com
+License: GPL
+Description: UNKNOWN
+Platform: UNKNOWN

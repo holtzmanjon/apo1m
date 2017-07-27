@@ -1,0 +1,2927 @@
+\documentclass{article}[12pt]
+
+\usepackage{epsfig}
+\usepackage{html}
+
+\textwidth=7in
+\textheight=9.5in
+
+\hoffset=-1.0in
+\voffset=-0.5in
+
+\title{Overview of 1-meter Systems}
+
+\epsfxsize 7in
+
+\begin{document}
+
+\maketitle
+
+\vskip 0.5in
+
+Complete document in a
+\htmladdnormallink{single PostScript file}{../systems.ps.gz}.
+
+
+\section{Introduction}
+
+This manual provides an overview of the hardware and software 
+systems at the 1-meter.
+It is intended to be a starting place.  In some cases, it will point
+you to places where you can find more information about a subject.
+In other cases, complete documentation will be here in the manual.
+
+Other possibly useful documentation include an overview of the
+\htmladdnormallink{telescope/instrument design and performance}
+{http://control1m.apo.nmsu.edu/tcomm/1m} , and the
+\htmladdnormallink{telescope operation manual}
+{http://control1m.apo.nmsu.edu/tcomm/man}.
+
+The manual is organized into five primary sections covering the following:
+
+Telescope Mechanical Systems: Includes information about encoders, motors, etc.
+
+Telescope Optical Systems: Includes information about mirror cleaning, mirror covers, and mirror removal for service.
+
+Instruments: Documents information about the Princeton Camera, filter wheel and guider.
+
+Observatory Dome: Includes documentation of the upper and lower slit as well as dome rotation.
+
+Auxiliary Systems: Includes information about Liquid Nitrogen Autofill system  
+
+There are a few notebooks and manuals that one should be familiar with.
+The primary notebooks are the yellow binders entitled, "Autoscope
+Model TCS-200  Telescope Control System" and "Autoscope Model TCS-200
+Observatory Control System."  These are referred to as "The yellow
+telescope binder" and "The yellow observatory binder" respectively in
+this document.  Most of the electrical drawings for the telescope are
+documented there.  Beware... not all drawings supplied by Autoscope are
+for as-built systems.  Perhaps more important than the drawings, the
+notebooks contain vendor contact information.  There are copies of these
+notebooks in the Astronomy Department and at Apache Point Observatory.
+
+There is a set of blueprints for the telescope in the 1m control room at
+APO. As with the documentation, there is no guarantee that this accurately
+represents the as-built system.
+
+There is another notebook that was maintained by Dave Summers when he was
+working on the 1-meter.  It is a large blue notebook with a label reading
+"Dave Summers' 1-meter notes."  In this manual it will be referred to as
+"The Blue Notebook" There is only one copy of this notebook and it is
+located at NMSU.
+
+There is a blue photo album located in the 1m control room at APO that
+includes photo documentation of some procedures.  I'll refer those photos
+at points in this manual. There are also digital photos at \htmladdnormallink{http://control1m.apo.nmsu.edu/1m/docs/photos/}{http://control1m.apo.nmsu.edu/1m/docs/photos/}
+
+Finally, there is a manual entitled "Filter-Guider Module \&
+Interchangeable Filter Wheel for New Mexico State University."  This is
+documentation provided by Dr. Peter Mack of Astronomical Consultants
+and Equipment in Tucson, Arizona that I've edited to reflect the as-
+built state of things.  It will be referred to as the "Guider book."
+This has been included in the main notebooks.
+
+\section{Telescope Mechanical Systems}
+
+The telescope uses an alt-az mount. There are single azimuth, altitude,
+and rotation motors.  There are three actuators attached to the secondary
+mirror to allow motorized focus and tilt (but not translation) adjustment.
+In September 2008, a new tertiary mount was installed that has a motor
+for tertiary rotation.
+
+\subsection{Major structural}
+
+\subsubsection{Azimuth}
+
+The entire telescope rests on the main azimuth bearing at the base of the
+cone. This bearing cannot be visually inspected; no serious investigation
+of it was made until May 2004. At that time, it was determined that the
+bearing is likely NOT the bearing called out in the drawings, it appears
+to be a size smaller. Jon Davis believes that it is an SKF bearing. 
+
+During May 2004, the telescope developed difficultly moving in azimuth, 
+prompting the investigation just mentioned. At this is time, it was
+determined there was a felt seal at the top of the bearing that was
+partially out of place, allowing some access to the bearing (for dirt,
+etc.) Insertion of some cable ties suggested there was little or no
+lubrication on the bearings. A visual probe was attempted and it was
+determined that the inner surface of the bearing does appear to be covered,
+with just a small access from the inner diameter that appears to also have
+a felt seal around it. At this point, it was decided that grease lubrication
+could only help the situation, so about 1/3 tube of grease was applied (Mobil
+fairly lightweight, type ???; this
+was done through a small grease port that did not have a grease fitting; we
+used such a fitting but the thread of the hole apparently didn't match the
+fitting well, so we could not get the fitting to stay in. After lubrication,
+a new felt seal was installed using masking tape.
+
+After the lubrication, the telescope appeared to move much smoother, but we 
+are still waiting to see if this is a long lasting improvement. The smoothness
+was quantified by attaching a force meter to the telescope structure near the
+rotator; it took about 40 lbs of force to get the telescope moving, and then
+about 25 lbs to keep it moving smoothly. Prior to the lubrication, it took
+50 lbs to get it going and 35-40 lbs, irregularly, to keep it moving; the
+improvment was fairly dramatic.
+
+Some additional lubrication was injected in November 2006, as the telescope
+seemed to be getting a bit more difficult to move. 
+
+Bill K. suggested that Mobil SHC 1500 grease was used, but Ben H. thinks that
+is unlikely and suggests Mobil SHC 460 was used. Nick M. says that all of the
+Mobil SHC greases are compatible and recommends SHC 460.
+
+The behavior of the azimuth axis warrants monitoring with time, and presumably
+routine lubrication, although one cannot continue to add grease indefinitely
+without cleaning out the bearings at some point. Servicing the bearing, however,
+will require lifting the entire telescope.
+
+In 2010, the pointing appeared to get noticeably worse. In November 11, Nick 
+MacDonald helped to inspect the system. He recommended getting replacement
+bearings for the azimuth wheel bearings, and to replace the cam followers. We
+also increased the pre-load on the soft springs a bit.
+
+Nick recommended Applied Industrial Technology in Albuquerque as a source for
+bearings. He determined that the az drive bearings are Fafnir S10PP2C3 (there are
+16 of these), and that the az drive idlers are Migill CF1S (there are 16 of these).
+
+The idlers/cam followers for both az and alt were rebuilt by Ben Harris summer 2013.
+
+Az drive re-greased 2014 May 30 (see log).
+
+
+\subsubsection{Altitude}
+
+From the drawings, it appears that the altitude and rotator bearings are sealed
+type bearings, i.e. without maintenance needs.
+
+In Nov 11, Nick M. looked at the altitude encoder, and saw that lots of metal 
+flakes were coming off of the altitutde drive. We removed the encoder and
+cleaned it up. When remounted, we left off on bracket that appeared to be
+overconstraining the system (put it in the toolchest). We also noticed that
+the fit of the encoder housing is very tight over the wheel, and wondered
+whether it should be remachined.
+
+Nick recommended Applied Industrial Technology in Albuquerque as a source for
+bearings. He determined that the alt drive bearings are Nic 5368 (there are
+4 of these), and that the alt drive idlers are Migill CF1/2S (there are 4 
+of these).
+
+In Decebmer 2012, we pulled off the altitude encoder and replaced the bearings
+and cam followers. The bearings are press-fit into the housing. However, one 
+of them was quite loose (the one where the encoder is), so we put it in with 
+some LocTite to try to keep it in place. The internal shaft is loose in the
+bearings, but we think that with preload, it will engage the bearing (and this
+appears to be the case).
+
+
+\subsection{Motors}
+
+The telescope az, alt, and rotator drive motors were manufactured by
+Parker-Compumotor.  Their technical support number is (800) 358-9070.
+The motors are Dynaserv series DR motors.  There are several copies
+of the manual for the motor drivers around.  There are copies in the
+Yellow Telescope Manual and the Big Blue Notebook.  The motors and their
+drivers are matched sets.  The model number of each motor is noted on
+the motor drivers. (Hard to see for sure, but best guess: Az drive DR1070E-115
+(resolver, 70N, E means 8 inch, 115V) SN 93020400314, altitude 
+DR1015B-115 (15N, B 6-inch) SN 93030900107, rot DR1060B-116 (60N, 6-inche) 
+SN93031000075). These are Generation 1 drives (no longer made), and
+must be matched set. 
+
+( 2/12 Information on potential replacement drives from Parker/Computmotor: now
+any 1070 drive can match with any driver. New ones are digital. Motors
+have not changed in output. Footprint is different.  Cabling to motor
+will be slightly different. Interface to the drivers will be quite
+different. New drives have a 36 pin connector instead of old 50 pin
+connector. Consult with Peter Mack, who has done stuff like this. Need
+to know what the I/O voltages used for controlare.  ROM quote: 
+DRG-1060B-115V motor+driver \$6729. )
+
+The motor drivers are located in the left-hand side of the computer rack
+behind the weather station.  If a motor ceases to function, sometimes,
+you can gain clues to the problem by looking at the digital readout on
+the face of the driver.  The digital readout will read "0" for normal
+operation.  Other codes that might be displayed are in the Compumotor
+manual.
+
+The motors can be tuned as described in the Compumotor manual, and this
+has been done several times, and should be periodically checked. To
+tune the motors, one uses an oscilloscope attached to the POSN and AGRND
+leads on each motor driver. You put the motors/controllers in a test
+mode via a recessed switch on the motor driver. This is supposed to
+generate a square wave which you can see on the oscilloscope. There are
+three adjustments that can be made  via small pots: the FC (characteristic
+frequency) switch, the lim integral switch, and the DC gain. The manual
+describes these in a bit more detail. Generally when we have done this,
+we have never been able to get a great square wave out of the controllers,
+we see a steep rise, a gradual decline at the top of the wave, and then
+a steep decline.  Adjusting the switches can change things, more from
+the FC switch than from lim integral; often one can see a "peak" at the
+beginning of the top of the wave, or a nonlinear top of the wave; generally
+we have tried to adjust these features so they are removed. Some of
+the adjustments can cause the motors to make loud, unhealthy noises, so
+one should make the ajustments gradually and be prepared to back them
+off reasonably quickly.
+
+The altitude motor controller was adjusted July 2004: the FC switch was changed 
+from 9 to B, limit integral was left at F, and DC Gain was left at 12:00.
+The azimuth motor was found at FC=9, Lim integral=5, and DC Gain=2:30.
+
+The motors were adjusted 2/4/2006. At this time, the rotator controller
+exhibited some peculiarities, reported an error code occasionally referring
+to encoder connector problems, but no specific problem was identified, and
+eventually it started to function OK (I believe that this was (much) 
+later identified as being due to bad cabling, which was replaced). 
+The altitude motor was adjusted to
+better contact the altitude drive, causing notable improvement in
+slewing behaviour. Motor adjustments were as follows: rotator FC from D
+to 9, limit integral F to F, gain to 45 degrees (highest before noise),
+altitude B to F, limit integral F to F, gain to highest before noise,
+azimuth FC 9 to 6, limit integral 5 to F, gain up.
+
+In October 2006, the altitude and rotator motors were adjusted to attempt
+to better mate them to the drive surfaces. The rotator was chattering
+significantly. I was unable to get a very good mating of the rotator, but
+it was much quieter after adjustment.
+
+The azimuth motor started to develop some serious vibrations in fall 2006.
+We had a several hour loud vibration in early November. After this, the
+mating was inspected with the boroscope and didn't seem too bad. After 
+consideration of the motor mounting, we decided to back way off on the
+spring at the bottom of the motor, as it seemed to be overconstraining
+the motor in the wrong direction. The soft spring was adjusted out until
+moving the azimuth wouldn't move the motor, then back in until the motor
+moved both directions when the telescope was rotated, then tightened 1/4
+turn further in.
+
+We looked again at motor tuning with Ed in late Jan 2013. Made some adjustments
+based both on test waveforms and also by tuning while looking at encoder
+feedback at various positions on sky. On azimuth, set to FC=7, LIM=E, ACGAIN=MIN
+DCGAIN=tick 4 (all no change). On altitude, FC=C->E, LIM=E->1, AC=MIN, DCGAIN=2.25->3.0.
+On rotator, FC=C, LIM=F, AC=MIN, DC=3.75 (all no change). Saw some poorer
+behavior (according to encoders) in az at high az rate, tried to increase gain,
+but that led to higher frequency vibration.
+
+\subsection{Encoder Mountings / Adjustments}
+
+Encoders are currently implemented on azimuth and altitude axes. At one
+point, an encoder on the rotator was considered, but it is not currently
+implemented.
+
+The original telescope encoders are all manufactured by Computer Optical Products
+of Chatsworth California.  Their phone number is (800) 340-0404.  Their
+website is http://www.opticalencoder.com.  The encoder part numbers
+are written on the sides.  All are model CP-850-HCE-128K (alt CP-850-HCE-128-F?) encoders.
+The differences in the three axes all have to do with their mounting
+configuration.  The azimuth encoder has a square flange mount and cable
+coming from the back of the encoder.  The elevation has the cable coming
+from the back of the encoder, but is manufactured without the flange.
+The rotator encoder has the flange but a side-cable.  These are important
+distinctions if replacements are ordered.
+
+In spring 2016, the az encoder started spuriously drifting; we identified
+the encoder as the cause by attaching az cable to alt encoder, and that looked
+fine. Az encoder was
+disabled (operation continued with motor positions)
+and a new encoder was ordered, but we could not locate one with
+exact same specs. Very similar encoder to ours available through Allied
+Motion, we ordered CPH50HHD-120000-3/8-L-S-A-R-ET with a different number
+of steps/rev (480000 instead of 512000); we ordered three in anticipation
+of replacing altitude and having a spare. Due to adqequate performance
+with motor tracking and lack of time, one was installed on az but not activated
+until spring 2017 -- at which point it was found that it didn't behave,
+giving different number of steps CW and CCW. Ed tracked this down to an
+impedance issue and constructed a short pigtail to match impedancees, and
+after that, behavior seemed fine. During the process, we switched back to
+old encoder, and it actually seemed to behave fine, with no spurious drifting!
+So we may have a lot of encoders on hand, in office in box on shelf.
+
+
+\subsection{Limit Switches}
+
+Limit switches are implemented on the azimuth and altitude axes. No
+limit switches are implemented on the rotator which means that extra care
+needs to be taken to avoid rotator cable wrap issues.
+
+The limit switches throughout the 1-meter system are commonly available
+microswitches.  Part numbers are printed on the switch housings and
+generally the switches can be ordered through such vendors as DigiKey
+and Mouser Electronics.  The smaller roller-rocker switches used in the
+mirror covers are available at Radio Shack.
+
+Most of the limits in the system are easy to understand with inspection.
+The limits that are more complicated are the azimuth limits.  The azimuth
+limits make use of two microswitches and a toggle switch to give a total
+range of 540 degrees.  The azimuth limits work as follows: When the toggle
+switch is down, the south microswitch is active; when the toggle switch
+is up, the north microswitch is active.  When the telescope is at the
+south limit switch, it is pointed almost east, i.e. at azimuth approximately
+450. As the telescope is rotated counterclockwise (from above) from this
+limit, it will trip the toggle switch at azimuth approximately 265, which
+is just \textit{after} the telescope has passed the north limit switch.
+Then the telescope gets another 360 degrees of rotation before it hits
+the north limit switch at azimuth approximately -90.
+
+The toggle switch is activated by a Delryn trigger mounted to an L-bracket
+from the azimuth disk.  If the toggle switch fails, the azimuth limits
+fail.  The toggle switch is a simple DPDT switch commonly available
+at Radio Shack.  Also, in an emergency, Apache Point keeps a stock of
+suitable toggle switches on hand.
+
+There are also software limits implemented. In azimuth, these allow motion
+315 degrees CCW and 140 degrees CW from the home sensor. Since the
+home sensor is at about 305 degrees (N=0), this corresponds to azimuth
+positions of -10 to 445 degrees.
+
+\subsection{Motor control}
+
+Motor control is implemented through the use of some Oregon MicroSystems motor
+control cards in the telescope computer.
+
+There are three control cards: 
+\begin{enumerate}
+\item controls telescope axes (az, alt, rotator) and three secondary actuators:
+6 axes, two (alt/az) with encoders; 
+\item controls guider stage (radial motion and focus), filter wheel rotation 
+and encoders, and tertiary rotation: 4 axes, no encoders; 
+\item controls dome rotation and shutter. 
+\end{enumerate}
+
+For the telescope and guider/tertiary control, we have used a OMS PC38-6E (with
+encoder option) for the telescope and  OMS PC38-6 (without encoder option) for
+the guider/tertiary control. For the dome control, we only use simple I/O
+bits to turn motors on and off, and are using an OMS PC34 card. These all
+have adjustable addresses based on jumpers on the cards (see the manuals 
+for specifics); the telescope card is at 0x310, the dome card at 0x314,
+and the guider card at 0x318.
+
+These three cards are all ISA bus cards that run under DOS. Oregon Micro
+Systems still exists (under Pro-Dex), but they have discontinued
+construction of the PC3x series. At the end of 2011, we ordered a
+ISA OMS PC48-6E (roughly \$1900, S/N 3454), which is supposed to be a drop-in
+replacement. We installed it in February 2012 in place of the OMS
+PC38-6E. Oregon Micro Systems says they will discontinue production of
+these (PC4x) by the end of 2012. Documentation on the PC48 is available
+via a \htmladdnormallink{PDF manual}{http://control1m.apo.nmsu.edu/1m/docs/Pc48mand.pdf}.
+
+The PC48E did not immediately work completely: it worked for the XYZ
+axes (azimuth, altitude, rotator), but not for the TUV axes (secondary
+actuators).  The card had some voltage leakage that OMS attributed to the
+encoder option (for UV axes), so OMS issued a RMA and repaired this issue
+(from OMS: per EW 138 U55 was removed and pin 6,7,9,10 were clipped off
+of U65). However, this did not resolve the issue. Turns out the motor
+controllers for the secondary actuators (Anaheim Automation model MBL-500)
+have 10 ohm pull-down resistors for step, direction, and enable, while
+the OMS cards require pull-up resistors.  How it was working with the
+PC38 is a bit of a mystery: perhaps those cards were specially modified,
+or perhaps they had ``beneficial'' leakage.
+
+With the PC38-6E we were getting intermittent "hangs" of the system
+which we think may have been attributable to the card (but not
+sure!). Nonetheless, it is probably a viable spare at some level,
+especially for the guider PC38-6. It has been left in the computer,
+configured at base address 0x300.
+
+Because of the end-of-life issues, we also ordered another spare PC48-6E
+(S/N 3489); this is an NMSU tagged item 430530. In June 2017, this spare
+was put into the computer because we had pointing problems, but behavior
+was identical, so no evidence for any issue with either card. The "spare"
+was left in the computer, with the other PC48-6E in the drawer in the
+office.
+
+\subsection{Maintenance}
+
+The primary maintenance required to keep the telescope in good operating
+condition is routine inspection and cleaning of all drive surfaces on
+the telescope.  This is critical to keep motor and encoder rollers from
+slipping.  Use Kimwipes and acetone to clean the azimuth, elevation and
+rotator drive surfaces at minimum once a month.  During moth season,
+this may need to be done once every few days.
+
+Periodic rotation of the telescope over its full range of motion is
+advisable to insure smooth motion.
+
+Periodic lubrication of the azimuth bearing may be advisable.
+
+\section{Telescope Optical Systems}
+
+
+\subsection{Mirror Mounting / Removal}
+
+%To aluminize the mirrors, it is necessary to remove them from the
+%telescope.  See section on secondary for information about removing it.
+%I refer the reader to the 1-meter telescope
+%blueprints that are stored in the bottom drawer of map cabinet in room
+%110 of the Astronomy Building.
+
+Removing any mirror requires at least two people and in some cases three.
+For help please consult Mark Klaene at Apache Point Observatory.
+
+\subsubsection{Tertiary mirror}
+
+The tertiary is mounted on a rotating table to allow access to both Nasmyth 
+ports. The rotation mechanism is mounted from behind the telescope. Extreme
+care must be taken to remove the bolts that mount the tertiary to the 
+table, and not to remove the bolts that mount the rotating mechanism to
+the telescope, or else the latter will fall out of the back end of the
+telescope!! The rotating mechanism mounts to a plate that is mounted to
+the telescope stovepipe from the primary mirror cell.  See later section
+on the tertiary.
+
+When we removed the tertiary May 2013, we removed the bolts on the inner
+circle, and lifted the tertiary mount off of the table; it has a pin, and
+needs to be lifted straight up. We then left the entire rotary table
+mechanism in the cell. We did this at a vertical orientation, but this
+did then require the we lift the tertiary out over the primary; doing it
+at an angle might be easier.  Note, of course, we took the baffle off
+first.
+
+OBSOLETE: removing the OLD tertiary:
+\begin{itemize}
+     \item This is easiest done when the telescope is horizontal.
+     \item Remove the cylindrical baffle from the tertiary mirror.  This is accomplished by using
+     the Allen-head bolts that are located around the circumference of the baffle on the side
+     closest to the primary.  Once the Allen bolts are removed, the baffling is only held in
+     place by a pressure fit.
+     \item There are six bolts that hold the tertiary mount to the telescope. They are located in
+     the base of the mount.  The bolts hold the tertiary mount to a tube that runs through
+     the center of the primary mirror cell.
+     \item Before unbolting the tertiary mount, make sure that someone is helping to hold the
+     mirror in position so that it doesn't slip.  
+     \item Remove the bolts.
+     \item The tertiary is held captive by two alignment pins.  Gently, but firmly pull the tertiary
+     mount toward the secondary mirror.  
+     \item When free, carefully take it away from the telescope.  At this point, the mirror may be
+     taken for washing or aluminizing.
+\end{itemize}
+
+Old reinstallation:
+
+\begin{enumerate}
+
+  \item Attach tertiary tripod to tertiary
+
+  \item Attach tertiary support to tertiary tripod
+
+  \item For old system, feed threaded rods through tripod and adjust
+
+  \item However, SUGGEST SYSTEM REDESIGN.
+\end{enumerate}
+
+\noindent{OLD Tertiary adjustment (OBSOLETE):}
+
+To adjust the tertiary, remove the cylindrical baffle around the mirror.
+The tertiary is adjusted using  three nuts on threaded rod behind the
+mirror itself.  The three threaded rods are mounted symmetrically around
+a ball-pivot.  Adjusting the nuts causes the mirror to pivot around it's
+geometric center. It is possible to piston the mirror by making sure 
+the central bolt is loose, then adjusting the nuts on all three of
+the threaded rods, iteratively; it make take a little while to move
+in piston, and the mirror will need to be readjusted in tilt, but it
+is possible to do in a moderate amount of time.
+
+
+\subsubsection{Primary mirror}
+
+We removed the primary in February 2000 for realuminization. We removed
+the mirrors for repolishing in 2002. We removed the primary again
+in May 2013 for realuminzation/overcoating; this was done at ATOC in
+Albuquerque where they put down aluminum plus 0.5wave (680nm) SiO2.
+
+See photo documentation at
+\htmladdnormallink{http://control1m.apo.nmsu.edu/1m/docs/photos/}{http://control1m.apo.nmsu.edu/1m/docs/photos/}.
+There is some older photo-documentation of this process in the Photo Album 
+in the control room.  On the day of removal, make sure that arrangements
+have been made for a suitable crane to hoist the primary mirror cell.
+Make sure there are sufficient personnel to operate the crane, and
+handle the mirror   this takes a minimum of three people.  You will
+need straps to attach the mirror cell to the crane.  Mark Klaene at
+Apache Point Observatory is experienced with handling this mirror and
+should be consulted regarding questions.  Also, Mark has the straps
+for handling the mirror cell.  Aluminization is a process that takes
+between 3-5 days.  The typical schedule should be as follows:  On day 1,
+remove the mirror cell and transport to Sunspot.  Strip the old coating
+that day if possible and prepare for aluminizing.  Day 2, aluminize.
+Day 3, check the coating and return to the telescope.  Extra days will
+be required if the first coating turns out poor.
+
+\begin{itemize}
+     \item First, remove the tertiary as described above.
+     \item Remove the elevation drive surface alignment pin.  This is a
+     bolt that goes through the semi-circular elevation drive surface and
+     pushes against the mirror cell.  The bolt is in place to make sure
+     the elevation drive surface is even and not cocked.  Measure the
+     separation before removing, so you can reproduce. As of 6/02, we
+ measured 1.4 inches between the outer edge of the aluminum altitude
+ drive surface (not the yellow part) and the inner raised yellow surface
+ (where the eye bolts are screwed in).
+
+     \item Detach the mirror covers, their mounting fixtures and limit
+     switches.  The mirror cover panels are easily removed.  First,
+     loosen the set screws that attach them to the motor.  Unbolt the
+     idler shafts from the mirror cell.  Once done, the panels are free.
+     It is critically important to note where each motor came from and
+     where each panel belongs before removal.  The mirror covers must be
+     reassembled exactly as they were or they will not function properly.
+     Before proceeding with motors and limit switches, take careful
+     note of the limit switch wiring.  Only a couple of wires need to be
+     clipped on the inside of the mirror cell to free the internal limit
+     switch wiring harness from the mirror cell.  Unbolt and remove the
+     internal limit switch harness.  The motor and idler mounts must
+     be unbolted.  The external limit switch mounts must be unbolted.
+     The motors and external limit switch mounts may be strapped to
+     the telescope frame to get them out of the way of the mirror cell.
+     This is shown in the photo album.
+
+     \item Protect the Elevation drive surface.  We used some cardboard
+     taped around the wheel to keep it from getting banged or scuffed.
+
+     \item Tie the telescope down.  It will be severely unbalanced when
+     the mirror cell is removed.  The top end   with the secondary   will
+     want to drop toward the floor.  Therefore, the strap should go near
+     the mirror cell.  This is shown in the photo album.
+  
+     \item It may be a good idea to remove the altitude limit switch/hard
+     stop as it may be damaged by putting the full unbalanced weight of
+     the telescope on it. However, if this is done, the weight will rest
+     on the altitude motor, which is also a bad idea! Need to figure out
+     a good solution to holding the unbalanced telescope in place.
+
+     \item Screw four eyehooks into the mirror cell   two on each side
+     in the tapped holes provided.  Facing the primary, these tapped
+     holes are on the left and right sides of the cell in the reinforced
+     sections of the mirror cell.  One of these eyehooks is permanently
+     in place now and taped to the side of the mirror cell; it cannot
+     be removed once the mirror cell is bolted in place. \textbf{Note
+     that you cannot use a shackle on the side of the mirror where the
+     altitude drive is, as there is not enough clearance; 
+     remember this especially when reinstalling mirror!} 
+
+     \item Attach the lifting straps to the eyehooks as directed by Mark
+     Klaene or other crane- experienced personnel.
+
+     \item At this point, the person directing crane operations takes
+     over for the most part.  The crane will be lowered through the dome
+     slit and attached to the handling straps.  Slack will be taken up
+     on the straps.
+
+     \item Remove the bolts that hold the mirror cell to the telescope
+     frame.  There are twelve bolts total.  At this point the mirror
+     will only be held on by alignment pins.
+
+     \item With help and watching to make sure that you don't bump
+     anything, carefully push the mirror cell away from the telescope
+     structure.
+
+     \item The mirror cell should be free at this point.  It may then be
+     lowered to the floor for service, if necessary, or lifted through
+     the dome slit, then lowered to the ground for transport to the
+     aluminizing chamber at Sunspot.  The last time the mirror was
+     aluminized, it was lifted through the slit.
+
+     \item The original mirror covers, located under the brown table on
+     the south side of the 1- meter enclosure, can be bolted to the top
+     of the mirror cell to protect the mirror during transport.
+
+     \item The mirror is removed from the cell as follows:  Remove the
+     mirror cover central collar.  Remove the teal-colored retaining
+     ring directly above the primary mirror.  At this point, the mirror
+     itself may be lifted out of the cell. Before doing this, the mirror
+     band should be attached. We have found that it is much better to   
+     lift the mirror out of the cell by hand rather than trying to use
+     a lift attached to the band.
+
+     \item Returning the mirror to the telescope is the reverse of the
+     above procedure.  The keys are to have sufficient personnel, take
+     your time and don't rush the operation.
+
+\end{itemize}
+
+Notes on reinstalling optics from June 2002/October 2003:
+
+\begin{itemize}
+\item Primary:
+\begin{enumerate}
+  \item Return primary support to previous state: remove extra spacers from the
+  feet, the six washers, and the longer bolts, and replace with shorter bolts
+  and a single washer (these are in an envelope marked as such).
+
+  \item Install central cone into cell.
+  
+  \item Primary mirror into cell, install blue retaining ring, 3 black foam 
+  retaining blocks, mirror cover lips
+  
+  \item Primary then ready to go onto telescope. Do not use shackles on the
+  side of the mirror that will be against the altitude drive; there is not
+  enough clearance! Use two longer bolts to help to guide cell onto telescope
+
+  \item Remove eye bolts from cell, except for one that is inaccesible: tape 
+  that one down.
+
+  \item Reinstall spacer bolt for altitude drive.
+
+  \item Reinstall altitude limit switch.
+
+\end{enumerate}
+
+\item Final touches:
+\begin{enumerate}
+
+  \item Install elevation drive spacer bolt.
+
+  \item Remove cardboard from elevation drive.
+
+  \item CAREFULLY check balance 
+
+  \item Install mirror covers.
+\end{enumerate}
+\end{itemize}
+
+\subsubsection{Secondary mirror mounting and actuators}
+
+The top end of the telescope is mounted to the telescope using an eight
+strut system, with turnbuckles on each of the eight struts.
+
+The secondary mirror is mounted to a tripod structure. A shaft attaches
+to the tripod and goes through a linear bearing on the telescope top end.
+The three legs of the tripod are attached to three secondary actuators 
+using flex couplers; the actuators allow for focus and tilt adjustment of the
+secondary mirror.
+
+In Feb 2009, something happened which led the flex couplers to all fail,
+causing the mirror to tilt and become unfunctional. At that time, Tom
+Harrison, Charlie Park (Engineering), and Yuping (MTEC) investigated the
+situation and found several issues: a destroyed linear bearing, some
+rusting on the shaft, some cracks in the turnbuckles, and a poor design
+of the struts used to attach the secondary cage to the top end. At that
+time, they remade a new set of struts (putting in a 90 degree rotation
+between the holes at each end), got new turnbuckles, got a new shaft,
+and got a new linear bearing. They also improved the safety system,
+putting a better stop at the end of the main shaft, and installing some
+straps on the tripod that will catch the mirror if the couplers fail.
+
+They found that the ideal amount to insert the actuators into the couplers
+was not to insert them as much as they had been before (this allows more
+tilt). As a result of the new mounting, however, the previous focal position
+placed the acuator shafts very close to the limit switches. As a result,
+the limits switches needed to be moved back a bit. 
+
+The bearing that holds the secondary shaft is fragile and may be destroyed
+if the shaft is removed without putting something in its place. Charlie
+designed a tool to allow the shaft to be safely removed. \textbf{This
+should always be used if the secondary is removed.}
+
+Periodically, the secondary actuators should be checked to make sure
+they are not binding.  The primary cause of binding is if one actuator
+locks up for some reason and stops moving, causing the shaft to exceed
+its tilt limit.  The shafts should be periodically cleaned of dirt and
+dust that builds up in the grooves and seems to cause the binding. The
+actuators should be mildly lubricated.
+
+The actuators are connected to the secondary with three flex couplers.
+\textbf{Before decoupling a actuator or coupler from the secondary, the
+secondary should be tied to prevent it from ``falling''; this is especially
+essential for the top actuator}.
+One should take care when decoupling the actuators from the secondary:
+if all three couplers are removed, the secondary will lose all support except for
+the central attachment, and so care must be taken to let it down gently.
+If all three are removed, it becomes much more difficult to attach them
+again, becuase the secondary must be held up while the couplers are
+connected. It is recommended to just remove one at a time if possible.
+Care must be taken to make sure the couplers are securely attached to
+the secondary!
+
+There should be spare secondary actuators; we do occasionally have failures.
+Additional replacements may be ordered from \htmladdnormallink{
+Eastern Air Devices}{http://www.eadmotors.com}.
+The part number is: LA23GCKJ-A213. 
+%The flex couplers are made by Huco; the part is a 
+%htmladdnormallink{Uni-Lat}{http://www.huco.com/html/h_unilat.htm}.
+
+The secondary actuators are controlled by the PC38 in the TOCC computer,
+as the T, U, and V axes of that controller. When looking at the primary
+mirror, the U actuator is the one on top, the T actuator is at the lower
+left, and the V actuator is at the lower right. The T actuator is hooked
+up to cable P113B, the U to P114B, and the V to P115B. There is a separate
+cable that connects to the limits switches that must also be connected.
+
+Measuring motion of the actuators gives .625 inches per 10000 steps, or
+.001587 mm/step. The actuators are located at a radius of 6.385 inches
+(162.19 mm) from the central shaft .
+%    .625 inches = 10000 steps
+%    5.631 shaft to shaft + 1.754/2 - .245/2
+
+\subsubsection{Secondary mirror reinstallation}
+
+\begin{itemize}
+\item Secondary:
+\begin{enumerate}
+  \item Attach secondary tripod to secondary. 
+
+  \item Attach secondary post to secondary tripod. 
+
+  \item Insert secondary post and install cotter pin (or better replacement)
+
+  \item Attach couplers to secondary actuators.
+
+  \item Note actuator position before June 2002 repolishing was around -2000.
+\end{enumerate}
+\end{itemize}
+
+\subsection{Aluminization }
+
+Aluminizing the mirror must be done by a qualified person.
+Currently, Mark Klaene and Jon Davis are both qualified to help with
+this procedure.  There is a custom-made band to hold the mirror in
+the Sunspot aluminizing chamber.  This band is located in the 1m crate,
+which is usually kept in the base of the 3.5-meter enclosure.
+
+Aluminization at Sunspot Feb 2000.
+
+Aluminization after repolishing, June 2002?
+
+Secondary and tertiary aluminized and overcoated by ATOC (fomerly Optical 
+Surface Technology) in Albuqueque, 2007? Primary?
+
+All mirrors removed May 2013. All coated and overcoated at ATOC: secondary
+and tertiary with Al + SiO2 (half wave at 500nm), primary Al + SiO2 (half wave
+at 680nm); the different overcoat thicknesses were to try to provide overall
+near-constant throughput as a f(wavelength) and to maintain decent UV
+throughput.
+
+\subsection{Alignment}
+
+\subsubsection{Secondary Adjusment}
+
+Put spot on secondary using print overlay of mirror, kept in secondary mirror
+crate.
+Collimating telescope in tertiary mount. Center and tilt secondary.
+
+\subsubsection{Tertiary Adjusment}
+
+Collimating telescope in Nasmyth mount. Adjust tertiary.
+
+There is fixture for mounting the APO collimating telescope at the
+Nasmyth mount on the back of the filter wheel. Using this, one wants
+to adjust the tertiary such that the collimating telescope can be
+focussed on the center of the secondary, and also that it can be
+focussed back on itself. Both things are changed by either tilt or
+piston of the tertiary, so it is an iterative process to get both
+things to focus; at a given piston, adjust the tilt such that the
+retroreflection is aligned, then see if the center of the secondary
+is centered; if not, repiston the tertiary and try again. Hopefully,
+you will see if the change in piston made the agreement better or
+worse, and you can converge on a proper alignment of the tertiary.
+
+Another method we have used for the tertiary is to map out the image
+quality in the focal plane (using the guider on its stage), and
+determine the location of the best images, and use this as the optimal
+center of the field. To get this location onto the science camera, you
+tilt the tertiary. The method for doing this has been to use a laser
+pointer mounted at the top of the telescope. Adjust the laser so that
+it is pointed at the guider pickoff at the location of the best images.
+Then adjust the tertiary until the laser spot is pointed at the
+science camera.
+
+Three components are needed to set up the laser for adjustment.  The first
+is a flexible flashlight-holder.  The holder has a clip on one end that
+may be attached to the secondary struts.  The second component is the
+laser pointer itself.  Finally, you need two small clamps.  One small
+clamp may be used both to hold the laser pointer in the holder and keep
+the laser pointer powered on.  The second clamp may be used to help hold
+the flashlight holder to the secondary mounts.  CAUTION:  When the laser
+pointer is powered on, take great care not to look into the beam.
+
+\subsubsection{Primary Adjusment}
+
+On sky, adjust primary to minimize coma.
+
+\subsubsection{Tertiary Adjusment}
+
+On sky, minimize astigmatism with tertiary rotation?
+
+\subsubsection{Puntino Shack Hartman - final adjustment}
+
+In 2011, we purchased a Puntino Shack-Hartmann sensor with associated
+software from Spot Optics. To reduce the cost, we provided an existing
+SBIG camera (ST8) for use with the system. The SBIG ST8 is controlled
+by a special version of the software that Spot Optics provided us with.
+
+The Puntino needs a reference frame to compare the star frames with.
+This is obtained by screwing in the small LED that came with Puntino
+(the instrument must be off the telescope to do this, and the 
+aluminum mounting plate taken off -- mark the orientation!). One then takes
+a reference frame with the software.
+
+The Puntino mounts at NA1 to an aluminum plate that is clamped to the
+filter wheel. To try to match the back focal distance of the CCD camera
+(and as a result allow the guider to be in focus for acquisition and guiding),
+some extra spacers (not currently known how much) should be inserted.
+If mounted in a repeatable orientation (TOP towards CCD controller) then
+one can use repeatable commanding for offsetting the telescope and tilting
+the secondary to produce repeatable results on the SH.
+
+Before using, the filter wheel should be moved to an OPEN positions!
+
+See Appendix \ref{sect:puntino} for details of different Puntino runs.
+
+\subsection{Tertiary and tertiary control}
+
+In July 2008, we obtained a new tertiary mount from ACE. The new tertiary
+is on a rotating table to allow use of both Nasmyth ports. In addition,
+the new tertiary mount was designed to allow easier adjustment of the
+mirror alignment, although this is still manual, not motorized adjustment.
+
+The rotation mechanism must be inserted from the back end of the telescope.
+It mounts to a plate that is bolted on from the front side of the telescope
+to the flange on the stovepipe that extends up through the primary. Installing
+or removing the rotation mechanism requires two people, because the screws
+thread in from the front, but the mechanism is inserted from the back. 
+The tertiary itself is bolted to the rotation table from the front.
+Extra care must be taken when removing the tertiary to remove the correct
+bolts: if the bolts to the rotation mechanism were removed, the mechanism
+would fall out of the back end of the telescope!  (I think it must not
+be possible, or at least very undesireable, to pull the entire thing out from 
+the top.)
+
+The tertiary rotation is controlled by a stepper motor which drives a 
+worm gear that is coupled to the rotation table. To obtain stable 
+positioning of the tertiary, there is also a brake that clamps the
+table in place. The brake is controlled by a 24V DC motor. The brake
+MUST be released before the table is rotated, and should be activated
+while motor power is still being applied after a move. There are limit
+switches that are triggered when the brake is in the open or closed
+position.
+
+There are two home switches near the position of the two ports. We
+have obtained reasonably repeatable positioning by moving to a home
+switch, then moving past the home switch in the same direction. Then
+reverse direction until home is hit, and reset the position counter. Then
+the tertiary can be moved, ideally in a single commanded move, to the
+desired position, as determined by the optical alignment procedure.
+
+Cable connection from tertiary: (but note, we have two cables coming out!
+maybe the motor power one was originally in the big connector, and we had
+to break it out for some reason???)
+
+\begin{itemize}
+  \item Motor driver: AMP 4-pin breakout cable to ACE motor controller box
+    \begin{itemize}
+       \item A+ phase: Pin 1 on tertiary to pin 1 on ACE control box
+       \item A- phase: Pin 2 on tertiary to pin 2 on ACE control box
+       \item B+ phase: Pin 3 on tertiary to pin 3 on ACE control box
+       \item B- phase: Pin 4 on tertiary to pin 4 on ACE control box
+       \item Inside ACE box, these go to the APM 3540M motor controller
+    \end{itemize}
+  \item Encoder: DB9 breakout cable direct to IO38 breakout box
+    \begin{itemize} 
+      \item Ground: Pin 12 on tertiary to DB9 pin 1 on IO38 breakout (green+white)
+      \item Phase A+: Pin 6 on tertiary to DB9 pin 3 on IO38 breakout (orange)
+      \item Phase A-: Pin 7 on tertiary to DB9 pin 4 on IO38 breakout (orange+white)
+      \item Phase B+: Pin 8 on tertiary to DB9 pin 7 on IO38 breakout (brown)
+      \item Phase B-: Pin 9 on tertiary to DB9 pin 9 on IO38 breakout (brown+white)
+      \item Index+: Pin 10 on tertiary to DB9 pin 2 on IO38 breakout (blue)
+      \item Index-: Pin 11 on tertiary to DB9 pin 8 on IO38 breakout (blue+white)
+      \item +5V: Pin 5 on tertiary to DB9 pin 5 on IO38 breakout (green)
+    \end{itemize}
+  \item Brake and home switches: AMP 9-pin breakout cable to ACE motor controller box
+    \begin{itemize}
+      \item  Brake motor +: Pin 13 on tertiary to pin 2 on ACE 9-pin
+      \item  Brake motor -: Pin 14 on tertiary to pin 3 on ACE 9-pin
+      \item  Brake engaged: Pin 15 on tertiary to pin 4 on ACE 9-pin
+      \item  Brake disengaged: Pin 16 on tertiary to pin 5 on ACE 9-pin
+      \item  Brake common: Pin 17 on tertiary to pin 6 on ACE 9-pin
+      \item  Port 1 home: Pin 18 on tertiary to pin 7 on ACE 9-pin
+      \item  Port 2 home: Pin 19 on tertiary to pin 8 on ACE 9-pin
+      \item  Port common: Pin 20 and 21 on tertiary to pin 9 on ACE 9-pin
+    \end{itemize}
+\end{itemize}
+
+Cable connections inside of ACE box
+\begin{itemize}
+   \item Motor drive: connects motor driver output to motor
+   \item Motor control: connect motor driver input to DB15
+     \begin{itemize}
+       \item +5v: to pin 1 on DB15
+       \item step: to pin 9 on DB15
+       \item direction: to pin 10 on DB15
+       \item enable: to pin 12 on DB15
+     \end{itemize}
+   \item Home switches
+     \begin{itemize}
+       \item Connect NA1 home (9-pin 7 from tertiary) to pin 2 on DB15
+       \item Connect NA2 home (9-pin 8 from tertiary) to pin 2 on DB15 for guider axis?
+     \end{itemize}
+   \item Brake logic
+     \begin{itemize}
+       \item Brake on (9-pin 4 from tertiary) to pin 15 on DB15
+       \item Brake off (9-pin 5 from tertiary) to pin 14 on DB15
+       \item Brake common (9-pin 6 from tertiary) to pin ?? on DB15
+       \item Brake engage:  OPTO 22 output to pin 13 and pin 14 on 9-pin from tertiary. DB15 pin 8 to
+             OPTO 22 input.
+       \item Brake disengage: OPTO 22 output to pin 13 and pin 14 on 9-pin from tertiary. DB15 pin 7 to
+             OPTO 22 input.
+     \end{itemize}
+   \item Other
+     \begin{itemize}
+       \item Connect ground (from tertiary) to pin 6 on DB15
+     \end{itemize}
+    
+\end{itemize}
+Cable connection from ACE box to IO38 box
+\begin{itemize}
+  \item DB15 to T axis DB9
+    \begin{itemize}
+      \item  ground: DB9 pin 1 to DB15 pin 6 
+      \item  step: DB9 pin 2 to DB15 pin 9 
+      \item  direction: DB9 pin 3 to DB15 pin 10
+      \item  enable: DB9 pin 4 to pin 12 
+      \item  +5V: DB9 pin 5 to DB15 pin 1
+      \item  home: DB9 pin 9 to DB15 pin 2
+    \end{itemize}
+  \item DB15 to IO DB25
+    \begin{itemize}
+      \item Brake on: pin 15 on DB15 to pin 6 on DB25 (I/O bit 6)
+      \item Brake off: pin 14 on DB15 to pin 19 on DB25 (I/O bit 7)
+      \item Engage brake: pin 8 on DB15 to pin 10 on DB25 (I/O bit 10)
+      \item Disengage brake: pin 7 on DB15 to pin 22 on DB25 (I/O bit 11)
+    \end{itemize}
+\end{itemize}
+
+\subsection{Baffles}
+
+Alt-az telescope can present challenges for proper baffling. The 1m
+has two baffles located in the Nasmyth tube, a baffle around the
+tertiary which has components both around the tertiary and up towards
+the secondary, and a baffle around the secondary, which has both
+a vertical and horizontal component.
+
+As of July 2004, the Nasmyth baffles are located 2 inches and 7 3/4 inches
+from the rotator mounting surface (in the direction of the tertiary). 
+These have a 4.5 inch diameter central hole.  
+
+\subsection{Mirror Cleaning}
+
+The original notes are in The Blue Notebook under the "Optics" section.
+For questions, contact Mark Klaene at Apache Point Observatory.
+To obtain CO2 cylinders, talk to Mark or Norman Blythe.  CO2 cylinders
+are obtained from Valley Welders in Alamogordo.  One cylinder typically
+lasts for about five cleanings.  A cleaning session for the primary,
+secondary and tertiary typically takes about 30 minutes.
+
+To clean the mirror with CO2:
+\begin{itemize}
+     \item Connect the CO2 mirror cleaning tube   typically located
+     under the brown table against the South wall in the 1-meter dome
+     to the CO2 bottle.  Make sure there is a washer in the connector
+     of the tube.  There is a washer for the cleaning tube in the small
+     drawers between the two tool chests in the 1-meter enclosure.
+     Fittings, etc. may be found on the observing floor of the 3.5-meter.
+
+     \item Open the CO2 cylinder for a few seconds to blow the tube
+     clear of particulates.  It sometimes is good to blow the CO2 at
+     some plain glass to see that you are getting a good clean stream.
+
+     \item Humidity needs to be below 80\% and should be below 60%.
+     Humidity needs to be above 15\%.  In conditions this dry, there is a
+     danger of arcing.  Ground the bottle using one of the straps from
+     the observing floor of the 3.5-meter or some grounding tape   Jon
+     Davis has some in his office.
+
+     \item Hold the tube at a 30-40 degree angle, 6-7 inches from the
+     mirror.  Move in sweeping motions   slow enough to get the dust off;
+     but fast enough that you don't get condensation.
+
+     \item Should only keep the CO2 bottle open 3-4 minutes at a time
+     to prevent freeze-up.
+
+     \item Wear eye-shielding.  Glasses are not sufficient protection.
+     Wear gloves.  Eye shields are stored in the cryogenic equipment
+     cabinet on the observing floor of the 3.5- meter enclosure.
+     There is a pair of gloves in the larger of the two red tool boxes
+     in the 1-meter enclosure.
+
+\end{itemize}
+
+To wash the mirrors (old procedure?):
+\begin{itemize}
+     \item Place a plastic tarp over the azimuth wheel to keep water
+     out of the motors and cables that come through the azimuth cone.
+     There is a plastic folded plastic tarp located in the big cabinet
+     in the 1-meter control room at Apache Point.
+
+     \item Use medical grade cotton or lint-free wipes.  Use only alcohol
+     and distilled water on the mirror.
+
+     \item To start, apply alcohol to a cotton ball or wad, make one
+     short, gentle, sweep on the mirror, then throw the cotton away.
+     Do not reuse the cotton once it's contacted the mirror.  Dust and
+     grit picked up from the first swipe can etch the mirror surface.
+
+     \item Continue the procedure with the cotton until the entire mirror
+     surface has been cleaned.
+
+     \item Rinse generously with distilled water.  Mark Klaene has water
+     jugs with spray wands that can be used for this purpose.
+
+     \item Let the mirror air dry.
+\end{itemize}
+
+
+\section{Telescope auxiliary systems}
+
+\subsection{Guider}
+
+\subsection{Filter Wheel}
+
+The Filter Wheel and guider were both manufactured by Astronomical
+Consultants and Equipment of Tucson, Arizona.  Their phone number is:
+(520) 579-0698.  There is a manual written by the Filter Wheel and
+Guider's designer, Dr. Peter Mack.
+
+One issue with the guider is that, since it is on the rotator, there
+are cable wrap issues. Since we do not have an ideal solution, the
+cables may occasionally go bad at the connectors. All of the cables
+use AMP connectors, which use crimp pins. These can be ordered from
+a variety of electronics sources, e.g. Digi-key corp: the AMP part
+numbers for the pins are 1-66103-7 and 1-66105-8. There is a crimp
+tool in the 1m tool box that allows one to attach wires securely, and
+another tool for removing pins from their sockets.
+
+The Filter Wheel Housing consists of a removable/interchangeable wheel,
+four small switches that encode position information, a detent lock that
+holds the filter in a given position   this detent lock is driven by
+a motor and has three separate switches to sense its position   and a
+rotation motor.  All of the switches are simple microswitches that may
+be ordered from an electronics catalog.  Details about the operation of
+most of these components is in the Guider manual.
+
+There are replacements for both of the motors of the Filter Wheel on
+the top shelf in the 1- meter control room at Apache Point.
+
+The most complicated part of the Filter Wheel has to do with the Detent
+switches.  Two of the switches surround the Detent motor cam shaft.
+Of these, the lower most senses when the Detent is completely disengaged.
+The upper most senses when the Detent is up, but not necessarily engaged
+in the filter wheel.  The final switch is on the opposite side of the
+filter wheel, near the Detent spring.  This switch is activated when
+the Detent fully engages in the filter wheel.  When this final switch
+is engaged, the filter wheel is said to be "home."
+
+The filter wheel operates as follows:  The detent is disengaged.
+The filter wheel is commanded to run most of the way to the final
+position.  The detent is run in.  At this point, the detent is not
+necessarily engaged.  A "run-until-home" command is executed.  When the
+detent engages, the filter is home.  The four "encoder" switches are
+then read to determine whether the filter moved to the correct position.
+Note, unless the filter wheel is "home" the encoder switches will not
+necessarily read the correct position.  One can get a combination of
+switches when the detent is not engaged that will give a false reading.
+How the filter encoder switches work is described in detail in the
+Guider Manual.
+
+To troubleshoot the filter wheel box, it may be run while detached from
+the telescope.  To do this, remove the top of the filter wheel and take
+the filter wheel out as described in the "Filters" section of this manual.
+The main body of the filter wheel box may be removed from its cover by
+removing the bolts around the perimeter of the filter wheel.  The cover
+stays mounted to the guider module on the telescope.  The filter wheel
+may be reinstalled without the cover plate.  It slides in as described in
+the "Filters" section.  Place the top on the filter wheel box.  Once you
+plug the filter wheel back into the control cables, you will be able
+to run the filter wheel as though it were on the telescope.  However,
+you will be able to see the operation of all the switches and motors.
+
+There are two filter wheels that may be used.  One is a ten-position wheel
+for 2"X2" filters.  The other is a six-position wheel for 3"X3" filters.
+
+We had problems with the triggering of the "detent out" switch in the summer
+of 2011. This was eventually fixed by adjusting an allen screw in the box
+that triggered the switch. In the process of diagnosing this, Ed Leon 
+documented how the circuitry worked; his diagram can be found in
+\htmladdnormallink{FilterWheelDetent.pdf}{../FilterWheelDetent.pdf}.
+
+\subsubsection{Filters}
+
+Filters for the 1-meter are located on the Filter Shelf in the 1-meter
+control room.  This filter shelf is the lower most shelf above the
+computer "Loki."  There are three sets of filters available for use on
+the 1-meter:  1) A Johnson broadband set, 2) A Gunn broadband set, and 3)
+A narrowband set owned by Dr. René Walterbos.  The Johnson and Gunn sets
+are NMSU property and may be used freely in the 1-meter.  The Walterbos
+narrowband filters may be used in the 1-meter as long as he does not
+have a priority project on another telescope.  Dr.  Walterbos' filters
+are stored in a filter box.  The combination to this box is 656.
+
+An SDSS set of filters was purchased from Custom Scientific.
+
+The original UBVRI set of filters was damaged spring 2013 and had shown
+degradation for some time before that. A new set of UBVRI filters was
+purchased at that time from Astrodon.
+
+Great care should always be taken in the handling of filters.  Only hold
+them by the edge.  Remember that filters are very fragile. Do not drop
+them. Avoid getting fingerprints on the filters.  The filters will need
+periodic cleaning even with careful handling.  Use canned air to gently
+blow filters free of dust.  Dust blowing is the most commonly required
+cleaning action.  In the event that something more difficult to clean off
+gets on the filter, there is a filter cleaning kit on the Filter shelf in
+the 1-meter control room.  The kit contains solvents for gentle cleaning
+of the filters.  Use only lint free wipes or medical grade cotton to
+wipe the filters.
+
+There is hardware for installing filters in the filter wheel on the
+Filter shelf in the 1-meter control room.
+
+To install/remove filters:
+\begin{itemize}
+     \item Make sure the telescope is stowed with the filter wheel upright (i.e. the handle on the
+     filter wheel box is upright.)
+     \item On the spec computer issue a DETENT 0 command to disengage the detent.
+     \item Loosen the two Allen screws on the filter lid and remove the lid.
+     \item Using the finger holes provided, carefully lift the filter wheel from the filter wheel box
+     and place the wheel on a clean work surface.
+     \item Three small screws and teflon washers hold the filters in place.  To remove a filter,
+     remove the three screws and carefully push the filter out of the slot.  To push the filter
+     out of the slot, either use clean cotton gloves (the 3.5-meter has a supply of these in
+     their filter cleaning supplies) or a lint free wipe.  Do not touch the filter directly.
+     \item Insert a new filter into the slot.  Replace the three screws and teflon washers.  In the
+     case of thick filters (such as the Walterbos narrow band set) spacers may be used to
+     keep the screws from being screwed down too tightly.
+     \item Note:  Do not screw the screws down too tightly on any filter.  "Finger tight" is
+     usually sufficient to hold a filter in place.  Too much pressure and you can crack a
+     filter.
+     \item Using the finger holes on the filter wheel, replace the wheel into the box.  Make sure
+     the groove on the filter wheel slips into the wheels in the box.
+     The filter wheel goes in with the detent notches towards the
+     tertiary; i.e., the side with the dots that mark the filter 
+     positions towards the tertiary.
+     \item Carefully replace the lid.
+     \item Before re-engaging the detent, it's a good idea to check and make sure that the filter
+     wheel was reseated properly.  With telescope motor powers off, carefully turn the
+     handle on the filter wheel drive motor (the motor with a handle) and make sure that
+     the wheel does not bind or give you any resistance.  If you listen carefully, you should
+     hear the filter wheel activating the detent switches as it turns, also.
+     \item Restore motor power and issue a DETENT 1 on the Spec computer to move the
+     Detent back in.
+     \item Issue a FILTINIT to re-init the filter wheel.
+     \item After installing new filters, you must update the file /control1m/tcomm/filters.dat, to give the name of the filter and the focus offset relative to the
+BVRI filter set. The file /control1m/tcomm/filters.master is supposed to have this
+information for all possible filters, so you can just extract the relevant
+line.
+\end{itemize}
+
+\subsection{Guider}
+
+As noted above, the Guider was built by Astronomical Consultants and
+Equipment of Tucson, Arizona.  They can help with obtaining spare motors
+or other parts that might have failed.  The cabling is documented in
+the Filter Wheel and Guider manual as noted above.   Note this box uses
+motor controllers Applied Motion Products 3540M
+
+%The guide camera
+%is a Spectrasource Teleris 2 camera built by Spectrasource Instruments.
+%Their phone number is: (818) 707-2655.
+
+The guider module is a self-contained unit that may be entirely removed
+from the telescope.  This is useful when diagnosing problems.  There are
+two stages   the first is a radial (X) stage for positioning the camera
+in the telescope field of view.  The second is a focus (Y) stage that
+moves the pick-off mirror further from and closer to the guide camera.
+Note the focus mirror does have the effect of acting like a radial stage.
+
+One issue with the guider is that it is wired such that the limit
+switches are recorder tripped if the limit circuit is \textit{open}. This
+means that in the case of connection/wire failure, the limits will read
+open and the stage will not move. So if the stage is not moving, it's
+a good idea to check the limit circuitry/wiring.
+
+Another issue is that occasionally on the focus stage, the gears become
+disengaged. 
+
+Some notes about the guider:
+\begin{itemize}
+     \item For 1,000,000 Y-steps you need to move the X-stage -40,000 steps to stay in the same
+     place.
+     \item +3,000,000 Y-steps corresponds to -500 units of secondary travel.
+     \item 7500 X-steps is approximately 10 arcsec on the sky.
+     \item To get the guider to the center of the PI field of view, need to set X=-270,000 and
+     Y=-2,547,500
+     \item There are a handful of other guider notes in the Big Blue notebook.
+\end{itemize}
+
+\subsubsection{Filter/guider wiring redesign, July 08}
+
+Six cables from telescope:
+\begin{itemize}
+\item Radial stage motor control 4-pin to ACE box
+
+\item Focus stage motor control 4-pin to ACE box
+
+\item Filter rotation 9-pin to 4-pin in ACE box
+
+\item Limits 9-pin: 3 pins (1,2,5) to radial stage DB15, 3 pins (3,4,5) to focus stage DB15
+
+\item Filter encoder 9-pin: pin 1 to focus DB15, pins 2,3,4,5,6 to PC38 IO DB25.
+
+\item Filter detent motor: 9-pin to ACE box
+\end{itemize}
+
+
+\subsection{Mirror Covers}
+
+MIRROR COVERS ARE CURRENTLY NOT IMPLEMENTED. The old system, described below,
+was too unreliable.
+
+Mechanical drawings of the mirror covers along with electrical drawings
+are in The Blue Notebook.   There are six mirror cover motors.  They are
+Pittman motors, part number GM9413-5 and are available from Automation
+Solutions in Englewood, Colorado; phone number (303) 792-5518.
+
+When operating the mirror covers, the telescope must always be near
+vertical.  To open the mirror covers manually:  There are three switches
+on the TCS box on the left-hand side of the rack in the dome.  Flip the
+left-most to manual control.  Flip the middle switch to "Set 1" Hold the
+"Open" switch up until the covers stop moving.
+
+To close the mirror covers manually:  As above, make sure the left-most
+switch is in the manual control position.  Flip the middle switch to
+"Set 2."  Hold the "Close" switch down until the covers stop moving.
+
+The "Set1"/"Set 2" switches refer to which set of limit switches (i.e. the
+open or close set) are active and determine the order in which power is
+applied to the mirror cover motors.  "Set 1" is for "open" and "Set 2"
+is for "close."
+
+To move the mirror covers via computer, make sure to leave the left-most
+switch in "Computer Control."
+
+There are two possible weak points in the mirror cover design.  1)  The
+motors themselves may be right at the torque limit.  New motors should be
+investigated and identified to replace those that are currently in place.
+2)  The mirror covers have a rigid coupling between the motor and the
+covers themselves.  Perhaps this should be replaced with either a flex
+coupling or a slip coupling of some sort.
+
+Occasionally, the bottom two mirror covers don't seem to close completely.
+This is easily remedied by loosening the set screws in the motor
+shaft-couplings and gently pushing the covers all the way closed.
+Re-tighten the set screws.  This should be checked about every two weeks.
+
+The most common failure mode with the mirror covers is damage to the
+gear head due either to the torque problem mentioned above or mirror
+cover collision.  If the mirror covers fail, loosen the set screw
+that holds the mirror cover to the motor on each mirror cover panel.
+At this point, the mirror cover panels will be free to swing open.
+Open the mirror covers in the correct order   A panels first, B second
+and C third.  Re-tighten the set screws that hold the mirror cover panels
+to the motor shaft.  If a given mirror cover panel will not remain open,
+strap it open using duct tape or cable ties.  Replace the damaged motor.
+
+Some possibly useful information if one wanted to redesign the
+mirror covers: the mirror cover central rest is about 17 inches diameter.
+The tertiary baffle is about 16 inches diameter and extends upward 
+starting about 5 inches above the central rest.
+
+\section{Detectors/cameras}
+
+\subsection{Leach camera with E2V/Marconi CCD}
+
+We obtained a E2V/Marconi 2048x2048 CCD 
+(\htmladdnormallink{CCD42-40}{http://control1m.apo.nmsu.edu/1m/docs/42-40-BI-NIMO-Cpak.pdf} backside illuminated)
+with 13.5 micron pixels through an internal grant at Los Alamos National
+Labs written by Tom Vestrand. The CCD was obtained and put in an Infrared
+Labs dewar by Bob Leach at UCSD, who supplied the controller. The dewar
+is a model WD5, serial number 3538, job number ARMF28H.
+
+Some drawings and photos for dewar/electronics can be found in
+\htmladdnormallink{http://control1m.apo.nmsu.edu/1m/leach}
+{http://control1m.apo.nmsu.edu/1m/leach}. Leach says 
+"I think the attached drawings are the applicable ones. We built a similar
+system for Wyoming, so don't get misled by that label. The heater is
+terribly simple, just a 25 ohm resistor connected to the utility board."
+
+Library software was provided by Leach, and LANL provided a simple command
+line interface to this. The library stuff is inserted as a kernel module.
+LANL supplied a computer with the camera; we have subsequently reinstalled
+OS/software to make it compatible with other computer systems; however,
+the RedHat 9 LANL installation+software was left on an unmounted partition
+on the computer ccd1m; see this manual LaTeX source for account information.
+% account: observer password: *Aggies
+% account: root     password: jbRR9a
+
+Leach provides application interface routines (astropci), as well 
+as a Linux JAVA control program called VOODOO. We have used the interface
+routines to implement our own software. Leach's software can be obtained
+from astro-cam.com; access control information can be found in the LaTeX
+source for this manual. Various Leach documentation from this web site
+can be found at \htmladdnormallink{http://control1m.apo.nmsu.edu/1m/docs/leach}
+{http://control1m.apo.nmsu.edu/1m/docs/leach}.
+% account: jwren
+% password: *mira
+
+The Leach astropci software is installed under the 1m/tcomm source directory.
+There are different versions for different kernels, see the documentation
+for more information.
+
+The dewar developed some leaks in 2007, and upon opening, several chips
+were discovered in the dewar window. Inquire to Infrared Labs revealed
+that we had a non-standard sized window, so a new top plate was purchased
+with a standard size window and installed.
+
+We had some issues with the shutter failing to open and opening incompletely
+in December 2008. At that time, we ordered and received a replacement
+shutter assembly from Leach; the shutter is a Pronto Magentic E64 (141176 2570)
+shutter. The shutter comes with a small electronics board (to transition from
+opening voltage to hold voltage???), but Leach told us to remove the board
+and connect the solenoid directly to the HIROSE connector from the 
+pins connected to a power supply through the timing card. We also discovered
+that the shutter needs to be physically modified to fit in our mounting
+scheme: the solenoid is farther from the shutter than in the Prontor default,
+and several bolt holes need to be redrilled to allow for flush bolts to
+be put in. Instead of making this modification, we simply replaced the old
+solenoid with the new one, and redid the wiring (made the cable significantly
+shorter. In fact, the old solenoid is probably still OK,
+problems may have just been electrical with perhaps some small mechanical
+alignment of the solenoid issues. We have retained the spare shutter and
+the old solenoid for potential future use.
+
+\subsection{FLI guider camera}
+
+The guider was built around the format of an old Spectrasource CCD camera 
+(Spectrasource is no longer in business). This constrains the physical
+dimensions of a guide camera to be cylindrical in shape within a diameter
+of a few (?) inches.
+
+The current guider camera is a \htmladdnormallink{Finger Lakes Instrumentation}{www.fli-cam.com} 
+MaxCam CM2-1, which has a 1024x1024 thinned backside illuminated sensor, with
+13 micron pixels. Mechanical interface drawings can be found at
+\htmladdnormallink{http://control1m.apo.nmsu.edu/1m/docs/fli}
+{http://control1m.apo.nmsu.edu/1m/docs/fli}. This camera was purchased/installed
+in summer/fall 2005.
+
+The guider camera is controlled via a USB interface. To minimize the number
+of computers in the dome, we purchased a fiber/USB converter kit made 
+by Icron, so that the control computer, ccd1m, is located in the main 
+computer room. A pair of fibers run from the 1m dome patch panel through
+the cone to the receiver box, into which the FLI camera is connected.
+
+Power is supplied by a small DC supply that is located up on the arm by the
+camera. Communication to the camera is by a custom 10-pin cable (looks like
+and Ethernet connector, but isn't) which goes to a small box with a control
+card that is attached to computer via USB.
+
+We sometimes have some trouble with the shutter not closing fully, especially
+during cold weather. As a result, normal operation is to command the shutter
+open at the beginning of the night and just leave it open; the small trails 
+created during readout don't significantly affect the centroids. The camera was
+opened in November 2006, and the shutter blades were cleaned with isopropyl
+alcohol and reassembled. 
+
+The guide camera stopped functioning in September 2008. It was returned to FLI 
+and they repaired and cleaned it.  Specifically, they replaced components on
+the A/D and internal power supply board, baked the camera, replaced o-rings
+and dessicant packs, cleaned the sensor, and purged the camera.
+
+FLI no longer makes this model, and their newer models do not appear to have
+the same form factor.
+
+\subsection{Apogee AP7P CCD Camera}
+
+Before obtaining the Leach E2V CCD camera, we used an Apogee camera as
+the main science instrument. This is now again being implemented as 
+the acquisition/guide camera for the high speed photometer.
+
+On the photometer port (also used for SDSS/APOGEE fiber feed), the camera
+looks at the focal plane. This is accomplished using a Nikon macro lens.
+To achieve maximum magnification, the lens needs to be focussed for the
+closest possible object, which is about 10 inches away. This requires that
+the camera be located as far down as possible in order to achieve focus.
+Even still, the pixel scale is between 1.5 and 2 arcsec/pixel -- it would
+be better to have a camera with smaller pixels.
+
+The Nikon lens has an adaptor for a C-mount that screws into the camera.
+The APOGEE camera has a large bolt circle, to which a snout that is 3
+inches in diameter is mounted. This is barely large enough to fit around
+the Nikon lens. The snout goes into a 3-inch diameter JMI focuser. This
+is controlled using a JMI SmartFocus unit.
+
+The \htmladdnormallink{Apogee}{http://www.ccd.com} 
+AP7P is a thermoelectrically cooled CCD.  Documentation for this camera is located
+on the documentation shelf in the 1-meter control room at Apache Point.
+The camera has a 512x512 thinned back-side illuminated CCD.
+The camera is plugged into the parallel port of the Linux machine,
+eyeball, which must be located in the 1-meter enclosure.  Power to the Apogee is
+supplied by its own power supply and special cable.
+Follow instructions in the manual for safely connecting and disconnecting
+the Apogee.
+
+If the camera window fogs over, it is time to replace the Apogee's
+desicant.  Consult the Apogee manual for detailed instructions.
+Replacement desicant is located in the upper most of the big file drawers
+in the 1-meter control room.
+
+Apogee has kept some documentation for their AP series at
+\htmladdnormallink{http://www.ccd.com/tech.html}{http://www.ccd.com/tech.html}.
+
+\subsection{Apogee Alta CCD Camera}
+
+In 2016, and APOGEE Alta F2 camera was purchased because lifetime for 7P seemed
+questionable with parallel port interface. Alta camera has USB interface,
+and identical mounting surface. The AP7P failed in spring 2017.
+
+The Alta F2 camera has a C mount, which is a smaller diameter thread than
+the AP7P. A C-mount to Nikon-mount adapted was purchased for installation.
+The chip is a 1536x1024 with 9 micron pixels.
+
+APOGEE completely redid their software API, so it was necessary to rewrite
+the camera interface. Examples were provided in C++, so this was adopted
+for the lower level camera control.
+
+\subsection{JMI SmartFocus}
+
+The HSP/APOGEE-feed acquisition/guide camera is mounted in a JMI Focuser
+which has a JMI SmartFocus control. Originally the serial interface to the
+SmartFocus was connected to the HSP Windows computer, and the Windows
+software from JMI was used to control the unit.
+
+In summer 2017, a Raspberry Pi was purchased to control the focuser.
+The INDI drivers were loaded onto the Pi using the binary libindi 
+packaged. Access to the pi (control1m, pi1m) is via default pi
+username and password. The INDI server is started using:
+
+nohup indiserver -v -m 100 indi_smartfocus_focus > /dev/null
+
+A remote client is used to control the server; the standard is Kstars/EKOS. 
+Unfortunately, this is not available for CentOS. It can be installed on
+MacOS. The client needs to connect to port 7624 on the Raspberry Pi;
+for remote operation this can be done using an SSH tunnel. 
+
+Power for the Pi and the JMI focus are on a single power strip connected
+to remote outlet on the azimuth disk (hsp1m).
+
+\subsection{Princeton Instruments CCD Camera}
+
+The original science CCD camera was was purchased from Princeton Instruments 
+of Trenton, New Jersey.  This camera was retired in the late 90s (?) and is
+now on long term loan to New Mexico Tech, via Bill Ryan, for their MRO 
+observatory (I don't know if they are actually using it).
+
+Princeton Instruments was bought out and is now Roper
+Scientific.  Roper Scientific's technical support number is (609)
+587-9797.  The people who seem to be most familiar with our system are
+Paul Sandyck and Rob Allen.
+
+There are several things to be familiar with when mounting and dismounting
+the PI CCD camera.  First off, the shutter assembly on the camera screws
+on and off with a flanged collar.  This collar needs to be tight,
+otherwise, the camera can turn, changing the camera's orientation on
+the sky.  Make sure not to rotate the shutter housing when tightening
+the collar -
+the mechanical solenoid that holds the shutter open can bind inside,
+on the camera housing.
+After tightening the shutter housing, run a test exposure to make sure
+the shutter opens cleanly.  Next, assuming you are looking at the shutter
+and the camera's fill tube is upright, there is a scratch on the shutter
+housing at roughly the 10 o'clock position.  This scratch lines up with
+a scratch on the filter wheel.  This allows you to mount the camera such
+that north is approximately at the top of the chip.
+
+The camera is held to the filter wheel with a set of three cleats that
+screw into the filter wheel.  Since the camera is only clamped in place,
+it is critical that the cleats be very snug to make sure the camera does
+not rotate.
+
+The camera control hardware consists of three components:  the camera
+head, which is mounted to the telescope; the camera controller which is
+in the left-hand side of the rack; and the computer interface card which
+is installed in the Dell 486 Computer that is housed in the left-hand
+side of the computer rack.  The camera operates at -110 Degrees C.
+There is a temperature control knob on the front of the camera controller.
+Next to that is an LED that shows green when the camera is at the correct
+temperature and amber when not at the correct temperature.
+
+Between the Dell 486 and the camera controller is a pair of roughly
+4-foot long "Parallel" cables.  Care must be taken when plugging these
+cables into the back of the camera controller
+  so that the pins do not bend.  These cables have a tendency to pull
+  free of the controller as
+the rack is moved or as the temperature in the dome shifts.  Check
+periodically to make sure the cables are firmly seated.
+
+\subsubsection{Fast Readout Mode}
+
+Fast readout mode capability has been added to the Princeton Instruments
+camera controller in-house.  Inside the camera controller unit, on the
+left hand side of the largest board visible from the top is a set of
+jumper pins labeled with speeds (e.g. 200 KHz, 50 KHz, etc.)  This set
+of jumper pins determines the readout speed of the Princeton CCD.  Note,
+the faster the selected speed, the higher the dark current.  Under the
+front plate of the camera controller again on the inside   is a box
+with a relay.  This box contains a relay that alternately connects the
+common (right-hand) side of the jumpers with either the 200 KHz or the
+50 KHz pin.  The relay is triggered when 12-volts are applied to pins 1
+and 2 of a 9-pin D-connector run out the back of the Camera Controller.
+The default (i.e. power off) state of the relay runs at the 50 KHz rate.
+
+\subsubsection{Vacuum pumping the Princeton Camera}
+
+Vacuum pumping the Princeton Camera may be done on-site at Apache
+Point Observatory.  It should only be done with the assistance of
+APO personnel who are familiar with the operation of the vacuum pump.
+Those people include Mark Klaene, Jon Davis, and Jon Brinkmann.
+
+The following are guidelines to follow when pumping the camera.
+\begin{itemize}
+     \item Make sure that the camera has warmed to room temperature.  Do not pump the
+     camera when it is at Liquid Nitrogen temperatures.
+     \item The vacuum pump is a large unit typically stored in the back work area at Apache
+     Point.  Before using the pump, make sure that you are instructed in its use by
+     qualified APO personnel listed above.  Also, make sure no one else has planned to use
+     the pump in the time it takes to pump the PI camera   typically 4-6 hours.
+     \item The fittings to connect the PI Camera to the vacuum pump are in the right-most red
+     tool box in the APO work area.  The qualified person assisting you can help you
+     locate all fittings.
+     \item The PI Camera should be pumped until it reaches a vacuum of at least 10-7 Torr.
+\end{itemize}
+
+\subsection{Remote video camera}
+
+Three Logitech QuickCam 4000 Pro web cams, with USB interface are
+connected to the ccd1m computer, via the USB/fiber interface boxes.
+These require the pwc driver.
+
+We also have a Panasonic eggcam with its own PCI interface card, but this
+requires a computer in the dome to run (eyeball was used for this purpose).
+
+\section{ Observatory Dome}
+
+The Observatory Dome was built and installed by AshDome.  Richard Olson,
+President of AshDome, is very helpful in answering questions and
+helping one track down replacement parts.  AshDome's phone number is:
+(815) 436-9403.  Their website is:  www.ashdome.com.
+
+\subsection{Upper Dome Slit}
+
+There is a manual control box for the upper dome slit on the north wall of
+the 1-meter enclosure.  To operate the slit manually, put the dome into
+"Manual" mode with the upper switch then use the raise/lower switch as
+appropriate.  There is a limit switch next to the motor at the top of
+the dome that automatically shuts the shutter power off when the dome
+is all the way open or closed.
+
+Procedure to follow in the event that the upper shutter fails to close:
+If the 1-meter dome does not close, immediate inspection of the dome
+and its control systems are required.  The following is a point-by-point
+list detailing the steps and order that should be followed in the event
+that the dome does not close.
+
+\begin{itemize}
+     \item Visually inspect the dome shutter.  From outside, make sure that ice, or some other
+     culprit has not caused the shutter to leave the tracks.  From inside the enclosure, look
+     straight overhead and see that the dome-stop switch is making good contact with the
+     switch-trigger (a metal piece that looks a lot like a handle).  If you cannot see the
+     front of the dome shutter or the "handle" there's a good chance that the dome had slid
+     back too far and is not engaged with the motor gear.  If the dome fails either of these
+     tests, the 1-meter contact person AND either Mark Klaene or Jon Davis should be
+     contacted immediately so that further plans may be made.  Cover the telescope as
+     described in step 7 if bad weather is imminent.
+     \item If the dome appears to be on track, proceed with an inspection off the electrical
+     system.  Go to the gray box on the north wall of the dome.  Place the top switch into
+     the "Manual" position.  Use the "Open/close" switch to try to move the shutter.  If it
+     closes, fine. If it hangs up, one could try such things as "rocking" the shutter to see if
+     it will clear an obstruction in the tracks. 
+     \item Next, if "manual" control of the dome fails to work, check the circuit breakers.  In the
+     gray box to the right of the door, are the circuit breakers.  Look for any that are
+     triggered; flip them back into position and try the shutter again.
+     \item If the circuit breakers are not tripped, check the fuses.  There are four fuses in the
+     gray box on the North wall of the dome.  The fuses are located in the bottom of the
+     box.   Of the four fuses, two are "active" and two are "spares." The fuses not labeled
+     "spare" are the "active" ones.  Check both of the active fuses.  If either one appears to
+     be burned out, replace it with a fuse from the spare slot.  Try to move the shutter as
+     described in step 2.
+     \item At this point, if bad weather is imminent, skip one step and close with the hand crank. 
+     Continue diagnostics after the telescope is safe.  (The reason for waiting to do the
+     handcrank until now is that checking the fuses and circuit breakers should go pretty fast.)
+     \item If the circuit breakers are OK and the shutter fails to move, check the shutter relays. 
+     The shutter relays are located in the small gray box next to the lower shutter on the
+     dome itself.  It requires working from the ladder.  The box is opened with six Phillips
+     head screws located on the sides of the box (Note: two are missing as of this writing).  The entire box comes off the
+     wall; you may need to unplug it to inspect the relays adequately. Check the three
+     relays.  The relays plug into sockets.  Often, damage takes the form of a splotch of
+     silver on the side of the relay where the contact was blown.  Replacement relays are
+     located in the bottom drawer of the center tool box on the table on the south side of
+     the dome.  Replace any suspicious relays and try the shutter again.
+     \item If the relays are OK and the shutter still fails to move, it's time to try closing with the
+     hand-crank.  The hand crank is located in the base of the 3.5-meter enclosure on the
+     wall to the right of the big double doors (note: this location is subject to change by
+     APO policy.  If the manual crank cannot be located, contact Bruce Gillespie or Mark
+     Klaene to find where it's been moved to.)  The hand-crank is a long pole with a hook
+     on the end.
+     \item Return to the 1-meter enclosure with the hand-crank.  Look overhead.  On the bottom
+     of the motor is a large eye-hook.  Hook the eye-hook with the pole.  Turn the crank. 
+     The dome shutter should move.  Close the dome if possible with this method. 
+     Remember to un-hook the manual crank when done.  If for some reason, you meet
+     resistance when trying to crank the dome, or it fails to move, there is probably
+     something wrong that will require further inspection.
+     \item If all else fails and the dome cannot be closed at all.  Cover the telescope with the
+     canvas and plastic tarps located under the brown table against the south wall.  If
+     possible, move the dome so that it is not over the computer rack that's against the east
+     wall of the dome.  Call Jon Holtzman or Mark Klaene immediately. 
+\end{itemize}
+
+We had continuing problems with the original relays for the upper dome
+slit. These dome relays were Icron MY4 relays, 110/120 VAC (Mfg part
+MY4-AC110/120(S).  They can be purchased from a variety of sources,
+e.g. www.mouser.com. Twenty were ordered in February 2006 of the MY4N
+variety (with indicator light) for about \$8.00 each.  
+
+In late 2007, Mark Klaene and Dave Woods redid the upper (and lower) slit control
+to use more robust relays. These appear to work much more reliably, although
+we have still had some failures that resulted in blown fuses.
+
+The dome box has two fuses, with spots for two spares; these are 6A slow 
+blow fuses.
+
+
+\subsection{Dome Home Switch}
+
+There is a dome azimuth home switch located just south of east, mounted
+to the slip-ring contactor post.  There are spares for this switch in
+the  big red tool box on the south side of the 1-meter enclosure.
+
+
+\subsection{Lower Dome Dropout}
+
+Automated lower dome dropout operation was designed and built in-house by
+David Summers.  Electrical drawings are in the Yellow Observatory folders
+and there are copies stored in the master control box inside the 1-meter
+enclosure itself on the South wall.  To achieve lower dome automation, a
+Bodine AC motor was simply attached to the winch that raises and lowers the
+dropout. 
+
+The winch is a Fulton K2550 Work winch; this was purchased to replace the
+original K1550 winch which has a lower gear ratio. The winch was purchased
+from Grainger.  The higher gear ratio winch was obtained so the the dome
+would not ``bounce'' on the limit switch, which happened with the lower
+gear ratio; the downside of the higher gear ratio is that the lower dome
+slit takes about 3 minutes to open or close.  These winches are ratcheted
+for pulling the load in; the load is let out using a slip clutch, so
+the ratchet \textit{is not} disengaged when the dome is lowered.
+
+The shaft is 2.5" from the mounting surface, and the shaft has a 0.5"
+(??) diameter.  There is a relay box for motor control on the dome it's
+the hinged small box to the right of the upper dome slit relay box.
+
+To lower the dropout using the master box on the south wall of the
+enclosure, flip the lower red switch into the "Lower" position and flip
+the upper red switch into the "Power On" position.  It is important
+to perform this operation in the correct order.  Once the dropout has
+powered itself off at the limit switch, move both of the red switches
+to the power off or automatic positions.
+
+To raise the dropout using the master box on the south wall of the
+enclosure, flip the lower red switch into the "Raise" position and flip
+the upper red switch into the "Power On" position.  Once the dropout has
+powered itself off at the limit switch, move both of the red switches
+to the power off or automatic positions.
+
+If the motor or power fails, the dropout may be closed by grabbing the
+blue clutch between the motor and the winch and turning by hand (or use
+a wrench on the nut) until the shutter is closed.
+
+Sometimes the lower dome gets closed too tight (mostly with the old
+winch) and the dome clutch does not slip to let it open again. If this
+happens, simply take a wrench and turn the nuts on the dome side of the
+blue clutch in the opening direction (relieving tension on the cable);
+the dome should start to open.
+
+Lower dome closed limit switch: white goes to common, yellow to norm closed.
+
+In late 2007, Mark Klaene and Dave Woods redid the lower dome slit
+system to use more robust switches (and relays?).
+
+\subsection{Rotation and Motor Adjustment}
+
+The dome's rotation motor is located on the north side of the dome just
+above the dome control box.  The rotation motor gear engages track
+that goes around the circumference of the dome.  Good engagement of
+the gear and rail are critical for accurate positioning of the dome.
+The dome motor is on a hinged base.  Engagement of the gear and rail is
+maintained by a single piece of threaded rod that comes up from the motor
+mount and through the motor base.  There is a nut on the the threaded rod.
+If the nut works loose, the motor can be allowed to "bounce" on the rail
+instead of driving the dome.  When this happens, a rather distinctive
+bumping noise can be heard.  To fix this, the hinged piece needs to be
+tightened. However, the bolt which currently runs through the bottom plate
+was poorly designed so there is nothing apart from friction to keep it
+from turning when the nut is tightened. As a result, it takes some care
+to tighten down the motor. Until a better design can be implemented, the
+preferred strategy is to use a C-clamp to tighten down the hinged plate
+until the motor engages fully, then the nut can be tightened without
+having the bolt rotate; do not use pliers to try to hold the bolt at
+the threads will likely become damaged. Tighten the clamp and then the
+nut so that there is good engagement between the motor gear and the rail.
+
+The dome motor gear seems to come disengaged first when the dome slit
+is either over the motor or opposite the motor (Dome azimuth of 0 or
+180 degrees.)  To check that the dome is well-engaged, put the dome into
+manual mode and rotate until the slit is over the motor.  Run the motor
+in short bursts.  It should start and stop smoothly.  If there is a loud
+banging or clanking as the motor starts and stops, it's time to adjust
+the motor.  Repeat this test with the dome 180 degrees from the first
+test position.
+
+Periodically, the rollers around the circumference of the dome should be
+greased so that the dome operates quietly with minimal wear.  There is a
+spray can of open gear lube located on the brown table against the south
+wall of the enclosure. However, Jon Davis recommends using a dry lube
+because of our dust exposure. He likes Dow Corning Silicone Lubricant 557,
+but unfortunately this comes in an aerosol can and it is not recommended
+to use an aerosol near optics. Instead, John recommends spraying some
+in a squirt bottle outside the dome, waiting for it to warm up, then
+squirting it from the bottle. There is a can of the lubricant in the
+APO machine shop, in a green aerosol can.
+
+However, Norm Blythe recommends using a grease on the sprockets, and
+another lubricant on the rollers.
+
+Dome rollers were relubed 2014 May 30 with a 3in1 Garage Door Lube.
+
+\subsection{Dome encoder}
+
+The dome encoder is coupled to the shaft at the motor. The encoder is a
+BEI Motion Systems (1-800-350-2727) Optical Encoder E206-1000-3G. It was
+originally read by the Tech 80 card in the telescope computer, but in
+July 2005 this stopped functioning (not positive which element failed),
+and we switched over to using the CP4016 card instead. The latter only
+reads 16-bits, so some code modification was necessary to count encoder
+wraps (this only functions properly when dome is moved under computer
+control!). The cable connections are different for the two cards, so
+we made a converter cable to work with CP4016. The CP4016 also only
+has inputs for the 3 poles, while the Tech 80 had the 3 poles plus
+their inverses (a support person at COP said it was OK to just hook
+up the 3 poles).
+
+A new encoder was ordered and installed in November 2006. At this time,
+it was still left hooked to the CP4016. The dome was having some serious
+positioning problem, unclear if this was due to the encoder, the
+coupler with the dome motor, or the dome motor to dome interface. A
+new, longer coupler was installed with the new encoder.
+
+\subsection{Dome control}
+
+The dome is controlled through the Autoscope OCS box. This box takes
+input from an OMS PC34 card in the telescope computer.  The OCS box
+itself contains Opto-22 relays to switch things on and off. This
+box controls: rotation power, rotation direction, shutter power, shutter
+directory, dome home switch sense, watchdog and watchdog reset, and
+LN2 fill system through an auxiliary port.
+
+A description (probably not fully accurate) of the system can be found
+in \htmladdnormallink{the Autoscope documentation}{http://control1m.apo.nmsu.edu/1m/docs//OCS.pdf}, along with some
+\htmladdnormallink{schematics}{http://control1m.apo.nmsu.edu/1m/docs/OCS_diagrams.pdf}. 
+
+Some information is also available about the \htmladdnormallink{OMS PC34 card}
+{http://control1m.apo.nmsu.edu/1m/docs/PC34.pdf}.
+
+\section{Dome auxiliary systems}
+
+\subsection{Cabling and Conduit}
+
+Cabling to the telescope is done through conduit that runs from below
+the computer rack into the pier.  There is a hole in the bottom of the
+azimuth cone and cables may be run up through that hole.
+
+The easiest way to run cable to the telescope is to tie off one end of
+the cable on the telescope structure, then drop the cable through the
+hole in the top of the azimuth plate and work it until it goes below
+the azimuth cone.  Next, get an extension ladder and place it alongside
+the pier on the north side.  Just below the floor of the dome is a small
+access door that opens with a flat-bladed screwdriver.  Open the door.
+You'll see where the cables turn the corner into the conduit.  Take the
+loose cable and direct it into the conduit.  The conduit itself has
+access doors.  Unfortunately, the design of the dome is such that the
+doors do not open very far.  Do your best to reach in through the access
+doors in the conduit and guide the cable to a place where you can grab
+it from the exit hole under the rack.
+
+Cables must be checked periodically to make sure there are no wraps
+down in the azimuth cone.  There is sufficient slack in the cables (and
+new cable runs should be done with sufficient slack) that the azimuth
+would need to wrap several times before cable wraps become an issue.
+To check on the cables, look down in the azimuth cone and check that
+the cables are hanging freely and not twisting around themselves.
+
+Rotator cables should be checked for wraps at each init as directed in
+the telescope operations guide.
+
+When working on conduit, be aware that mice and rats often get into the
+conduit.  You should take hanta virus precautions.  Wear a dust/nuisance
+mask rated for protection against organic vapors.  There are masks in
+the 1-meter control room.  Also, Mark Klaene at Apache Point Observatory
+has masks that can be used.  Wear rubber gloves.  If rodent droppings are
+found, make a mixture of 50% chlorine bleach and 50% water.  Spray this
+mixture on the droppings to neutralize any potential hanta virus.
+Once work is completed, discard the rubber gloves and mask.
+
+\subsection{Instrument Rack}
+
+The instrument rack sits against the eastern wall of the observatory
+enclosure.  Ideally the rack should keep the computers and other sensitive
+electronics at a comfortable operating temperature, while not allowing
+heat from that equipment to affect dome seeing.
+
+Ron Yarger, on the APO staff, is a qualified air-conditioning service
+technician.  He can be consulted regarding the heat exchanger unit on
+the roof of the enclosure over the left-hand side. (This unit has been
+removed!).
+
+The left side of the rack houses, from bottom to top, the motor controllers,
+weather station (in front of motor controllers), telescope control (TCS) box,
+observatory control (OCS) box, guider/filter wheel control, and main power
+box. All of the motors and controller boxes are plugged into a power strip
+at the very top of the rack. This power strip is plugged into the main power
+box, which gets its power from the Masterswitch unit in the right side of
+the rack. The only utility of running the power through the main power box
+is that it enables the power switches on this box, and in particular, the
+emergency stop button which has an access point just inside the front door.
+Beware that the main power box takes several seconds after power is supplied
+before power goes out to the motors, etc.
+
+There is also a temperature control senson on the main power box that will
+kill power if the temperature goes out of range. This is an Omega series 
+CN9000A/Model CN9111A controller which we have set to have a wide 
+allowable range of temperature.  There is a manual in one of the notebooks 
+for this and also a PDF file (M1191.pdf) in the docs directory. This unit
+started to fail in 2009 (with calibration errors EE8) so it was temporarily 
+removed and the temperature circuit bypassed (10/09).
+
+The right side of the rack houses the telescope control computer, the CCD
+LN2 autofill control, a monitor, the 16-output APC masterswitch
+unit, and a UPS unit near the bottom, below the compuer.  
+
+The UPS is a APC SU1400RM2U, which is a model that has been discontinued.
+Replacement batteries (replacement battery cartridge RBC24) were still 
+available in 2008, at which time the batteries were replaced.
+
+%Below is a drawing of the rack layout.  Cables come up from below the
+%right-hand side of the rack.  The motor controllers, which are labeled,
+%are accessed from the rear of the rack.  The power strip on the left-hand
+%side of the rack acts as an emergency stop switch.  The power strip on the
+%right only controls the computer monitor.  The monitor should be powered
+%off for normal (i.e. automated) operation.  There is a temperature
+%readout / control in the middle of the Main Power Box.  This unit is
+%part of the air conditioning system.  However, if the temperature gets
+%too far above or below the set point, the effect is that the monitor
+%will not turn on.  To adjust the set point, press and hold the * button
+%while adjusting the temperature up or down with the arrows.
+
+Currently the rack is vented into a vent hole in the dome floor that lead
+via conduit into the pier. There is a fan at the base of the pier, which
+, when activated, will draw air through the rack. As of 2004, this fan
+has been put under computer control via the APC power strip. For this to
+work, rack needs to be fairly well sealed, allowing air to come in only
+at the top of the rack and passing across the electronics before venting
+at the bottom of the rack. A filter should be placed over the opening at
+the top of the rack to prevent moths, etc from being draw into the rack;
+dimensions of the hole are ~16x14 inches.  The power strip at the bottom
+powers the fan in the venting and also the fan in the telescope pier;
+it is plugged into the Masterswitch unit.
+
+It may be a good idea that a better insulated rack be purchased
+for the equipment in the 1-meter enclosure.  A good source of new racks
+appears to be ITS Enclosures.  It is possible that their enclosures
+could be placed outside the 1-meter enclosure itself.  Their products
+may be viewed on the web at: http://www.icestations.com
+
+\subsection{Autofill System}
+
+The auto-fill system was purchased from VBS Industries in California.
+The product manager was David Carnahan.  The engineer was Alan Ziegler.
+They may be reached at (408) 371- 3303.  There is a file in the upper
+drawer of the tan filing cabinet with details regarding the construction
+of the auto-fill system.
+
+The auto-fill system has a manual control box located in the rack just
+under the monitor, on the shelf with the screen switcher.  The key should
+always be in the "on" position.  Fills are triggered via one of the TCS
+auxiliary output lines.
+
+The system has an auto-shutoff feature, where
+The autofill shuts off when Liquid Nitrogen makes contact with a sensor
+mounted in the fill tube that mounts in the CCD dewar.  This sensor has
+a gold-colored tip and may is located in the right-angle pipe near the
+top of the fill tube assembly.  The wire to the shut-off sensor is in
+the metal "cable" that is attached to the fill tube. However, we were
+never able to get this to work reliably. As a result, the sensor connection
+has been replaced with a plug that closes off the circuit. Dewar fills
+are shut off using a timed fill duration instead of the sensor.
+
+One should periodically inspect the Autofill lines.  Make sure there are
+no apparent breaks and that nothing has come unscrewed in the plumbing.
+The most likely place for a disconnect is at the azimuth cone, just
+below the black solenoid that controls the fill.
+
+%According to Princeton Instruments, the maximum fill is achieved when the
+%dewar is horizontal.  This was borne out in testing done with the dewar.
+%Essentially, the rotator angle must be 90 or 180 degrees.
+
+\subsubsection{Manual Override of the fill}
+
+Fills can be triggered in the dome by powering on the autofill system
+from the APC MasterSwitch and pushing the green button on the front of
+the VBS manual control box.  If needed, a manual fill may be terminated
+by turning the key to the "off" position.  Just be sure to turn it back
+"on" before returning to the autofill mode.
+
+\subsection{LN2 Hoisting and Attachment}
+
+A 100-liter Liquid Nitrogen dewar is used to supply the E2V detector
+with coolant.  This dewar is connected directly to the VBS Autofill system
+documented above via a flow regulator.  VBS-supplied hose runs from the
+flow-regulator into the conduit under the enclosure and up through the
+center of the azimuth cone to the solenoid.
+
+As of 2006, the big LN2 dewars are left below the enclosure, and a long
+hose goes up through the cone, the valve, and eventually, the dewar.
+It takes about 7 minutes to get a complete fill of the dewar, without
+any pressure regulation on the big dewar.
+
+%To get the big LN2 dewars into the 1-meter enclosure, use the Genie
+%Superlift stored at the base of the enclosure.  The Superlift is a manual
+%hoist that can lift over 800 pounds 20 feet into the air.  Norman Blythe
+%at Apache Point Observatory is familiar with the lift's operation.
+%Documentation on the lift is located in the top file drawer in room 110
+%of the Astronomy building.  There is also lift documentation in the tube
+%mounted to the base of the lift itself.
+%
+%To hoist LN2 into the 1-meter:
+%\begin{itemize}
+%     \item Open the hatch in the floor of the 1-meter enclosure.  This requires two screwdrivers;
+%     one to turn the latch in the floor and one to pry the hatch far enough open that you
+%     can grab it.
+%     \item Remove the protective tarp from the Superlift and set aside.
+%     \item Place the two red ramps (stored under the table against the south wall of the
+%     enclosure) between the legs of the Superlift.
+%     \item Remove the used LN2 dewar from the enclosure by raising the lift   using the
+%     handcrank   until the platform is level with the enclosure floor.
+%     \item Disconnect the used dewar from the Autofill system using a 7/8 wrench.
+%     \item Move the dewar onto the platform and secure, using straps, to the handles mounted to
+%     the back of the platform.
+%     \item Lower the dewar.
+%     \item Lift off the platform using the dewar-handling cart at APO.
+%     \item Lift the fresh dewar onto the platform using the dewar handling cart.  The red ramps
+%     you've put into place are designed to get the axles of the cart up and over the wheels
+%     at the front of the Superlift.
+%     \item Raise the fresh dewar into the dome using the Superlift.  One person can do this, but
+%     it is easier if two people operate the crank.  Bring the platform up until it is level with
+%     the enclosure floor.
+%     \item Pull the fresh LN2 dewar to its position next to the rack.  Make sure that when
+%     unloading the Superlift, someone is stabilizing the lift so it doesn't rock when the
+%     dewar is coming off.
+%     \item Connect the dewar to the Autofill system.
+%     \item Lower the platform.
+%     \item Close the floor hatch.
+%     \item Cover the Superlift with the canvas tarp and secure.
+%\end{itemize}
+%
+%The big LN2 dewars that are used to fill the PI CCD weigh 515 pounds
+%when full and 235 pounds when empty.  One fill takes approximately 7
+%lbs of LN2.
+
+\subsection{Fans and Louvers}
+
+The enclosure's louvers open by simply applying and maintaining power to
+the enclosure's compressor system.  
+%Currently, the system is designed such
+%that when the louvers in the enclosure open, four box-fans just inside
+%the louvers come on simultaneously.  If this system proves good at venting
+%air from the dome, the fans should be replaced with more permanent fans.
+
+The way the louvers work is that power is applied to the appropriate
+socket of the APC master switch.  The socket does not supply power
+directly to the louvers.  Instead, it simply energizes a relay
+that in turn activates a power strip.  The louvers come on
+when power is applied to the power strip.  The relay is housed in a
+small black box that currently sits under the southeastern louvers.
+The power strip is plugged into an outlet mounted to the relay-enclosure.
+
+There is a large fan in front of the SE louver. This is plugged into
+one of the controllable APC Masterswitch outlets.
+
+\subsection{Weather Station}
+
+The weather station is well-documented in the Yellow Observatory Binder.
+One item not documented is that if the weather station loses power for
+less than ten seconds, it will not come back up fully operational.
+Someone examining the rack will see lines across all of the places
+where numbers would normally be displayed.  The weather station will
+not respond to commands from the Tocc.  To remedy, simply unplug the
+weather station for approximately fifteen seconds, then plug it back in.
+
+\subsection{Tools \& Spares}
+
+Most required tools are in the red tool boxes on the south side of
+the 1-meter telescope enclosure.  Additional tools may be found in the
+3.5-meter and Sloan work areas.  As a rule, tool drawers are labeled with
+the items that are enclosed.  When borrowing tools from the 3.5-meter
+or Sloan, make sure to alert the appropriate personnel (Mark Klaene or
+Jon Davis, if no one else is available) and return the tools as soon
+as possible.
+
+The upper-most shelf by the window over control1m  in the 1-meter control
+room contains spare motors and a breakout box for testing the TCS and
+OCS boxes.  There are also spares available in the two large drawers under
+the white board in the 1-meter control room.  There's a small supply of
+spare relays (including spare dome relays) and motors (including mirror
+cover motors) in the lower-most drawer of the big tool box on the south
+side of the 1-meter enclosure.
+
+\appendix
+
+\section{Computers}
+
+The computer control system for the 1m consists of the following 
+computers:
+\begin{itemize}
+  \item tocc1m, the telescope, dome, guider stage, and filter wheel control 
+        computer, a PC running DOS
+  \item ccd1m: computer with Leach controller card that controls the E2V CCD,
+        also the FLI guider camera, and remote web camerasi
+  \item eyeball: the Apogee CCD control computer and remote video controller,
+        PC running linux
+  \item command1m: the master control computer that sends commands to all of the
+        above computers, a PC running Linux
+\end{itemize}
+
+In 2016, command1m failed, and all control functionality was transferred to
+ccd1m (telescope commuication, Leach communication, FLI communication, and
+master control). In 2017, ccd1m failed, and a replacement was installed. At
+this point OS was updated to CentOS6. This required recompilation which is
+an issue for camera devices, requiring updates to new camera libraries, and
+subsequent rewrite of camera interface software.
+
+The current method of commmunication between the comoputers is via commands 
+over sockets. On the DOS machine, this is enabled using 
+networking software from
+NetManage, their PC/TCP Software Development Kit. This allows for socket
+communication, which was implemented circa 2004. There is a set of 5 manuals,
+and software comes on a set of 3.5 floppies and some CDROMs. The serial
+and key number can be found in the LaTeX source of this manual.
+% Part: PC50232
+% License: 1 User
+% Serial #: 4000-0386-4736
+% Key: 1388-1998-0369
+
+The old method of communication between the computers was via disk files that
+are seen by each computer on an NFS mounted disk on control1m. In fact, the
+software for telescope and guider PCs are also located on the control1m disk.
+Most computers used PC-NFS Version 5.1; the installation disks can be found
+in the 1m control room; the PI computer was still on version 4.0.
+Note that if one wants to change the license of PC-NFS, the only way is
+to delete the existing version and reinstall.
+
+The power to the computers (and several other things) is controlled by a 
+network device that has 16 outlets that can be switched on and off via
+network commands. There is a separate 8 outlet network power strip located
+on the azimuth disk.
+
+\subsection{Network}
+
+The APO network uses the following:
+\begin{itemize}
+  \item Router: sampepys, 192.41.211.1
+  \item Netmask: 255.255.255.0
+  \item Nameserver: 192.41.211.10, 192.41.211.40, secondary 192.41.211.98
+  \item IP addresses for 1m machines:
+    \begin{itemize}
+      \item tempa1m: 192.41.211.18  (tempager3E 00:20:4A:AD:81:C8)
+      \item ccd1m: 192.41.211.19 (Princeton control PC) ( 00:13:20:53:E6:BF)
+      \item powera1m/power1m : 192.41.211.20 (power control (APC)) (00:C0:B7:92:01:5A)
+      \item eyeball : 192.41.211.21 (remote video, Apogee CCD control ) (00:04:76:EA:41:E3)
+      \item tocc1m: 192.41.211.22 (telescope control PC) ( 00:03:1D:03:0D:08)
+      \item powerb1m/spare1m : 192.41.211.23 (available for notebook, etc.) ( 00:C0:B7:76:96:79)
+      \item command1m : 192.41.211.24 (PC in control room )
+      \item tempb1m : 192.41.211.25 (tempager3E 00:20:4A:AD:81:7D)
+      \item hsp1m/nmsuhsp : 192.41.211.220 (photometer computer) (00:80:2F:10:55:14)
+      \item powerc1m/photpower : 192.41.211.221 (photometer power strip) (00:16:18:65:13:90)
+      \item video1m : 192.41.211.130 (network video camera) (00:80:F0:AD:E3:2A)
+    \end{itemize}
+ 
+\end{itemize}
+
+As of December 2010, APO switched the 1m computers over to a local network, with addresses obtained via DHCP.
+
+\subsection{The telescope computer}
+
+A new telescope computer was ordered March 2006 from 
+\htmladdnormallink{Industrial Computers Inc}{http://www.eindustrialcomputer.com}. This contains a 
+backplane with 5 ISA and 7 PCI slots and a single board 
+(PICMG slot) computer with integrated display, Ethernet, etc, plus an 80 Gby 
+disk, CDROM, and floppy drive. The SBC is an LGA 775 with Pentium 4 processor.
+Ethernet is via an Intel 82562EZ 10/100.  It uses DDR2/533 memory, currently 
+a 256Mby SIMM. 
+
+Installation of DOS on this computer proceeded as follows: DOS installed
+using standard 3 MS-DOS installation disks. After installation, computer
+hangs on boot while loading HIMEM.SYS. Reboot from floppy and replace
+HIMEM.SYS with Windows version (usr/local/1m/dosfiles). Network software
+was switched from PCNFS to PCTCP to allow socket communication. To get
+network to work, drivers for 82562EZ (Intel PRO 100) were downloaded
+from Intel (PRODOS.EXE); this file didn't execute on DOS and needed
+to be unpacked on a Windows machine.  This included both ODI and NDIS
+drivers. I could get the ODI driver to load (LSL, E100BODI, IPXODI),
+but was unable to get the PCTCP packet driver interface ($\backslash$PCTCP$\backslash$ODIPKT)
+to work with it. I then installed the NDIS driver. First, I did a PCNFS
+installation, but of course the new device is not in the installation
+list. I then modified $\backslash$LANMAN$\backslash$PROTOCOL.INI and put in a section for
+the new device driver (E100B.DOS). The driver loaded successfully on
+bootup. Commented out PCNFS initialization. Finally, I redid the PCTCP
+installation and it saw the NDIS device. I used frame type DIX-ETHERNET
+and PCTCP kernel worked!
+
+During 2007-2010 we would get sporadic hangups of the telescope computer,
+sometimes going a long time without one, and sometimes having multiple
+hangups in rapid succession. In April 2010, the entire single board computer,
+including CPU and memory was replaced to see if this makes any difference.
+The replacement single board computer was bought from IPC Hammer and was an 
+FS-979 (also possible known as PG-7791); it differs slightly from the original
+in that it has two different Ethernet controllers. A Pentium 4 CPU was purchased
+from MemoryLabs.
+
+Unfortunately, this didn't seem to make a difference for the hangs. I then
+modified the software to update the telescope status less frequently (~4 seconds), 
+and this appears to have reduced the hangs significantly, although not 
+eliminated them. Subsequently, I suspect that the culprit is the motor
+control card (PC38-6E); see information in the motor control section about
+the replacement of this card.
+
+In July 2014, the computer started to freeze/crash shortly after reboots. I
+took the card out, and discovered that the two big fans in the computer case
+were not attached to power, so I connected them. I went back to the old SBC
+because I thought a fan on the board wasn't working, but it was the same with
+the old SBC (not the CPU fan but a smaller one on the board). I left the old
+SBC in there, so the FS-979 is back in the in the drawer in the office; not
+clear if there could be a problem with it or not! Note that when I connected
+the new card, I had to change the weather station to COM2 (in sysscf.new).
+
+Linux (Redhat Enterprise 4-U1) was also installed on this computer for 
+possible convenience.
+
+The ISA slots are populated by:
+\begin{itemize}
+\item \htmladdnormallink{Oregon Micro Systems PC48-6E}{http://control1m.apo.nmsu.edu/1m/docs/Pc48mand.pdf} (SN 3454, with EW138)  motor controller
+(short card that controls telescope alt/az/rot and 3 focus axes), 
+\item OMS PC38-6 (SN4053) motor controller (controls guider radial and focus stage, filter wheel, tertiary rotation), 
+\item Oregon Micro Systems PC38-6E (SN 902)  motor controller
+(spare long card that used to control telescope alt/az/rot and 3 focus axes), 
+\item \htmladdnormallink{OMS PC34}{http://control1m.apo.nmsu.edu/1m/docs/PC34.pdf} motor controller (controls dome), 
+\item Technology 80 5312 encoder card (long card previously used with dome encoder),
+\item Computer Optical Products CP4016 motor/encoder controller purchased for
+use with rotator encoder. The Tech 80 card was used for the dome encoder,
+but in July 2005 we had problems and switched over to using the CP4016
+card instead. 
+\end{itemize}
+A weather station is plugged into a serial port (COM1 or COM2, depending on how it it attached to SBC).
+
+\subsubsection{Old telescope computer}
+
+The old telescope computer was an \htmladdnormallink{Industrial Computer Source}
+{http://www.icsadvent.com} (tech support and customer service 1-800-480-0044,
+sales 1-888-294-4558, original sales order 144151, 7/9/97) 200 Mhz Pentium
+PC (7000-8MB chassis, motherboard 586MBH200, floppy drive, RAM, KB3
+with touchpad, 2" CPU fan, power supplies Turbo-Cool 300 Slim with P8/P9
+power connectors); three of these computers were ordered, one
+for the telescope, one for the guider, and one spare.  The operating
+system is DOS. The program it runs is called TOCC.EXE and it lives on
+E:\\BIN\\TOCC.EXE.
+
+The telescope computer has a 166 Mhz processor, a 1.2Gbyte disk, and
+8 Mbytes RAM. It has eight (??) ISA slots. These are populated by:
+video card (SIIG VGA), 3c509 networking card, PC38-6E (SN 902)  motor controller
+(long card that controls telescope alt/az/rot and 3 focus axes), PC34
+motor controller (controls dome), PC38-6 (SN 4053) card for filter wheel and guider,
+Technology 80 5312 encoder card (long card used with dome encoder), and
+a Computer Optical Products CP4016 motor/encoder controller purchased for
+use with rotator encoder. The Tech 80 card was used for the dome encoder,
+but in July 2005 we had problems and switched over to using the CP4016
+card instead. A weather station is plugged into a serial port (COM1),
+and a voltage meter used for measuring the PI CCD temperature is plugged
+into the parallel port.
+
+The networking is done using PC-NFS. The PC-NFS configuration is as follows,
+as reported by the NET ALL command:
+\begin{itemize}
+\item The name of this system is tocc1m, and its IP address is 192.41.211.22.
+\item The license number of this copy of PC-NFS is PC-NFS10D3DD92.
+\item The subnet mask is 255.255.255.0 [0xffffff00].
+\item It is in network information service domain noname,  for which there is no NIS server.
+\item DNS configuration file:  resolv.cnf
+\item DNS primary server:  galileo.apo.nmsu.edu (192.41.211.40)
+\item DNS alternate server:   tycho.apo.nmsu.edu (192.41.211.98)
+\item DNS search domains:  apo.nmsu.edu
+\item The authentication server is sdsshost.apo.nmsu.edu (192.41.211.171).
+\item Non-local routing via gateway sampepys (192.41.211.1).
+\item You are logged in as nobody, with UID -2 and GID -2.
+\item It is Sun Feb 04 00:56:16 2001, MST
+\item The license number of this copy of PC-NFS is PC-NFS10D3DD92.
+\end{itemize}
+
+\subsection{The Apogee CCD/remote video computer}
+
+This computer, eyeball, runs Linux (RedHat 9). It was purchased from
+Elite PC, and is a  600 Mhz Pentium III with 46Mby (!!) memory and a 80 Gbyte
+disk drive. 
+
+\subsection{The control computer}
+
+The control computer, command1m, runs Linux (RedHat Enterprise 4). 
+It is a Dell Dimension 5150. See the LaTex source for this manual for 
+account information.
+% account: tcomm  password: clear$skies
+% account: root   password: hbox@217
+
+On RHEL4, sometimes on the virtual desktop, the window manager stops
+allowing windows to be resized or moved; if this occurs, kwin --replace
+seems to fix it!
+
+\subsection{The ccd computer}
+
+The camera control computer, ccd1m, runs Linux (RedHat Enterprise). It
+is located in the APO computer room. It communicates with the dome via
+a fiber link using a fiber repeater purchased from Icron. This computer
+controls the Finger Lakes guider camera (USB), three USB webcams, and the
+Leach camera (custom card). See the LaTex source for this manual for
+account information.
+% account: tcomm  password: clear$skies
+% account: root   password: hbox@217
+
+The Leach controller requires a kernel module to be loaded. This is compiled
+for a specific kernel version (2.4), so significant attention must be paid
+if the system were to be upgraded. In addition, the 2.4 kernel required
+some modifications to allow control of the Quickcam 4000 Pro webcams.
+
+\subsection{Power control}
+
+Power is controlled by two network controllable power switches.
+
+The first commandable power controller is an APC MasterSwitch, part number
+AP9210, serial number wa9720838756, Ethernet address 00:c0:b7:92:01:5a;
+this has 8 plugs. It is statically configured as power1m.apo.nmsu.edu.
+It can be accessed via a serial port, via the WWW,
+or via SNMP. The regular usage is via SNMP; four machines can access it
+this way, and these machines are control1m, eyeball, tycho, and tocc1m.
+To access via serial (only necessary if the WWW password has been
+forgotten), one needs a female 9-pin serial connector cable. This
+cable should have a null model pin-swap. The Linux program minicom can
+be used to communicate over serial port, using /dev/ttyS0.
+
+The second commandable power controller is an APC ..., Ethernet
+address 00:c0:b7:76:96:79; this has 16 plugs. It is statically configured
+as spare1m.apo.nmsu.edu. This has a serial port
+cable included with the device; serial communication as above.
+
+To access via http, one needs a username and password. These are set
+the same as the observe account on control1m except only 8 characters are
+used for the password.  In desperate situations, there is a backdoor
+password that was supplied by APC. See the APC manual for this device or
+LaTeX source for this manual for access information.
+% 8 plug Masterswitch: power1m
+%   user: observe  password: clear$sk
+%   backdoor password:  95;;:<^IBA=<   (APC case# 1887240)
+% 
+% 16 plug Masterswitch: spare1m
+%   user: observe  password: clear$sk
+% 
+
+The ccd1m computer, located in the APO control room, is also on a
+controllable power switch.
+
+% computer room masterswitch
+%   apo/foenix
+%   manager/208volts
+
+Photpower (powerc1m) is a controllable power switch for the high speed photometer.
+% hspphot/hsp-phot
+
+%hsp1m VNC nmsu-hsp admin: nmsuhsp
+
+\subsection{OBSOLETE: guider computer}
+
+WE NOW NO LONGER HAVE A SEPARATE GUIDER COMPUTER. The guider stages are
+controlled by the telescope computer, and the camera is controlled by the
+ccd1m computer.
+
+The guider computer was an \htmladdnormallink{Industrial Computer Source}
+{http://www.icsadvent.com}, identical to the system for the telescope computer
+described above. The program it runs is called GCS.EXE
+and it lives on E:\\BIN\\GCS.EXE.
+
+The guider computer has a 200 Mhz processor, a 1.2 Gbyte disk, and 8
+Mbytes RAM. Its ISA slots have an SIIG video card, a 3c509 network card,
+a long card used to communicate with the Spectrasource guide camera, and  a long
+PC38 card for the guider stage and filter wheel control.
+
+The networking is done using PC-NFS. The PC-NFS configuration is as follows,
+as reported by the NET ALL command:
+
+\begin{itemize}
+\item PCNFS 119I : The PC-NFS Version is 5.1a.
+\item The name of this system is pic1m, and its IP address is 192.41.211.22.
+\item The license number of this copy of PC-NFS is PC-NFS2208E0F6.
+\item The subnet mask is 255.255.255.0 [0xffffff00].
+\item It is in network information service domain noname,  for which there is no NIS server.
+\item DNS configuration file:  resolv.cnf
+\item DNS primary server:  galileo.apo.nmsu.edu (192.41.211.40)
+\item DNS alternate server:   tycho.apo.nmsu.edu (192.41.211.98)
+\item DNS search domains:  apo.nmsu.edu
+\item There is no authentication (PCNFSD) server
+\item Non-local routing via gateway sampepys (192.41.211.1).
+\item You are logged in as nobody, with UID -2 and GID -2.
+\item It is Sat Feb 03 01:38:48 2001, MST
+\item The license number of this copy of PC-NFS is PC-NFS2208E0F6.
+\end{itemize}
+
+\subsection{OBSOLETE: spare computer}
+
+The spare computer is an \htmladdnormallink{Industrial Computer Source}
+{http://www.icsadvent.com}, identical to the systems above. It has a
+200 Mhz processor, 1.2 Gbyte disk, 64 Mbyte RAM, a CDROM, and a 3c509
+network card.
+
+The spare is no longer functional. The old control computer, loki, may
+serve as an adequate spare.
+
+\subsection{OBSOLETE: PI control computer}
+
+The PI control computer wass a Dell 486 running Window for Workgroups.
+
+\section{Software control}
+
+\subsection{Instrument blocks}
+
+Imaging program has INIT/GOS command. Point at a bright star before
+issuing command. INIT moves star around in 3x3 grid by fixed amount on sky
+(50 pixels, but can specify with INIT argument), finds centroid, and gets
+linear transformation solution; it loads this in internal varaibles. In
+addition to this, instrument block needs location of instrument relative
+to rotator center. To do this, determine offset in RA/DEC to move
+star from rotator center to center of instrument while at PA=0. Then
+INSTBLOCK dra ddec command will send proper SETINST command to tocc to
+set instrument block, using the offset and the transformation information.
+
+At a lower level: SETINST inst sx sy dra -ddec rot, where rot is in degrees.
+
+For instrument at NA2 (no rotator), need to add extra arguments: rot0 fixed, 
+where rot0 should be the negative of the derived rotation, and fixed should
+be 1 to identify a fixed instrument.
+
+The instrument blocks show up at the end of the sysscf file.
+
+\section{Maintainance checklists}
+
+\subsection{Routine (weekly) maintenence}
+
+\begin{itemize}
+\item Clean all drive wheel surfaces
+
+\item Inspect dewar connections for leaks. Tighten fill tube nut.
+
+\item Inspect azimuth and rotator drives to confirm no cable wraps. 
+
+\item Inspect cables, etc. on azimuth disk (be careful of the fiber!) Does the
+big LN2 hose need to be tightened on azimuth disk?
+
+\item Check video camera light bulb(s)
+
+\item Inspect mirror for possible cleaning
+\end{itemize}
+
+\subsection{Nighttime checks}
+
+\begin{itemize}
+\item Check and adjust collimation
+
+\item Pointing model
+
+\item Check instrument blocks
+
+\end{itemize}
+
+\subsection{Longer term maintenance}
+
+\begin{itemize}
+  \item Run telescope to limits to check proper performance and smooth motion
+
+  \item Run secondary to home and reset position
+
+  \item Run guider to home and reset position. Check that guider home position
+        is good default for focus.
+
+\item Pointing model
+
+Before running a pointing model, make sure the time is set well on the
+computer (SETTIME), and check the azimuth motor scale (CAZ). 
+Check the rotator center and implement it in pm.pro.
+
+For a pointing model, one looks at stars of known position at many locations
+across the sky, and determines the pointing correction as a function of
+altitude and azimuth. There is an XVISTA procedure, pm.pro, that will take
+the pointing model data, based on an input file of desired positions, 
+pm.dat.  Given the poor pointing of the telescope, one needs to use 
+a preliminary pointing model to even be able to find the stars on the
+frames.
+
+If totally lost, use spiral.pro to try to find a bright star. Once found,
+use pmwrite.pro to write a pointing model entry for it; \textbf{IMPORTANT,
+pmwrite want to write target RA/DEC with observed az/alt, so need to use
+GUIDEINST to move telescope, not OFFSET!} Can gradually move around sky,
+adding stars to a pointing model file until enough are found to try to
+do an initial model. Need to use posrecen to change from output file
+form to TPOINT input file format.
+
+Also have option (recenter$<$0) that will use last GUIDEINST on next star,
+if things are really bad, this may help to find stars for positions that
+are adjacent to previous position (see, e.g., pmstep.dat).
+
+pm.pro takes images, finds bright star and moves it to rotator center, then
+takes new image, stored in pm???.fits. So this has observed az/alt to 
+get star in rotator center. For pointing model, compare this with 
+predicted az/alt. pm.pro creates proper input file for TPOINT using
+program posrecen.c. Use output pm.dat for TPOINT INDAT command,
+then CALL ALTAZ and USE NRX NRY to 
+implement the proper alt-az Nasmyth pointing model terms, then FIT multiple
+times to get a solution. To see results graphically, do PLTON xwindows, then
+CALL A9 (for 9 different graphs) or GSMAP (to see residuals as a function 
+of position in sky). You can remove points using, e.g. MASK r g 50 to mask
+points with residual greater than 50 arcsec.  Once a satisfactory fit is
+found, OUTMOD file.mod will output the model.
+
+To implement the model, use TPFILE command in command window, which asks
+for TPOINT .mod file, then transmits the coefficients via the TOCC TPOINT
+command. 
+
+OLD WAY:
+To analyze the data, the positions of the stars on the frames are measured.
+This can be doing using the XVISTA pos.pro procedure. Then the measured
+positions need to be reformatted into a file that TPOINT can read; the
+program coord2 does this; it takes the output .dat file of pos.pro as
+input and outputs to standard output a .mcd file. The .mcd file needs to
+have 4 header lines put into it (someday I should fix all the software to
+just do everything properly automatically!). Once you have the .mcd file,
+you run TPOINT (currently available on avalon only, after source 
+holtz/star/etc/login and source holtz/star/etc/cshrc). Using INDAT file.mcd
+to read in star file, INMOD file.mod and UNFIT to undo the pointing corrections
+made by the operational pointing model, CALL ALTAZ and USE NRX NRY to 
+implement the proper alt-az Nasmyth pointing model terms, then FIT multiple
+times to get a solution. To see results graphically, do PLTON xwindows, then
+CALL A9 (for 9 different graphs) or GSMAP (to see residuals as a function 
+of position in sky). You can remove points using, e.g. MASK r g 50 to mask
+points with residual greater than 50 arcsec.  Once a satisfactory fit is
+found, OUTPUT file.mod will output the model.
+
+To implement this model, move the .mod file to control1m:/export/tocc and edit
+the file /export/tocc/toccscf.new to use the new .mod file.
+
+\item{Check focus motors to confirm proper operation}
+
+\item{Visually inspect all filters}
+
+\item{Check vacuum on dewar, pump.}
+
+\item{Check all telescope limit switches (altitude and azimuth)}
+
+\item{Check dome shutter hard limits, motor adjustment, etc.}
+
+\item{Wash mirrors}
+
+\end{itemize}
+
+\subsection{To-do items}
+
+\begin{itemize}
+
+\item Install guider corrector (done early 2008)
+
+\item Permanently bolt shelf to telescope (done 4/2008)
+
+\item Redo cables through azimuth cone, replace fiber if needed (done 3/2008)
+
+\item Run fiber with more fibers between building and dome
+
+\item Diagnose optics. Action...
+
+\item Implement fast readout for CCD camera
+
+\item Implement separate shutter for guide camera
+
+\item Further investigate/implement encoder on rotator. If rotator is out
+of round, tabulate look-up of scale vs. rotator angle, once latter can
+be measured reliably and repeatably.
+
+\item Redesign dome rotation motor mount to allow for proper easy adjustment
+of motor engagement with track. Install soft-start relay on dome motor
+if possible (1/3 hp single phase, split phase, 1750 rpm motor)
+
+\item Repair rack air conditioning unit and/or replace rack. Consider relocation
+of equipment to outside of dome.
+
+\item Design/implement some sort of dome sensor to confirm dome closure when
+commanded. Implement software for email/phone notification in case of failure.
+
+\item Implement more permanent mounts for fans in front of louvers. Color of
+extension cords should be changed (site policy has orange for clean power,
+i think); extension cords should be safely/permanently laid.
+
+\item Determine/implement backup policy for all computers. 
+
+\item Determine/implement upgrade policy for all computers.
+
+\item Add fuse to lower dome circuit (rated lower than relay!).
+
+\item Install rain sensor, and implement rain sensor shutdown in software
+
+\item Replace auto/manual switch for upper dome (it's showing signs of age)
+
+\item Replace light in OCS power switch
+
+\item Consider replacing connectors on guider with "L' connectors to reduce
+cable strain
+
+\end{itemize}
+
+\section{Maintenance/repair log}
+
+\begin{itemize}
+
+\item June 2017: enabled new az encoder to try to address pointing issues.
+Encoder worked only after Ed added impedance
+matching. Severe pointing issues seem to be unrelated to encoders, however,
+and seems to just be very large pointing model term (AW, also NRX/NRY).
+
+\item May 2017: severe pointing issues noted
+
+\item May 2017: significant computer failure of ccd1m. Replaced with new
+computer, updated to CentOS 6. Significant issues with camera drivers (Leach,
+FLI) require rewrites.... also need to develop software for new Alta camera
+
+\item spring 2017 New ccd1m computer ordered
+
+\item fall 2016?: failure of command1m, all control transferred to ccd1m.
+
+\item spring 16: new APOGEE Alta camera purchased for long-term support, but
+not installed
+
+\item spring 16: az encoder failure, disable x_encoder. Replacement ordered
+and installed, but not enabled
+
+\item 10/17/16: Ed replaces 6A fuse after dome shutter fails halfway open/closed
+
+\item 8/18/16: Ben and Ed replace dome rollers after more rotation failures
+
+\item 5/30/14: Today we lubed the dome wheels and and track with a 3in1 Garage Door Lube. 
+
+We installed a permanent grease fitting.  It seems strange to us that there is just one grease port but this must be a small bearing. We greased the azimuth bearing with Mobil 460. Uncertain how much grease to add we rotated the telescope by hand in azimuth as we added 20 pumps with the grease gun. After 360 degrees of rotation, we added another 10 and then parked the telescope. 
+
+\item 7/9/13: reinstalled all three mirrors after coating and overcoating
+by ATOC in Albuquerque. All went fairly smoothly. Used print overlay
+of secondary to put a spot in physical center of mirror. 
+Did alignment of secondary
+with collimating telescope, only adjust tilt a little. Did alignment of tertiary
+with collimating telescope: adjusted tertiary rotation, and piston a bit.
+Did initial primary aligment on sky. Note azimuth scale change because of
+new az encoder shaft.
+
+\item 6/13: Ben rebuilt all azimuth idler boxes. Readjusted azimuth motor.
+Replaced aluminum encoder cam with steel one.
+
+\item 8/24/11: dewar removed and put on pump, appears to have been very
+soft. It has been warm most of the summer because of the filter wheel
+problem and the weather.
+
+\item 8/24/11: Ed/Ben repair filter wheel which has been failing since
+late June. Ed: "1-m Filter wheel detent problem is fixed.  The original
+symptoms were that the 1m would not rotate the filter wheel because
+the 'DETENT OUT' signal was not being received by the OMS controller.
+The detent motor could be heard turning so attention focused on the
+'DETENT OUT' limit switch.  I was able to measure switch action at the
+detent connector by using a very long probe to actuate the switches.
+Both checked out ok for switch function.  This led me to troubleshoot the
+system and interconnections.  Had some problems due to poor documentation
+but broke through when Ben built a breakout cable for the OMS (Oregon
+Motion Systems) and we were able to stimulate the status bits manually
+and confirm that the OMS side was working correctly.  We verified the
+cabling so that left the limit switch itself (even though the very
+first test did not agree).  Ben and Bill removed the unit and the bench
+inspection revealed that the switches were indeed functioning well.
+We reverse documented the circuit and saw that the 'DETENT OUT' switch
+was not actuating when the detent was indeed out. Ben discovered that
+the small allen set-screw was very loose and had screwed itself in.
+
+Ben and I adjusted the switch trip points and verified that the filter
+wheel would be able to turn freely.  Ben did apply a small amount of
+locktite to the set-screw to prevent the failure mode.  Bench testing
+showed proper operation in and out.  Ben cleaned the inside of the unit
+with IPA and removed moth and dust debris. We re-installed the unit on
+the instrument and tested it using Jon's provided GUI.  Detent functions
+are working properly.
+
+I have documented the circuitry (attached) that I saw and it is saved
+on my computer under my 1m path."
+
+
+\item 3/31/11: Bill replaced 656/25 in slot 3 with 657/27
+
+\item 3/28/11:  replaced broken dome encoder coupler and adjusted dome motor, after apparent failure of dome tracking.
+Ed:  "Just wanted to add a couple of things for the documentation of
+this repair.  Ben also addressed the probable root cause of the flex
+coupling failure.  The encoder shaft and motor shaft were misaligned so
+Ben modified the encoder mounting bracket to proper alignment.  We also
+re-terminated the encoder connector with a high pressure housing and
+receptacles from Molex.  Same form factor but the new receptacles grab
+the encoder posts from all four sides instead of the previously installed
+economy type which only spring tensions along one side."
+Ben: "Mark spotted the flexure was cracked in half for the encoder. Ed
+found another flexure in your tool box i installed. Also we found the
+motor assembly was loose, we tightened it back up. when testing everything
+i found that the up limit on the lower hatch was out of adjustment. I
+readjusted it and is working correctly."
+
+\item 2/24/11: repair of azimuth home sensor.
+Ed: "This email simply documents what Ben and I did to the telescope
+this morning.  We disconnected the TCS rack and brought it into the
+lab for servicing.  Visual inspection shows clogged fan filters but
+the inside of the cabinet looked relatively clean and well laid out.
+Re-seat all connectors in the 'X-axis home' signal chain.  replace the
+IM103 digital output Opto-22 module (red color).  Tighten  all Opto-22
+module retaining screws and blow out dust from cabinet and fan filters.
+Reassemble the cabinet and reinstall.  Called you up to perform a homing
+verification and finished.
+
+Since the Az home problem is very intermittent, only time will tell
+if replacing the Opto-22 module repairs the problem.  To date we've
+re-terminated the magnesensor read head connector (both ends), aligned
+the read head and magnet, and replace the Opto-22 module.  If it fails
+again we'll try replacing the Sony detector (PD-100) or perhaps the
+entire kit (read head, magnet, PD-100).  I have a request for quote into
+Industeq. Inc. for both parts.  I'll contact you when the pricing and
+availability is known.
+
+Please let me know if the problem returns."
+
+\item 10/11/10: Replaced camera after pumping.
+
+Bill: "FYI, vacuum with heat blanket on got down to 5.7e-6
+torr. After heat was removed it pumped down to
+1.8e-6 torr."
+
+\item late 2007, Mark Klaene and Dave Woods redid the lower dome slit
+system to use more robust switches (and relays?).
+
+\item 11/06: lube of azimuth bearing
+
+\item 05/04: lube of azimuth bearing:
+"about 1/3 tube of grease was applied (Mobil fairly lightweight, type ???; this
+was done through a small grease port that did not have a grease fitting; we
+used such a fitting but the thread of the hole apparently didn't match the
+fitting well, so we could not get the fitting to stay in. After lubrication,
+a new felt seal was installed using masking tape."
+
+\end{itemize}
+
+\section{Puntino analysis}
+
+\label{sect:puntino}
+
+SH computer:  10.75.1.48 (port 5900) tom/nmsuhsp  vnc: nmsu-hsp
+
+Mount Puntino with spacers!
+
+Move filter wheel to OPEN position!
+
+\subsection{Offsets and tilts}
+
+\subsubsection{post-April  2012}
+\begin{verbatim}
+Moved focal plane back 1.7 inches by installing spacer
+
+mount SH with TOP towards CCD controller
+should use metal spacers if possible to allow guider to focus!
+
+star at (680,320) in guider at guideloc 1500, INST 2 puts star
+  in SH at INST 1 after GOFFSET 50 0
+  (so 630,320!)
+
+set rotator at approx 10-alt to get spiders diagonal:
+   positive x offset moves dots down
+   positive y offset moves dots right
+   S tilt --> +x    N tilt --> -x
+   W tilt --> +y    E tilt --> -y
+
+
+\end{verbatim}
+\subsubsection{pre-April 2012}
+\begin{verbatim}
+
+focus around -2000
+guidefoc 300
+star at (680,320) in guider at guideloc 1500, INST 2 puts star
+  in SH at INST 1
+
+set rotator at approximately 20-alt
+then:
+positive x offset moves dots to the right
+positive y offset moves dots up
+N tilt --> +y   S tilt --> -y
+W tilt --> +x   E tilt --> -x
+
+
+\end{verbatim}
+
+\subsection{Analysis}
+
+\subsubsection{120501}
+\begin{verbatim}
+Start image 321
+\end{verbatim}
+
+\subsubsection{120426}
+\begin{verbatim}
+
+reference 28 taken as test
+reference 29 taken just before sunset
+
+saw relatively poor SH results with coma and spherical, and astigmatism
+jiggled primary --> coma changed significantly
+moved secondary to remove coma, and spherical seemed to improve
+moved tertiary to remove astigmatism, and spherical seemed to improve
+
+looked at range of altitudes in the east, and coma didn't change by too much
+
+ended up at xtilt 0.02, ytilt -0.54, tertiary 31900
+
+
+
+
+\end{verbatim}
+\subsubsection{120219}
+\begin{verbatim}
+
+reference 26 taken as test
+reference 27 taken just before sunset
+
+120226
+595,575 at inst=2
+590,585
+
+
+185-...  moved star, moved focus to more position (hit guider range)
+
+193 new star at higher alt
+
+put in 1.375 (2 wood + 1 metal), move guider to opposite end of range (0),
+focus much more negative (~-6000) no chance of guiding
+
+196 still not in focus, actually maybe this is good!
+ worked on centering, see 212
+213 moved focus -50
+214 df 25 to focus=-5325, very nice
+changed PA by 20 degrees
+
+--> Looks like moving back 1-1.25 inches will be good!
+
+\end{verbatim}
+\subsubsection{111111}
+\begin{verbatim}
+
+  moved primary, SH gave tilts of 0.16,-0.36 around alt=50-60
+
+\end{verbatim}
+\subsubsection{111103}
+\begin{verbatim}
+
+alt 55
+focus -2725
+(0.06, -0.04)
+  102   coma 1.8  -88  0.11 -1.80
+
+(0.06, 0.01)
+  103   coma 2.67 -88  0.08 -2.67       bigger ytilt -> more negative y coma
+
+(0.06, -0.09)
+  104   coma 0.59 -101 -0.11 -0.58
+
+(0.06, -0.11)                        (is this correct?)
+  105   coma 0.51 -8.7  0.50 -0.077  (weird y?)
+
+(0.04, -0.11)
+  106   coma  0.42 -77  0.09 -0.41      
+
+(0.02, -0.13)
+  107   coma 0.6 154    -0.54 0.26      smaller xtilt -> more negative x coma
+
+(0.02, -0.11)
+  108   coma 0.58 135   -0.41 0.41
+
+(0.03, -0.10)
+  109   coma 0.58 136   -0.41 0.40
+      focus 8.39
+df -50
+  110     focus 10.41
+df 150 to -2625
+  111     focus 4.36
+focus -2575
+  112     focus 2.27
+focus -2525
+  113      focus 0.47
+        coma 1.3 -120   -0.65 -1.13
+repeat
+  114     coma 
+repeat
+  115    coma 1.1 -121   -0.56 -0.94
+(0.03,-0.12)
+  116     coma 0.67 -157 -0.62 -0.26
+(0.01, -0.12)
+117     coma 2.02 -153   -1.78 -0.92
+(0.05, -0.12)
+118     crash
+119     coma 0.87 -5.6   0.87 -0.08
+(0.04, -0.12)
+120     coma 0.33 -20.6  0.31 -0.11
+altitude at 45
+
+move to higher altitude 67
+122  coma   1.32 -147
+123 bad
+124 bad
+125  coma  1.64 -146   
+offset
+126  bad offset
+127 bad offset
+128 still off
+129 still off
+130  coma 1.77 -130
+
+
+
+230, 57, -78
+Procedure:
+
+  set filter to open position
+  GOTO 170,alt with INST=2, guideloc 1500
+    move star to 660,380
+    inst=0, find guide star and star guiding
+  Determine PA to align spiders to diagonal  
+    pa=20, rotator=-48 at alt=68
+           rotate=-15   at alt=35
+       rotator=20-alt
+  (figure out which direction in guider corresponds to which direction in SH)A
+    goffset +x  moves SH image right
+    goffset +y  moves SH image up
+  Center image and guide 
+  Focus
+  Take several mirror images
+  Adjust xtilt and ytilt seperate to determine effects on coma
+
+        focus  alt   tilt      focus    coma
+0145,           70 0.04,-0.12
+0146   -2990    67
+0147   -2740                     9.44    1.59, 0
+0148   -2590                     2.65    1.48, -3
+0149               0.04, -0.08           0.55, 1.5
+0150            66       -0.06           0.55, 23.8
+   center a bit
+0151
+   newstar
+0152            31   forgot INST 1
+0153                bad PA, and bad pointing
+0154                 forgot INST 1
+0155                bad pointing
+     guideinst 2 0 -40
+0156                still off in x, missing spots on R
+     guideinst 2 40 0
+0157                                    2.29, -178 pointing OK, missing spots, dome?
+0158                                               still vignetted
+0159                                    2.85  -178
+
+0160                0.04, -0.14         1.6   175
+     moved dome manually +5 degrees
+0161         worse vigetting?
+     moved dome manually -5 degrees
+0162          even worse!
+     moved manuall +15
+0163           disaster!
+     back to dome slaving!
+0164  
+
+move to new star
+0165            40
+    guideinst 0 -50
+0166               0.04                  0.66  123
+
+move to new star
+0167            62
+
+\end{verbatim}
+\end{document}

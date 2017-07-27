@@ -1,0 +1,56 @@
+parameter start end
+if end==0
+  end=start
+end_if
+create 1 n=2048
+do ii=start,end
+  call readg ii
+  n=ifix[ii/100]
+  i=ii-n*100
+  add 1 $i dr=(ii-start)*30
+  string var 'f%i2.2' ii-start+1
+  {var}={i:focus}
+  tv $i
+  if ii==start
+    mark new id=1
+  else
+    mark auto exit id=ii-start+1 
+  end_if
+  aperstar $i star=5 sky=10,15
+  psffit $i radius=int[1.5/scale]
+  if ii==start
+    save phot=./focus
+  else
+    save phot=./tmp
+    get phot=./focus
+    get phot=./tmp append
+    save phot=./focus
+    get phot=./tmp
+  end_if
+  sky $i
+  sub $i c=sky
+  add 1 $i dr=(ii-start)*30
+end_do
+get phot=./focus
+plotfocus scale=scale
+mn 1
+tv 1
+save coo=./focus sr=0 sc=0
+open coo ./focus.coo
+stat n=count[coo]
+nstars=ifix[n/(end-start+1)]
+read coo
+read coo
+read coo
+do i=start,end
+  string var 'f%i2.2' i-start+1
+  string foctext '%f8.1' {var}
+  do istar=1,nstars
+    read coo
+    x=@coo.2+10
+    y=@coo.3+(i-start)*30
+    tvplot p=y,x text=foctext
+  end_do
+end_do
+close coo
+END

@@ -1,0 +1,227 @@
+#!/bin/sh
+
+PATH=.:/bin:/home/tcomm/1m/bin:/home/tcomm/bin:/usr/bin:/usr/local/bin:/usr/X11R6/lib:/usr/bin/X11
+# Default location of files
+BIN=/usr/local/bin
+BIN=/home/tcomm/1m/bin
+TOCC=/home/export/tocc
+SPEC=/home/export/spec
+PI=/home/export/pi
+
+# Default file names to use for communication
+STAT=statr
+CMD=tocccmd
+RESP=toccr
+PICMD=picmd
+PIRESP=pirespon
+SPECCMD=speccmd
+SPECRESP=specresp
+RESTART=restart
+
+export BIN
+
+trap ' ' 2 3 15
+trap
+
+echo "              WELCOME TO THE NMSU 1m TELESCOPE !!"
+echo
+echo " Please be aware that YOU are responsible for protecting the telescope"
+echo "  from the weather and other damage. Please monitor the weather closely"
+echo "  from the APO weather page. You should check in with the 3.5m telescope"
+echo "  operator to let them know you are observing on the 1m, and you can ask"
+echo "  them to contact you if they are closing the 3.5m, but they are doing "
+echo "  this as a favor to us (i.e., they might forget!) and they are NOT "
+echo "  RESPONSIBLE for the safety of the 1m - YOU ARE!!!"
+echo
+echo " The other major hazard for the 1m (aside from weather) is the issue"
+echo "  of making sure the rotator cables do not get wrapped. You should NEVER"
+echo "  initialize the telescope without watching the rotator via the remote"
+echo "  video. If you don't understand this issue, STOP NOW!!"
+echo
+
+# Start the network aliveness program which will attempt to touch a file on
+# /export/tocc every 30 seconds which the TOCC program will look for, delete, and
+# close the dome if file isn't seen for a specified length of time
+kill -KILL `ps x | grep "alive" | grep -v grep | awk '{print $1; }'` 2> /dev/null
+kill -KILL `ps x | grep "alive" | grep -v grep | awk '{print $1; }'` 2> /dev/null
+alive &
+job1=$!
+
+# Start remote video
+#ssh -a -l tcomm eyeball touch /home/export/rvideo/quit
+#ssh -l tcomm eyeball.apo.nmsu.edu killrvideo
+#ssh -l tcomm eyeball.apo.nmsu.edu killrvideo                        
+#ssh -a -l tcomm eyeball 'rm' /home/export/rvideo/*
+#ssh -a -l tcomm -f eyeball.apo.nmsu.edu rvideo 
+
+#ssh -l tcomm ccd1m.apo.nmsu.edu killrvideo                        
+# only 2 webcams run at a time without risking system crash!!
+#ssh -a -l tcomm -f ccd1m.apo.nmsu.edu rvideo2
+#ssh -a -l tcomm -f ccd1m.apo.nmsu.edu rvideo2 0
+#ssh -a -l tcomm -f ccd1m.apo.nmsu.edu rvideo2 2
+echo \
+"You should now be seeing a small window which has a video view of the telescope.  "
+
+# Now start the telescope control program 
+# Kill any existing processes, at least on the current machine
+killtcomm
+killtcomm
+#ssh -l tcomm eyeball.apo.nmsu.edu killtcomm
+#ssh -l tcomm eyeball.apo.nmsu.edu killtcomm
+
+ulimit -s 32768 2>/dev/null
+
+# start program to monitor 3.5m dome
+shutter35m 2> /dev/null &
+
+# Clean up any files which might be leftover from previous sessions
+rm -f com2port port2com com2ccd ccd2com stat2port port2stat com2gccd gccd2com
+rm -f $TOCC/$STAT.fin $TOCC/$STAT.doc
+rm -f $TOCC/$CMD.doc $TOCC/$CMD.fin
+rm -f $TOCC/$RESP.doc $TOCC/$RESP.fin
+rm -f $PI/$PICMD.doc $PI/$PICMD.fin
+rm -f $PI/$PIRESP.doc $PI/$PIRESP.fin
+rm -f $SPEC/$SPECCMD.doc $SPEC/$SPECCMD.fin
+rm -f $SPEC/$SPECRESP.doc $SPEC/$SPECRESP.fin
+rm -f ccdstatus.* guidestatus.*
+rm -f /home/export/tocc/louver.dat /home/export/tocc/35*
+sleep 2
+
+# Create FIFOs
+mkfifo com2port port2com stat2port port2stat com2ccd ccd2com com2gccd gccd2com
+
+# Touch restart file which will let telescope computer know we've restarted
+rm -f $TOCC/$RESTART.doc $SPEC/$RESTART.doc
+touch $TOCC/$RESTART.doc $SPEC/$RESTART.doc
+chmod 777 $TOCC/$RESTART.doc $SPEC/$RESTART.doc
+sleep 5
+
+# Now we start all of the "child" processes in their own xterms. We do this
+# using csh because, otherwise, under Linux, the child processes get killed
+# during a CTRL-C in the main program, even if it is trapped. In order to
+# be able to kill the children when we are done, start them using a dummy
+# command tcomm_xterm, which is just a link to xterm, so they can easily
+# be found with a ps and killed
+
+# Start the power control program
+rm -f /home/export/power/*
+power &
+job2=$!
+sleep 2
+
+# Start the status program
+#rm -f start_status
+#echo ' 
+#tcomm_xterm -fn fixed -geometry 80x21-25+80 -T "Telescope and CCD Status" -e \
+#  '$BIN/status' &
+#' > start_status
+#csh -f start_status
+start_status
+job4=$!
+
+# Start the  port program to talk with telescope computer
+#rm -f start_port
+#echo ' 
+#tcomm_xterm -fn 6x10 -sb -sl 1000 -geometry 80x10-25+620 -T "Telescope Control" -e \
+# '$BIN/sockport' &
+#' > start_port
+#csh -f start_port
+start_port
+job3=$!
+
+# Start the ccd program to talk with the PI computer
+#rm -f start_ccd
+#echo ' 
+#tcomm_xterm -fn 6x10 -sb -sl 1000 -geometry 80x10-0-270 -T "PI CCD Control" -e \
+#  '$BIN/ccd' &
+#' > start_ccd
+#csh -f start_ccd
+#job5=$!
+
+# Start the ccd program to talk with the Apogee computer
+# rm -f start_accd
+# echo ' 
+# tcomm_xterm -fn 6x10 -sb -sl 1000 -geometry 80x10-0+380 -T "Apogee CCD Control" -e \
+#   ssh -l tcomm eyeball.apo.nmsu.edu '$BIN/accd' &
+# ' > start_accd
+# csh -f start_accd
+start_accd
+ job5=$!
+
+# Start the ccd program to talk with the Leach computer
+#rm -f start_lccd
+#echo ' 
+#tcomm_xterm -fn 6x10 -sb -sl 1000 -geometry 80x10-25+380 -T "Leach CCD Control" -e \
+#  ssh -l tcomm ccd1m.apo.nmsu.edu '$BIN/lccd' &
+#' > start_lccd
+#csh -f start_lccd
+start_lccd
+job6=$!
+
+# Start the gccd program to talk with the spectrasource computer
+#rm -f start_gccd
+#echo ' 
+#tcomm_xterm -fn 6x10 -sb -sl 1000 -geometry 80x10-0-155 -T "Guider Control" -e \
+#  '$BIN/gccd' &
+#' > start_gccd
+#csh -f start_gccd
+#job6=$!
+
+# rm -f start_fccd
+# echo \
+# ssh -f -l tcomm ccd1m.apo.nmsu.edu 'xterm -fn 6x10 -sb -sl 1000 -geometry 80x10-25+500 -T \"FLI CCD Control\" -e fccd' \
+#  > start_fccd
+# csh -f start_fccd
+start_fccd
+job7=$!
+
+# echo ' 
+# tcomm_xterm -fn 6x10 -sb -sl 1000 -geometry 80x10-0-270 -T "FLI CCD Control" -e \
+#   ssh -l tcomm ccd1m.apo.nmsu.edu '$BIN/fccd' &
+# ' > start_fccd
+# csh -f start_fccd
+# job6=$!
+
+# Finally, start the command program from the current window
+$BIN/command 
+
+# When done, make sure all started jobs get killed
+#echo "stopping rvideo ...."
+#touch /home/export/rvideo/quit
+
+#echo "Killing processes ...."
+killtcomm
+killtcomm
+#ssh -l tcomm eyeball.apo.nmsu.edu killtcomm
+#ssh -l tcomm eyeball.apo.nmsu.edu killtcomm
+
+# Clean up files and FIFOs
+echo "cleaning up files..."
+rm -f com2port port2com com2ccd ccd2com stat2port port2stat com2gccd gccd2com
+rm -f $TOCC/$STAT.fin
+mv $TOCC/$STAT.doc.3 $TOCC/$STAT.doc.4
+mv $TOCC/$STAT.doc.2 $TOCC/$STAT.doc.3
+mv $TOCC/$STAT.doc.1 $TOCC/$STAT.doc.2
+mv $TOCC/$STAT.doc $TOCC/$STAT.doc.1
+rm -f $TOCC/$CMD.doc $TOCC/$CMD.fin
+mv $TOCC/$RESP.doc.3 $TOCC/$RESP.doc.4
+mv $TOCC/$RESP.doc.2 $TOCC/$RESP.doc.3
+mv $TOCC/$RESP.doc.1 $TOCC/$RESP.doc.2
+mv $TOCC/$RESP.doc $TOCC/$RESP.doc.1
+rm -f $TOCC/$RESP.doc $TOCC/$RESP.fin
+rm -f $PI/$PICMD.doc $PI/$PICMD.fin
+rm -f $PI/$PIRESP.doc $PI/$PIRESP.fin
+rm -f $SPEC/$SPECCMD.doc $SPEC/$SPECCMD.fin
+mv $SPEC/$SPECRESP.doc.3 $SPEC/$SPECRESP.doc.4
+mv $SPEC/$SPECRESP.doc.2 $SPEC/$SPECRESP.doc.3
+mv $SPEC/$SPECRESP.doc.1 $SPEC/$SPECRESP.doc.2
+mv $SPEC/$SPECRESP.doc $SPEC/$SPECRESP.doc.1
+rm -f $SPEC/$SPECRESP.doc $SPEC/$SPECRESP.fin
+rm -f /home/export/tocc/louver.dat /home/export/tocc/35*
+
+# Kill remote video
+#ssh -a -l tcomm eyeball touch /home/export/rvideo/quit
+#ssh -l tcomm ccd1m.apo.nmsu.edu killrvideo                        
+
+# Kill the aliveness program and we are done
+kill -KILL $job1 $job2 $job3 $job4 $job5 $job6 $job7

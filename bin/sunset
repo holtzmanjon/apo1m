@@ -1,0 +1,2 @@
+skycalc < sunset.inp | grep Sunset | awk '{print substr($0,29,6)}'
+

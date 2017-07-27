@@ -1,0 +1,28 @@
+14:50:49 **** Incremental Build of configuration Release_x64 for project CArcTiffFile ****
+make all 
+Building file: ../src/ArcTiffFileCAPI.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/streit/Documents/ARC_API/3.5/tiff-4.0.3/linux/x64/include -O3 -Wall -c -fmessage-length=0 -std=c++11 -fPIC -MMD -MP -MF"src/ArcTiffFileCAPI.d" -MT"src/ArcTiffFileCAPI.d" -o"src/ArcTiffFileCAPI.o" "../src/ArcTiffFileCAPI.cpp"
+Finished building: ../src/ArcTiffFileCAPI.cpp
+ 
+Building file: ../src/CArcTiffFile.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/streit/Documents/ARC_API/3.5/tiff-4.0.3/linux/x64/include -O3 -Wall -c -fmessage-length=0 -std=c++11 -fPIC -MMD -MP -MF"src/CArcTiffFile.d" -MT"src/CArcTiffFile.d" -o"src/CArcTiffFile.o" "../src/CArcTiffFile.cpp"
+Finished building: ../src/CArcTiffFile.cpp
+ 
+Building file: ../src/DllMain.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/streit/Documents/ARC_API/3.5/tiff-4.0.3/linux/x64/include -O3 -Wall -c -fmessage-length=0 -std=c++11 -fPIC -MMD -MP -MF"src/DllMain.d" -MT"src/DllMain.d" -o"src/DllMain.o" "../src/DllMain.cpp"
+Finished building: ../src/DllMain.cpp
+ 
+Building target: libCArcTiffFile.so
+Invoking: GCC C++ Linker
+g++ -L/home/streit/Documents/ARC_API/3.5/tiff-4.0.3/linux/x64/lib -shared -o "libCArcTiffFile.so"  ./src/ArcTiffFileCAPI.o ./src/CArcTiffFile.o ./src/DllMain.o   -ltiff
+Finished building target: libCArcTiffFile.so
+ 
+make --no-print-directory post-build
+cp /home/streit/Documents/ARC_API/3.5/CArcTiffFile/Release_x64/libCArcTiffFile.so /home/streit/Documents/ARC_API/3.5/Release/x64
+ 
+
+14:50:50 Build Finished (took 661ms)
+

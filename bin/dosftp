@@ -1,0 +1,26 @@
+#!/bin/sh 
+
+# Arguments:
+#   1:  root directory (and file) name, e.g. 981010
+
+'rm' $HOME/sftp.inp
+echo "-mkdir /home/1m/$1" >$HOME/sftp.inp
+echo "cd /home/1m/$1" >>$HOME/sftp.inp
+echo "lcd /home/tcomm/images/$1" >>$HOME/sftp.inp
+echo "mput *" >>$HOME/sftp.inp
+echo "put .htaccess" >>$HOME/sftp.inp
+
+# script to  images to charon.
+# Arguments:
+#   1:  root directory (and file) name, e.g. 981010
+#   2:  start image 
+#   3:  end image (if null, then xfer single image now)
+#   4:  time to perform transfer (if null, perform xfer NOW)
+
+if [ $# -lt 2 ] ; then
+  sftp -b $HOME/sftp.inp observe@astronomy.nmsu.edu
+else
+  echo sftp -b $HOME/sftp.inp observe@astronomy.nmsu.edu | at $2
+fi
+
+exit

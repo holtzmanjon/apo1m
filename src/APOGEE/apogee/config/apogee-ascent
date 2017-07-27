@@ -1,0 +1,22 @@
+#!/bin/bash
+# $Id: apogee-ascent,v 1.1 2004/08/30 13:05:27 rfactory Exp $
+#
+# /etc/hotplug/usb/apogee-altau
+#
+# Sets up newly plugged in Apogee Ascent USB camera so that
+# the console according to pam_console can access it from user space
+#
+# Note that for this script to work, you'll need all of the following:
+# a) a line in the file /etc/hotplug/usermap that corresponds to the 
+#    camera you are using.
+# b) a Linux kernel supporting hotplug and usbdevfs
+# c) the hotplug package (http://linux-hotplug.sourceforge.net/)
+#
+# In the usermap file, the first field "usb module" should be named 
+# "apogee-ascent" like this script.
+# 
+
+if [ "${ACTION}" = "add" ] && [ -f "${DEVICE}" ]
+then
+    chmod 666 $DEVICE
+fi

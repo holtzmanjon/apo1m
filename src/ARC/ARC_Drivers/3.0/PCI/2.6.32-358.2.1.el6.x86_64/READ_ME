@@ -1,0 +1,75 @@
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                   astropci Driver Version 3.0
+                        ( Apr 19, 2013 )
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+This driver has been tested under the CentOS 6.x, kernel 2.6.32.xx.el6.x86_64
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+   Compiling and Installing
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Before compiling, you must make sure the following directory exists. If
+it does not, then you must become root and create it. This directory is
+where the *.ko file will be installed.
+
+/lib/modules/`uname -r`/extra
+
+To compile and install the driver, which will cause the driver to
+auto-load on each subsequent boot, use the following commands:
+
+%> make				( NOT as root/su )
+%> sudo make install		( as root/su )
+%> sudo ./Load_AstroPCI		( as root/su )
+
+The driver should be installed immediately after system boot or the
+system may need to be SHUTDOWN ( not reboot ), after driver installation
+in order to ensure the image buffer memory can be properly allocated.
+
+To unload the driver, use:
+
+%> sudo .UnLoad_AstroPCI
+
+Note, you must be root to execute some of the above commands or they
+will fail. Check the following if the driver fails to auto-load on the
+next boot:
+
+1. The driver 'astropci.ko' exists in /lib/modules/`uname -r`/extra
+
+2. Check that the module is loaded:
+
+	/sbin/modprobe -l astropci
+
+3. Make sure another version isn't already loaded:
+
+	sudo ./UnLoad_AstroPCI
+
+   Then re-load using:
+
+	sudo ./Load_AstroPCI
+
+   Then reboot.
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+   Allocating Image Buffer Memory
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+The default image buffer size is 4200 x 4200 pixels ( 35MB ).
+ 
+To change the image buffer size, edit the "g_ulSize" variable in the
+astropci.c file to reflect the desired buffer size in bytes. The driver will
+then need to be recompiled and installed following the steps near the top
+of this file.
+
+The system may need to be SHUTDOWN and restarted after these changes. DO NOT
+just reboot; the system must be powered off completely before booting.
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+   Errors/Issues
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Contact Scott Streit (streit@astro-cam.com)
+

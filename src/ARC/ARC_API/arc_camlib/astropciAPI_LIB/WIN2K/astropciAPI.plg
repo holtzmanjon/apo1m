@@ -1,0 +1,37 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: astropciAPI - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\streit\LOCALS~1\Temp\RSP1E.tmp" with contents
+[
+/nologo /ML /W3 /GX /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /Fp"Release/astropciAPI.pch" /YX /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Documents and Settings\streit\C++ Files\astropciAPI_LIB\src\Deinterlace.c"
+"C:\Documents and Settings\streit\C++ Files\astropciAPI_LIB\src\DSPCommand.c"
+"C:\Documents and Settings\streit\C++ Files\astropciAPI_LIB\src\FitsFile.c"
+"C:\Documents and Settings\streit\C++ Files\astropciAPI_LIB\src\LoadDspFile.c"
+"C:\Documents and Settings\streit\C++ Files\astropciAPI_LIB\src\Memory.c"
+"C:\Documents and Settings\streit\C++ Files\astropciAPI_LIB\src\Temperature.c"
+]
+Creating command line "cl.exe @C:\DOCUME~1\streit\LOCALS~1\Temp\RSP1E.tmp" 
+Creating command line "link.exe -lib /nologo /out:"Release\astropciAPI.lib"  ".\Release\Deinterlace.obj" ".\Release\DSPCommand.obj" ".\Release\FitsFile.obj" ".\Release\LoadDspFile.obj" ".\Release\Memory.obj" ".\Release\Temperature.obj" "
+<h3>Output Window</h3>
+Compiling...
+Deinterlace.c
+DSPCommand.c
+FitsFile.c
+LoadDspFile.c
+Memory.c
+Temperature.c
+Creating library...
+
+
+
+<h3>Results</h3>
+astropciAPI.lib - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

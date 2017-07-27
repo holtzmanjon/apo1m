@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?> <!-- -*- SGML -*- --> 
+
+<deviceinfo version="0.2">
+
+  <device>
+    <match key="info.capabilities" contains="filterwheel">
+      <match key="filterwheel.access_method" string="proprietary">
+        <append key="info.callouts.add" type="strlist">/usr/libexec/altausb-set-procperm</append>
+      </match>
+      <match key="filterwheel.access_method" string="ptp">
+        <append key="info.callouts.add" type="strlist">/usr/libexec/altausb-set-procperm</append>
+      </match>
+    </match>
+  </device>
+
+</deviceinfo>

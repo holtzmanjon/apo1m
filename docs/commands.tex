@@ -1,0 +1,103 @@
+\begin{itemize}
+
+\item{{ALTAZ} --- Move the telescope to a specified alt/az position}
+
+\item{{CD} --- {\bf C}lose the {\bf D}ome slit.}
+\item{{CENTER} --- move the telescope to {\bf CENTER} on an object in an image based on the current image display.}
+\item{{CF} --- {\bf C}lose the command {\bf F}ile.}
+\item{{CL} --- {\bf C}lose the {\bf L}ouvers - the large vents at the floor of the dome.}
+\item{{CLOSE} --- {\bf CLOSE}s the guide shutter.}
+%\item{{CM} --- {\bf C}lose the {\bf M}irror covers.}
+\item{{CO} --- move the telescope to the {\bf CO}ordinates given as hh mm ss dd mm ss.}
+
+\item{{DI} --- {\bf D}ome {\bf I}nitialization command.}
+\item{{-DISK/+DISK} --- turn off/on autosaving of images to {\bf DISK}.}
+\item{{-DISPLAY/+DISPLAY} --- turn off/on auto {\bf DISPLAY}ing of images.}
+\item{{DF [{\it $\Delta$f}]} --- move focus position by {\bf D}elta {\bf F}ocus = {\it $\Delta$f}.}
+\item{{DM} --- toggle {\bf D}o{\bf M}e tracking on/off.}
+
+\item{{EXP [{\it time}]} --- take an {\bf EXP}osure of length {\it time} seconds.}
+
+\item{{FILENAME [{\it name}]} --- change the default root for image {\bf FILENAME}s to {\it name}.}
+\item{{FILL} --- {\bf FILL} the dewar}
+%\item{{FILTER [{\it n}]} --- switch current {\bf FILTER} to position {\it n}.}
+%\item{{FITS} --- set file type to {\bf FITS} format and turn on autosaving of images.}
+\item{{FLAT {\it ndesired nmax startexp fudge}} --- takes a series of {\bf FLAT} field images; see text for more.}
+\item{{FO [{\it f}]} --- move to {\bf FO}cus position {\it f}.}
+\item{{FOCRUN} --- {\bf FO}cus {\bf RUN}.}
+\item {{FUDGE} --- setup for STAN command.}
+\item{{FULLSCALE} --- set autoscaling of images to have greyscaling showing {\bf FULLSCALE} of image.}
+
+\item{{GCENTER} --- CENTER command for guider.}
+\item{{GEXP} --- EXP command for guider.}
+\item{{GFLAT} --- FLAT command for guider.}
+\item{{GFOCRUN} --- {\bf FO}cus {\bf RUN} in the {\bf G}uider.}
+\item{{GFULLSCALE} --- FULLSCALE command for guider.}
+\item{{GLOCATE} --- LOCATE command for guider.}
+\item{{GOFFSET [$\Delta${\it x} $\Delta${\it y}]} --- {\bf Offset} the telescope  by a specified number of \textit{pixels} in the guider}
+\item{{GSAMESCALE} --- SAMESCALE command for guider.}
+%\item{{GSSCALE} --- SSCALE command for guider.}
+\item{{GSKYSCALE} --- SKYSCALE command for guider.}
+\item{{GUIDE} --- turn on the {\bf GUIDE} system.}
+\item{{GUIDEOFF} --- turn the {\bf GUIDE} system {\bf OFF}; for long exposures, a warning will come up if guiding if off.}
+\item{{GUPDATE [{\it n}]} --- {\bf UPDATE} the number of {\bf G}uide exposures to determine centroid.}
+\item{{GSIZE [{\it n}]} --- set the {\bf SIZE} of box used by {\bf G}uide camera for computing star centroids.}
+
+%\item{{HO} --- initialize telescope to {\bf HO}me position.}
+\item{{HP} --- {\bf H}el{\bf P} command.}
+
+\item{{INIT} --- INITialize telescope.}
+\item{{INPUT} filenmae --- execute a series of commands from the specified
+{\bf INPUT} file}
+\item{{INST} --- select a new default instrument for pointing (currently, either
+science CCD or guider CCD.}
+
+\item{{LOCATE} --- move the telescope such that object in current image display
+ is moved to some other specified {\bf LOCATION} in the display.}
+
+%\item {{MAG} --- setup for STAN command.}
+\item{{MEXP [{\it time number}]} --- take {\it number} of {\bf M}ultiple 
+{\bf EXP}osures of length {\it time} seconds.}
+
+\item{{NE} --- change to a {\bf N}ew {\bf E}poch for coordinates.
+\item{{NEWEXT [\it ext}]} --- give a {\bf NEW} {\bf EXT}ension for the next image file.}
+\item{{NOSHUTTER} --- set guide camera to use {\bf NO} {\bf SHUTTER} during guide exposures.} 
+
+\item{{OBJECT} --- specify {\bf OBJECT} name for FITS header.}
+\item{{OD} --- {\bf O}pen the {\bf D}ome slit.}
+\item{{OF} --- {\bf O}pen the command {\bf F}ile created by user.}
+\item{{OFFSET [$\Delta${\it x} $\Delta${\it y}]} --- {\bf Offset} the telescope  by a specified number of \textit{pixels}.}
+%\item{{OM} --- {\bf O}pen the {\bf M}irror covers.}
+\item{{OL} --- {\bf O}pen the {\bf L}ouvers - the large vents at the floor of the dome.}
+\item{{OPEN} --- {\bf OPEN} the guide camera shutters.}
+\item{{OS} --- {\bf O}pen the {\bf S}tandard star file.}
+
+\item{{PA} --- change the {\bf P}osition {\bf A}ngle of the detector.}
+\item{{PM} --- move the telescope to a position of one of the last five
+{\bf P}revious {\bf M}ove positions.}
+
+\item{{QCK [{\it time}]} --- take a {\bf Q}ui{\bf CK} exposure of 
+length {\it time} seconds, \textbf{but do not save it}.}
+\item{{QM [{\it $\Delta$ RA $\Delta$ DEC }]} --- do a {\bf Q}uick {\bf M}ove with the offset in RA and DEC in arcsec.}
+\item{{QU} --- {\bf QU}it the telescope command program {\it gracefully}.}
+
+\item{{RF [{\it id}]} --- {\bf R}ead from command {\bf F}ile created by user and move telescope to object {\it id}.}
+\item{{RS} --- {\bf R}ead from {\bf S}tandard star file.}
+
+\item{{SA} --- set the telescope to point at a {\bf SA}o star.}
+\item{{SAMESCALE} --- set autoscaling of images for future images to be the {\bf SAMESCALE} as current image.}
+\item{{SCALE {\it low high}} --- redisplay current image with new grey {\bf SCALE} between {\it low} and {\it high}.}
+\item{{SHUTTER} --- sets guide CCD camera into normal {\bf SHUTTER} mode.}
+\item{{SKYSCALE} --- set autoscaling of images to have grey{\bf SCALE} levels around mean {\bf SKY} level.}
+\item{{SLEEP [{\it t}]} --- suspend operation (sleep) for specified number of seconds.}
+\item{{STAN [{\it n}]} --- take an exposure through filter number {\it n} of a {\bf STAN}dard star; program determines exp time.}
+\item{{ST} --- {\bf ST}ow the telescope to stow position to quit.}
+
+\item{{TR} --- toggle {\bf TR}acking on and off.}
+
+\item{{UC} -- {\bf U}pdate {bf C}oordinates for current telescope pointing.}
+
+\item{{WRITE} --- toggles to mode where guide exposures are {\bf WRITE}en to disk; default is not to save images.}
+
+%\item {{ZERO} --- setup for STAN command.}
+\end{itemize}

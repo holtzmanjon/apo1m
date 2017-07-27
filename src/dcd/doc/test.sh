@@ -1,0 +1,1 @@
+epydoc --ignore-param-mismatch --tests all --check  --private   ../gtkindiclient.py   ../indiclient.py  

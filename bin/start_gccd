@@ -1,0 +1,4 @@
+#!/bin/csh -f 
+tcomm_xterm -fn 6x10 -sb -sl 1000 -geometry 78x9-10-155 -T "Guider Control" -e \
+  /usr/local/bin/gccd &
+

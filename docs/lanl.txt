@@ -1,0 +1,66 @@
+Information relevant to purchase/construction of LANL CCD camera:
+
+Mechanical: circular mounting plate, 6 inch diameter, 3/8" thickness is
+      used to clamp detector package to back of filter wheel. One needs to
+      be able to use 3 clamps at 120 degress to attach this. Alternatively
+      the plate could be larger and include bolt holes at the appropriate
+      locations, but the 6 inch plate is probably simpler.
+
+      on current camera, optical distance from back of this plate to CCD 
+      is ~1.11 inch, i.e. total optical distance from back of filter wheel to 
+      CCD is 1.11+.375=1.485 inches.
+
+      Note that dewar will be mounted horizontally (at Nasmyth focus), and
+      will need to allow rotation of a bit more than 360 degrees. Weight
+      should be roughly distributed symetrically around central axis if
+      possible.
+
+Dewar: hold time should be greater than 16 hours
+      Remember that dewar is horizontal and must allow for complete rotation.
+      Need to confirm vacuum fixtures can be used with APO pumps
+
+Electrical: camera is on a rotator so there can be some stress on the cable
+      and connector. Best design would have connector in the back (not side)
+      of package. Use robust cable and connector.
+
+      Cable length needs to be measured accurately, but will need to be 
+      somewhere between 25 and 50 feet. Cable will run alongside others, so
+      shielding and pickup issues need to be carefully considered.
+
+Shutter: package must include a shutter
+
+CCD: before purchase, need information on QE curve, cosmetics, readout noise.
+   Note pixel scale at focal plane is about 34 arcsec/mm; 13.5 micron
+   pixels would give about 0.45 arcsec/pixel.
+
+CCD electronics: before purchase, need information on readout speed/readout
+   noise combinations, support of multiple modes (readout speed, gain, etc),
+   subframe readout capability. For standard astronomy usage (e.g. narrow
+   band imaging), we would like a mode with <=5 electrons rms noise with
+   a "manageable" readout time (<1 minute full frame?). For focussing, we
+   would like a fast subframe mode. For rapid transient followup, we want
+   a fast readout mode.
+
+software: -Linux drivers for CCD camera
+          -discussion of alert generation/response software
+
+contact information:
+
+   - primary contact is Jon Holtzman, holtz@nmsu.edu, NMSU phone (505) 646-8181
+     NMSU FAX (505) 646-1602 (I will supply alternate contact information 
+     during sabattical when available)
+
+   - John Barentine, technical staff APO, jcb@apo.nmsu.edu, (505) 437-6822,
+     FAX (505) 434-5555
+
+   - Kurt Anderson, NMSU faculty, kurt@nmsu.edu, (505) 646-1032
+
+   - Rene Walterbos, NMSU Astronomy department chair, rwalterb@nmsu.edu,
+     (505) 646-5990
+
+   - LANL contact: Tom Vestrand, (505) 665-9542
+
+other issues:
+
+   - develop a memorandum of understanding for use of telecope/camera
+   - identify student to be associated with project

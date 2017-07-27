@@ -1,0 +1,232 @@
+/* Routines to set up socket servers and clients, both for IP and local
+   connection */
+
+#include <stdio.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <sys/un.h>
+#include <errno.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+short timer = 300;
+
+void setup_client(int *sock, int port, char *server);
+void setup_server(int *sock,int port,char *server);
+void read_server(int *sock, int port,char *server, char *buf, int maxlen);
+#define WRITE
+#ifdef WRITE
+main()
+{
+ int sock,port,nread;
+ char server[16], line[80];
+
+ port = 7;
+ sprintf(server,"172.16.48.129"); // ccd1m
+ port = 1050;
+ sprintf(server,"192.41.211.22"); // tocc1m
+ setup_client(&sock,port,server);
+
+ if (sock>0) {
+
+  fprintf(stderr,"enter string to send: ");
+  gets(line);
+  strcat(line,"\n");
+
+  write(sock,line,strlen(line));
+
+  line[0] = 0;
+  while (strstr(line,"DONE") == NULL) {
+    nread=0;
+    memset(line,0,80);
+fprintf(stderr,"starting read\n");
+    while (strstr(line,"\n") == NULL) {
+      nread += read(sock,line+nread,1);
+fprintf(stderr,"nread: %d %s\n",nread,line);
+    }
+    fprintf(stderr,"received: %d %s\n",nread,line);
+  }
+ } else {
+   fprintf(stderr,"no server available!\n");
+ }
+}
+
+#else
+
+main()
+{
+  int sock, port, client;
+  char server[16], line[800];
+
+  port=1051;
+  sprintf(server,"172.16.48.1");
+  sprintf(server,"192.41.211.24");
+  setup_server(&sock,port,server);
+  while (1) {
+  read_server(&sock, port, server, line, 800);
+  fprintf(stderr,"line: %s\n",line);
+  }
+
+}
+#endif
+
+/* setup_server returns a fd for the listening socket (sock) and a fd for
+   the first client to connect to this socket (client). The server will
+   listen from passed server/port. If port==0, then connection is assumed
+   local with identifier given by server */
+
+void setup_server(int *sock,int port,char *server)
+{
+  struct sockaddr_in addr;
+  struct sockaddr_un uaddr;
+  struct in_addr in_addr;
+  int addrlen, status, n, i, maxset, domain;
+
+  if (port > 0)
+    domain = PF_INET;
+  else
+    domain = PF_UNIX;
+
+  if (port > 0) {
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(port);
+    status = inet_aton(server,&in_addr);         
+    if (status<0) {
+      fprintf(stderr,"inet_aton returns %d\n",status);
+      exit(-1);
+    }
+    addr.sin_addr = in_addr;
+    addrlen = sizeof(addr);
+  } else {
+    uaddr.sun_family = AF_UNIX;
+    uaddr.sun_path[0] = 0;
+    for (i=0; i<strlen(server); i++) uaddr.sun_path[i+1] = server[i];
+    addrlen = sizeof(uaddr.sun_family) + strlen(server) + 1;
+  }
+
+  status = -1;
+  n=0;
+  *sock = socket(domain, SOCK_STREAM, 0);
+  if (*sock<0) {
+      fprintf(stderr,"socket returns %d\n",status);
+      exit(-1);
+  }
+  while (status<0&&n<timer) {
+      if (port>0)
+        status = bind(*sock, &addr, sizeof(addr));
+      else {
+        status = bind(*sock, &uaddr, addrlen);
+      }
+      if (status<0) perror("bind error:");
+      n++;
+      sleep(1);
+  }
+  if (n<timer) {
+      listen(*sock,5);
+  } else {
+      fprintf(stderr,"bind timed out...");
+      *sock = -1;
+  }
+}
+
+void read_server(int *sock, int port,char *server, char *buf, int maxlen)
+{
+  struct sockaddr_in addr;
+  struct sockaddr_un uaddr;
+  struct in_addr in_addr;
+  int addrlen, status, n, i, maxset, domain, nread, client;
+
+  if (port > 0)
+    domain = PF_INET;
+  else
+    domain = PF_UNIX;
+
+  if (port > 0) {
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(port);
+    status = inet_aton(server,&in_addr);         
+    if (status<0) {
+      fprintf(stderr,"inet_aton returns %d\n",status);
+      exit(-1);
+    }
+    addr.sin_addr = in_addr;
+    addrlen = sizeof(addr);
+  } else {
+    uaddr.sun_family = AF_UNIX;
+    uaddr.sun_path[0] = 0;
+    for (i=0; i<strlen(server); i++) uaddr.sun_path[i+1] = server[i];
+    addrlen = sizeof(uaddr.sun_family) + strlen(server) + 1;
+  }
+
+  client = 0;
+  if (domain==PF_INET) 
+      client = accept(*sock,&addr,&addrlen);
+  else
+      client = accept(*sock,&uaddr,&addrlen);
+  if (client <0) perror("accept error:");
+
+  nread = 0;
+  memset(buf,0,maxlen);
+  /* If we've read anything, keep reading until we encounter a newline */
+  while ( strstr(buf,"\n") == NULL ) {
+     if ( (n = read(client,buf+nread,maxlen-nread)) > 0)  {
+       nread += n;
+     }
+  }
+  buf[nread] = 0;
+  close(client);
+}
+
+void setup_client(int *sock, int port, char *server)
+{
+  int status, n, i, addrlen, domain;
+  struct sockaddr_in addr;
+  struct sockaddr_un uaddr;
+  struct in_addr in_addr;
+
+  if (port > 0) {
+    domain = PF_INET;
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(port);
+    status = inet_aton(server,&in_addr);
+    if (status<0) {
+      perror("inet_aton returns:");
+      exit(0);
+    }
+    addr.sin_addr = in_addr;
+  } else {
+    domain = PF_UNIX;
+    uaddr.sun_family = AF_UNIX;
+    uaddr.sun_path[0] = 0;
+    for (i=0; i<strlen(server); i++) uaddr.sun_path[i+1] = server[i];
+    addrlen = sizeof(uaddr.sun_family) + strlen(server) + 1;
+  }
+
+  status = -1;
+  n=0;
+//  while (status<0&&n<timer) {
+    *sock = socket(domain, SOCK_STREAM, 0);
+    if (*sock<0) {
+      fprintf(stderr,"socket returns %d\n",status);
+      perror("socket error:");
+      exit(-1);
+    }
+    if (domain==PF_INET)
+      status = connect(*sock,&addr,sizeof(addr));
+    else 
+      status = connect(*sock,&uaddr,addrlen);
+    if (status < 0) {
+    //  perror("connect error:");
+      sleep(1);
+      close(*sock);
+      *sock = -1;
+    }
+    n++;
+//  }
+  if (n==timer) {
+    *sock = 0;
+    //fprintf(stderr,"connect timed out.... no connection available\n");
+  }
+}
+

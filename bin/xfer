@@ -1,0 +1,22 @@
+#!/bin/sh 
+
+# script to  images to charon.
+# Arguments:
+#   1:  root directory (and file) name, e.g. 981010
+#   2:  start image 
+#   3:  end image (if null, then xfer single image now)
+#   4:  time to perform transfer (if null, perform xfer NOW)
+
+if [ $# -le 3 ] ; then
+  if [ $# = 2 ] ; then
+    doxfer $1 $2 $2
+  else
+    doxfer $1 $2 $3
+  fi
+else
+  'rm' $HOME/xfer.inp
+  echo "doxfer $1 $2 $3" >$HOME/xfer.inp
+  at -f $HOME/xfer.inp $4
+fi
+
+exit

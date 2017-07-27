@@ -1,0 +1,233 @@
+\documentclass{article}[12pt]
+
+\usepackage{epsfig}
+\usepackage{html}
+
+\textwidth=8in
+\textheight=10in
+
+\hoffset=-1.7in
+\voffset=-1in
+
+\title{NMSU 1 meter telescope}
+\author{Jon Holtzman, Assistant Professor, NMSU}
+
+\epsfxsize 7in 
+
+\begin{document}
+
+\maketitle
+
+\vskip 0.5in
+
+Complete document in a 
+\htmladdnormallink{single PostScript file}{../1m.ps.gz}.
+
+\section{Telescope}
+
+\begin{itemize}
+\item Telescope is an alt-az Ritchey-Chretien design and produces an F/6.06 
+beam.
+
+\begin{latexonly}
+\epsfbox{1mlayout.eps}
+\end{latexonly}
+\begin{htmlonly}
+\begin{rawhtml}
+<IMG SRC=1mlayout.gif WIDTH=100%>
+\end{rawhtml}
+\end{htmlonly}
+
+\item Basic design optical parameters (units are inches)
+
+\begin{center}
+\begin{tabular}{lcccc}
+NAME & RADIUS & THICKNESS & DIAMETER & CONIC \\
+Primary & -200 & -62.66 & 40 & -1.202461 \\
+Secondary & -127.059 & 40.1585 & & -8.434993 \\
+Tertiary & Inf & 30 & & \\
+Rotator mount & & 11.93 & \\
+Focal plane & & & 
+\end{tabular}
+\end{center}
+
+At this point, we have essentially no information as to how the as-built
+optical parameters match these design parameters.
+
+\item Rotator mounting details: 12(?) hole bolt pattern with 1/4-20 bolts 
+spaced evenly on a circle 14 inches diameter. From the center of the
+rotator, you can mount anything out to a radius of 12 inches. Once you
+are back 6 inches from the rotator, there is some additional clearance;
+by the time you are 8 inches from the rotator, there are no constraints
+on a mounted instrument.
+
+\item Alt-az-rotator system has 3 axes of motion; at current time, rotator
+exists on only one of the Nasmyth ports. Altitiude and azimuth axes have
+limit switches and magnetic home sensors. Rotator axis does not have
+limit switches, only a magnetic home sensor; to avoid rotator cable wrap
+problems, the rotator position must be carefully stored using software
+and remembered from session to session.
+
+\item All drives are friction drives. Altitude and azimuth have friction
+driven encoders as well; rotator only has the motor drive. On the
+azimuth axis, there is clear evidence that the ``scale'' of the axis,
+degrees/mm, varies slowly with temperature despite the fact that the
+material of the drive shaft and drive wheel are the same. We have plans
+to implement a temperature-dependent scale to correct for this to
+first order.
+
+\end{itemize}
+
+\section{Instrument}
+
+\subsection{Current instrument}
+
+\begin{latexonly}
+\epsfbox{1m.eps}
+\end{latexonly}
+\begin{htmlonly}
+\begin{rawhtml}
+<IMG SRC=1m.gif WIDTH=100%>
+\end{rawhtml}
+\end{htmlonly}
+
+Current design has a spacer box mounted on rotator mount, which has a
+back mounting plate 5.25" behing the rotator mount. An off-axis guider
+camera is located inside this box, mounted to the back plate.  This
+mount holds a 1.25" diagonal mirror along with a SpectraSource 512x512
+CCD camera with 20 micron pixels.  The center of the guider is currently
+located $\sim$ 2300 arcseconds off axis.  However, at the current time,
+the diagonal mirror housing partially vignettes the beam going to the
+science instrument.  There is currently no corrector in front of the
+guider.
+
+Behind the spacer, a filter wheel is mounted. The current filter wheel
+is 3.5" thick. It accomodates 6 2" square filters. 
+
+Behind the filter wheel, the science CCD camera is located. It has a
+focal plane which is located 1.25 " (optical distance) behind the
+mounting surface. The science CCD is 1024x1024 array put together 
+by Princeton Instruments. The CCD pixels are 24 microns square.
+
+The current design places the CCD array about 2 inches closer to the
+secondary than is suggested by ray-tracing using the nominal optical
+parameters.
+
+\subsection{New instrument}
+
+We are currently having a new guider and filter wheel being built by
+\htmladdnormallink{Astronomical Consultants and Equipment}
+{http://www.astronomical.com} (Peter Mack) out of Tucson. 
+The idea is to make a much thinner filter
+wheel which will allow the guider to be located much closer to the
+focal plane. This will allow the guider to come closer on-axis without
+vignetting the primary beam to the science instrument. This is motivated
+so we can maximize the size of baffles in the system to minimize scattered
+light, which currently poses a problem. 
+
+For more information on specifications for the new system provided to
+Peter, see \htmladdnormallink{this document}{../newinst/index.html}.
+
+\section{Computer and software control}
+
+The telescope, science CCD and filter wheel, and guider CCD are each
+controlled by a separate PC. The telescope is controlled by the TOCC
+computer, running DOS, the science CCD by the PI computer running 
+Windows 3.11, and the guider CCD by the SPEC computer running DOS.
+
+An original version of the alt-az control system running on the TOCC
+computer was written by the AutoScope corporation, but this had many
+problems and large portions of it have been rewritten (by Jon Holtzman) 
+to form the current version. This software also controls the dome
+and dome shutter, as well as commandable fill system for the CCD dewar.
+
+The science CCD is controlled by software provided by Princeton Instruments.
+
+The guide CCD is controlled by software written by Jon Holtzman using
+library routines provided by SpectraSource.
+
+All three programs look, in addition to input from the local keyboard(s),
+for input in specified files which are visible over the network. This
+allows for complete remote operation.
+
+For remote operation, a suite of programs (tcomm) is run from a UNIX
+workstation. Basically, a program is run which talks with each of the
+three computers in the dome. In addition, there is a master command
+program which is the user interface and sends commands to the UNIX client
+programs. There is also a status program which monitors status files sent
+back from the telescope and the CCD programs and displays a status
+window with the current pointing of the telescope, exposure/filter 
+information, etc.  Finally there is a program which controls the power
+to various devices in the dome via a network power switching device.
+
+\section{Current telescope performance}
+
+\subsection{Pointing/tracking}
+
+The telescope after nominal mechanical optical alignment has very poor
+pointing performance. However, the pointing can be fairly well modelled
+using standard terms for an alt-az telescope implemented, e.g., by the
+TPOINT software, which we use. When making a pointing model using 100-200
+stars around the sky, we typically achieve rms pointing performance 
+of $\sim$ 20 arcsec.
+
+Tracking performace directly comes from this pointing performance because
+we track using encoder information in the same way that we point.  The
+tracking performance varies with location in the sky. Typically, we
+estimate that moderately good tracking, i.e. image quality can be maintained,
+for roughly 3-5 minutes.
+
+\subsection{Guiding}
+
+We have implemented guiding software to allow for longer integrations.
+With the current system, we perform relatively slow guiding; we can
+update roughly once every 1-2 seconds fastest. Our usual mode of operation
+is to operate significantly slower, usually computing an offset every
+1-2 seconds but averaging five of these before sending a correction to
+the telescope.
+
+The performance of the guiding still depends on the quality of the
+pointing model because we only have position measurements of the guide
+star in two coordinates while the telescope is a three axis system.
+We currently assume that the rotator position is correct, and guide
+in alt-az alone. This appears to be sufficient so long as the pointing
+model is good; when it is not good, we get noticable rotation around the
+position of the guide camera when we are guiding. Better guiding can
+also be obtained if the observer is careful to rezero the coordinate
+pointing immediately before guiding (i.e. setting the pointing to be
+correct to first order).
+
+Our current guiding performance has yet to be fully quantified.
+
+\subsection{Image quality}
+
+The image quality currently leaves quite a bit to be desired. We have
+never achieved image quality much better than $\sim$ 1.9 arcsec.
+
+We have attempted to collimate the telescope several times. We have
+twice done mechanical collimation by 
+\begin{enumerate}
+\item positioning the secondary (decenter and tilt) based on an alignment 
+telescope mounted in the primary hole
+\item positioning the tertiary (tilt only) based on an alignment telescope
+mounted on the rotator mount
+\item positiong the primary based on stellar images
+\end{enumerate}
+
+From this initial mechanical alignment, we have refined the collimation
+using secondary tilts to minimize the apparent coma in the images. 
+The secondary can be tilted using motor control, but not decentered.
+
+Out-of-focus images show no strong signs of coma or astigmatism. However,
+they do show very prominent, roughly azimuthally-symmetric, zonal
+errors. At the current time, we suspect that the poor image quality
+arises from one or more misfigured optics. The primary support system 
+is also a possible culprit, but it is not clear how it would produce
+azimuthally symetric features, as the primary support structure consists
+of a set of three ``tripod'' cup mounts.
+
+We currently have limited data on whether the  current best image quality 
+can be achieved reliably. Anecdotal reports suggest there may be some
+problem here, possibly with repeatability of the secondary mirror position.
+
+\end{document}

@@ -1,0 +1,18 @@
+**** NOTE: All labels and data values MUST be separated by a single tab. ****
+plot title:	E2V4240_LN2_Right
+start time:	50
+end time:	1000
+number of points:	7
+save images:	true
+dark columns:	6000
+dark rows:	500
+flat columns:	2200
+flat rows:	1000
+dark lower left X:	2200
+dark lower left Y:	100
+dark upper right X:	2900
+dark upper right Y:	450
+flat lower left X:	1300
+flat lower left Y:	200
+flat upper right X:	1900
+flat upper right Y:	800

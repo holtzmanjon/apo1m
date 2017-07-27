@@ -1,0 +1,6 @@
+#!/bin/sh
+
+export LD_LIBRARY_PATH=/home/streit/Documents/ARC_API/3.0/Release/x64
+
+valgrind -v --track-origins=yes --leak-check=full --show-reachable=yes ./ArcAPIService
+

@@ -1,0 +1,10 @@
+#!/bin/sh
+'rm' $HOME/transfer.inp
+echo "dotransfer $1" >$HOME/transfer.inp
+if [ $2 = now ] ; then
+  at -f $HOME/transfer.inp now+1minute
+else
+  at -f $HOME/transfer.inp $2
+fi
+
+exit

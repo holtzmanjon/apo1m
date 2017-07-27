@@ -1,0 +1,39 @@
+set jd = `tail -2 /export/tocc/statr.doc | head -1 | awk '{print $6}'`
+set domeopen = `tail -2 /export/tocc/statr.doc | head -1 | awk '{print $26}'`
+set temp = `tail -2 /export/tocc/statr.doc | head -1 | awk '{print $37}' | awk -F. '{print $1}' `
+#set jd2 = `tail -2 /export/tocc/statr.doc | head -1 | awk '{print $6}'`
+if ( $jd == $jdold ) then
+  set tocc = hung
+else
+  set tocc = ok
+endif
+echo tocc: $tocc    domeopen: $domeopen     temp: $temp   jd: $jd   jdold: $jdold
+if ( $tocc == hung ) then
+  echo tocc appears hung, turning motors, fans, and computer off
+#  ms off 6
+#  ms off 1
+#  ms off 4
+else
+  set tlow = 18
+  set thigh = 32
+  if ( $domeopen == 0 && $temp < $tlow ) then
+    echo $temp is less than $tlow, turning fans off
+    ms off 4
+  else if ( $temp < $thigh ) then
+    echo $temp is less than $thigh, but greater than $tlow, turning fans on
+    ms on 4
+  else
+    echo $temp is greater than $thigh, turning computers off
+    umask 000
+    echo "QU" > /export/tocc/tocccmd.doc
+    touch /export/tocc/tocccmd.fin
+    echo "QU" > /export/spec/speccmd.doc
+    touch /export/spec/speccmd.fin
+    echo "QU" >> /loki/tcomm/master2com
+    echo "y" >> /loki/tcomm/master2com
+    echo "y" >> /loki/tcomm/master2com
+    head -1 /loki/tcomm/com2master
+    sleep 5
+    ms off 1
+  endif
+endif

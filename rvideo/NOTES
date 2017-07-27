@@ -1,0 +1,19 @@
+To get Panasonic Eggcam to work;
+
+ - get bttv package. Install it under /usr/src/linux/bttv
+ 
+   in /usr/src/linuc/bttv/driver, edit Makefile for correct device
+
+   in /usr/src/linux/bttv, make
+
+   To test, do make ins
+
+ - To get modules to auto-load using kerneld:
+
+     cp /usr/src/linux/bttv/driver/*.o  to /lib/modules/(version)
+
+     in /etc/conf.modules, put
+       alias char-major-81 bttv
+
+
+For PWC, see http://www.lavrsen.dk/twiki/bin/view/PWC

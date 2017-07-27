@@ -1,0 +1,68 @@
+14:49:11 **** Incremental Build of configuration Release_x32 for project CArcDevice ****
+make all 
+Building file: ../src/ArcDeviceCAPI.cpp
+Invoking: GCC C++ Compiler
+g++ -O3 -Wall -c -fmessage-length=0 -std=c++11 -m32 -fPIC -MMD -MP -MF"src/ArcDeviceCAPI.d" -MT"src/ArcDeviceCAPI.d" -o "src/ArcDeviceCAPI.o" "../src/ArcDeviceCAPI.cpp"
+Finished building: ../src/ArcDeviceCAPI.cpp
+ 
+Building file: ../src/ArcOSDefs.cpp
+Invoking: GCC C++ Compiler
+g++ -O3 -Wall -c -fmessage-length=0 -std=c++11 -m32 -fPIC -MMD -MP -MF"src/ArcOSDefs.d" -MT"src/ArcOSDefs.d" -o "src/ArcOSDefs.o" "../src/ArcOSDefs.cpp"
+Finished building: ../src/ArcOSDefs.cpp
+ 
+Building file: ../src/CArcDevice.cpp
+Invoking: GCC C++ Compiler
+g++ -O3 -Wall -c -fmessage-length=0 -std=c++11 -m32 -fPIC -MMD -MP -MF"src/CArcDevice.d" -MT"src/CArcDevice.d" -o "src/CArcDevice.o" "../src/CArcDevice.cpp"
+Finished building: ../src/CArcDevice.cpp
+ 
+Building file: ../src/CArcPCI.cpp
+Invoking: GCC C++ Compiler
+g++ -O3 -Wall -c -fmessage-length=0 -std=c++11 -m32 -fPIC -MMD -MP -MF"src/CArcPCI.d" -MT"src/CArcPCI.d" -o "src/CArcPCI.o" "../src/CArcPCI.cpp"
+Finished building: ../src/CArcPCI.cpp
+ 
+Building file: ../src/CArcPCIBase.cpp
+Invoking: GCC C++ Compiler
+g++ -O3 -Wall -c -fmessage-length=0 -std=c++11 -m32 -fPIC -MMD -MP -MF"src/CArcPCIBase.d" -MT"src/CArcPCIBase.d" -o "src/CArcPCIBase.o" "../src/CArcPCIBase.cpp"
+Finished building: ../src/CArcPCIBase.cpp
+ 
+Building file: ../src/CArcPCIe.cpp
+Invoking: GCC C++ Compiler
+g++ -O3 -Wall -c -fmessage-length=0 -std=c++11 -m32 -fPIC -MMD -MP -MF"src/CArcPCIe.d" -MT"src/CArcPCIe.d" -o "src/CArcPCIe.o" "../src/CArcPCIe.cpp"
+Finished building: ../src/CArcPCIe.cpp
+ 
+Building file: ../src/CArcTools.cpp
+Invoking: GCC C++ Compiler
+g++ -O3 -Wall -c -fmessage-length=0 -std=c++11 -m32 -fPIC -MMD -MP -MF"src/CArcTools.d" -MT"src/CArcTools.d" -o "src/CArcTools.o" "../src/CArcTools.cpp"
+Finished building: ../src/CArcTools.cpp
+ 
+Building file: ../src/CLog.cpp
+Invoking: GCC C++ Compiler
+g++ -O3 -Wall -c -fmessage-length=0 -std=c++11 -m32 -fPIC -MMD -MP -MF"src/CLog.d" -MT"src/CLog.d" -o "src/CLog.o" "../src/CLog.cpp"
+Finished building: ../src/CLog.cpp
+ 
+Building file: ../src/CStringList.cpp
+Invoking: GCC C++ Compiler
+g++ -O3 -Wall -c -fmessage-length=0 -std=c++11 -m32 -fPIC -MMD -MP -MF"src/CStringList.d" -MT"src/CStringList.d" -o "src/CStringList.o" "../src/CStringList.cpp"
+Finished building: ../src/CStringList.cpp
+ 
+Building file: ../src/DllMain.cpp
+Invoking: GCC C++ Compiler
+g++ -O3 -Wall -c -fmessage-length=0 -std=c++11 -m32 -fPIC -MMD -MP -MF"src/DllMain.d" -MT"src/DllMain.d" -o "src/DllMain.o" "../src/DllMain.cpp"
+Finished building: ../src/DllMain.cpp
+ 
+Building file: ../src/TempCtrl.cpp
+Invoking: GCC C++ Compiler
+g++ -O3 -Wall -c -fmessage-length=0 -std=c++11 -m32 -fPIC -MMD -MP -MF"src/TempCtrl.d" -MT"src/TempCtrl.d" -o "src/TempCtrl.o" "../src/TempCtrl.cpp"
+Finished building: ../src/TempCtrl.cpp
+ 
+Building target: libCArcDevice.so
+Invoking: GCC C++ Linker
+g++ -m32 -shared -o "libCArcDevice.so"  ./src/ArcDeviceCAPI.o ./src/ArcOSDefs.o ./src/CArcDevice.o ./src/CArcPCI.o ./src/CArcPCIBase.o ./src/CArcPCIe.o ./src/CArcTools.o ./src/CLog.o ./src/CStringList.o ./src/DllMain.o ./src/TempCtrl.o   
+Finished building target: libCArcDevice.so
+ 
+make --no-print-directory post-build
+cp /home/streit/Documents/ARC_API/3.5/CArcDevice/Release_x32/libCArcDevice.so /home/streit/Documents/ARC_API/3.5/Release/x32
+ 
+
+14:49:17 Build Finished (took 6s.70ms)
+

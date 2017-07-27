@@ -1,0 +1,1590 @@
+\documentclass[10pt]{report}
+
+\usepackage{makeidx}
+\usepackage{epsf}
+\usepackage{html}
+
+\includeonly{%
+chap1,%
+chap2,%
+chap3,%
+chap4,%
+chap5,%
+chap6,%
+chap7,%
+chap8,%
+chap9,%
+refs,%
+index,%
+}
+
+\makeindex
+
+%\renewcommand{\[}{\begin{eqnarray}}
+%\renewcommand{\]}{\end{eqnarray}}
+%
+%\renewcommand{\tilde}{\~\space}
+%
+%\renewcommand{\floatpagefraction}{0}
+%\setcounter{topnumber}{1}
+%\setcounter{totalnumber}{1}
+
+\newenvironment{hanging}{
+	\begin{list}{}{
+		\labelsep=0pt
+		\labelwidth=0pt
+		\listparindent=0pt
+		\itemindent=-\leftmargini
+		\leftmargin=\leftmargini
+	}
+}{
+	\end{list}
+}
+%\newenvironment{references}{
+%	\begin{hanging}\raggedright
+%}{
+%	\end{hanging}
+%}
+%\newenvironment{url}{
+%	\begin{list}{}{
+%		\labelsep=0pt
+%		\labelwidth=0pt
+%		\listparindent=0pt
+%		\leftmargin=\leftmargini
+%	}\item\tt
+%}{
+%	\end{list}
+%}
+%\newenvironment{code}{
+%	\begin{list}{}{
+%		\labelsep=0pt
+%		\labelwidth=0pt
+%		\listparindent=0pt
+%		\leftmargin=\leftmargini
+%	}\item\tt
+%}{
+%	\end{list}
+%}
+\newenvironment{example}{
+        \begin{list}{}{
+                \labelsep=0.25in
+                \labelwidth=2.0in
+                \leftmargin=2.75in
+                \itemindent=0in
+                \itemsep=0in
+                \parsep=0in
+        }
+}{
+        \end{list}
+}
+
+\newcommand{\note}[1]{\marginpar{\raggedright\scriptsize{#1}}}
+
+%\makeindex
+
+\title{\Huge\bf NMSU 1m User's Manual}
+\author{\Large
+Jon Holtzman
+}
+\date{\Large November 2008}
+
+\begin{document}
+
+\setcounter{page}{1}
+\pagenumbering{roman}
+
+\maketitle
+
+\begin{htmlonly}
+Complete document in a
+\htmladdnormallink{single PostScript file}{../man.ps.gz}.
+\end{htmlonly}
+
+
+\tableofcontents
+%\listoffigures
+%\listoftables
+
+\clearpage
+
+\setcounter{page}{1}
+\pagenumbering{arabic}
+
+
+\chapter{Introduction}
+
+The NMSU 1m is an F/6 alt-az Ritchey-Chretien telescope located at the Apache
+Point Observatory. It was constructed by the AutoScope corporation, although
+the company went out of business before they really completed the project.
+
+The 1m dome is the small dome located closest to the 3.5m dome. We currently
+have a rotating tertiary with instruments at the two Nasmyth ports: NA1 has
+a 2048x2048 LN2 cooled CCD camera on a instrument derotator, while NA2 has
+a single-object multi-color photometer that uses a combination of PMTs and 
+APDs as detectors, along with a aperture-viewing camera; the photometer is
+not on a rotator.
+
+The 1m is normally run in robotic or remote mode. This manual describes the
+interactive command set used for interactive observing, and provides some
+notes on scripts used for robotic observing.
+
+\section{Instruments}
+
+As of 2008, there is a rotating tertiary that can be directed on either of the
+Nasmyth ports.
+
+\subsection{NA1}
+
+There is an imaging camera on an instrument derotator at the NA1 port. This
+camera uses a E2V 2048x2048 CCD that is cooled in a LN2 dewar. The electronics
+were supplied by Bob Leach of Astronomical Research Cameras. The pixels are
+13.5 microns on a side, giving a pixel scale of approximately 0.46 arcsec/pixel.
+
+The camera is mounted behind a guider box and filter wheel. The filter wheel
+holds 10 2x2 inch filters; UBVRI, ugriz, Washington CM, DDO51, and some 
+narrow band filters belonging to Rene Walterbos are available.
+
+The guide box has a Finger Lakes Instrumentation CM2-1 camera with an E2V
+1024x1024 CCD in it. The guide camera is located on a radial stage and is
+pointed at a diagonal pickoff mirror that is itself located on a stage on
+top of the radial stage to allow independent focussing of the guider.
+
+\subsection{NA2}
+
+At the NA2 port, a single-object, multi-channel (UBVRI) photometer has been 
+built at NMSU.  This uses photomultiplier tubes for UB and avalanche photo-diodes
+for VRI. Light from the telescope hits a diagonal mirror with a small hole
+in it that allows light into the photometer. The rest of the field is imaged
+using an APOGEE 7P camera which has a 512x512 SITe CCD; the pixel scale is
+about 1.6 arcsec per pixel. There are no filters in front of this camera.
+It is used for object acquisition and subsequent guiding (on a field star).
+
+\section{Computers}
+
+In the 1m control room at APO, there is currently one computer:
+command1m, a Dell 3.2 Ghz Pentium D PC, which runs the Linux operating
+system.  command1m is the main computer used for operating the 1m.
+A variety of software, including IRAF, xvista, TeX/LaTeX, etc. is
+available.  On command1m, users should use the tcomm account; for
+the current password, check with Jon Holtzman.  The normal mode of
+observing is that a VNC server is run on command1m , and all of the
+observing programs are run out of this server. See section
+\ref{sect:software} for instructions on how to start/kill the VNC
+server and how to connect to it.
+
+Another computer, ccd1m, is located in the computer room in the main
+building. This computer controls the NA1 camera via a custom card and fiber
+optic connection, the guide camera via a USB port (through a fiber extender
+to the dome), and 3 remote video Webcams (through USB ports).
+
+\subsection{Dome computers}
+
+In the dome, there is a rack which holds the telescope control
+hardware. The left side of rack holds the main power switches for
+the telescope/dome, the telescope motor controllers, the guider/tertiary
+motor controllers, and the weather station.  The right rack holds
+two PCs which control the telescope/guider and the APOGEE photometer
+acquisition camera. The two PCs are:
+
+\begin{itemize}
+\item tocc1m: PC which handles telescope, dome, and guider control, which 
+is called the TOCC computer.  This runs DOS.
+
+\item eyeball: PC for the photometer aperture-viewing CCD. This runs Linux.
+When the photometer is not being used, this can be powered down to 
+minimize heat production in the rack.
+
+\end{itemize}
+
+There is a single monitor and keyboard in the rack that can be used with
+either computer, but the cables need to be plugged into the computer
+you want to look at.
+
+\section{Emergency telescope control}
+
+There are two emergency stop buttons in the dome: one on the pier across
+from the door, and another small which controls the power strip at the top 
+of the left side of the power rack.
+\textbf{Please identify the locations of these buttons before using
+the telescope.}
+Hitting this button will kill power to the telescope and dome motors and
+should immediately stop the telescope and dome.  This should
+be done if there is ever any question about whether the telescope is
+moving safely, or is about to run into something or someone.
+If the situation requires that you hit the emergency
+stop button, \textit{you must contact Jon before restoring power and
+using the telescope}; after hitting the stop button, the telescope will
+be lost and not be aware of the fact that it is lost, which can be a
+very dangerous situation. Hopefully, you will never need to hit this
+button.
+
+Emergency stop is also available through computer control using the
+power program which is automatically started when the telescope control
+suite (tcomm) is started.
+
+If you kill the motor power with the dome open, the dome will automatically 
+close (so long as there is site power). Note that the software will not be 
+aware that the dome has closed if this
+happens.
+
+%Note the location of two red {\bf panic} buttons in the dome. 
+%One is
+%located on the telescope structure directly in front of you as you enter
+%the dome, and the other is located on the left power rack. Hitting either
+%of these buttons will immediately cut power to the telescope. This should
+%be done if there is ever any question about whether the telescope is
+%moving safely, or is about to run into something or someone.
+
+\section{WARNING about manual telescope motion}
+
+Although it is possible to move the telescope manually, this should
+\textbf{not} be done if it can be avoided. Always move the telescope using
+computer control, unless instructed otherwise. The reason
+for this is that it is possible with an alt-az telescope to have cable
+wrap-up problems, which can be avoided only if the software accurately
+can keep track of where the telescope is. If the telescope is moved
+manually, the software won't know about it, and it may then command
+moves which will cause trouble. This is especially true for the rotator,
+which has no limit switches at all, and consequently its state of wrap
+is monitored by software only.
+
+\chapter{Starting up}
+
+You should get the telescope started and initialized well before it gets
+dark, to make sure everything is working well. Everything can be initialized
+without opening the dome. 
+
+\section{Power to the telescope}
+
+All power to the telescope components is done using software control
+through several network controllable power strips.  These devices
+allows network control of 24 outlets in the dome, into which various
+components are plugged in. Power switches in the dome should not
+be used except in the case of an emergency.
+
+You can control the network power strips using the command line program
+\textit{power1m on|off device}; \textit{power1m} by itself gives the
+list of device names. You can also control the power using the graphical
+power program, just click on the item you want to power toggle, and it
+will ask for a confirmation. As mentioned below, don't power the telescope
+computer (tocc1m) off without quitting the software first if at all 
+possible!
+
+\section{Starting up the software}
+
+\label{sect:software}
+
+Everything for the 1m can be done from inside the control room (or remotely).
+The telescope is run from the Linux PC, command1m. 
+The normal mode of observing is that a VNC server is run on command1m , and
+all of the observing programs are run out of this server.  If you should need
+to restart the server, e.g. after a computer reboot, enter \textit{vncserver} (note CentOS 6 requires -depth 32);
+if you need to kill a running server, e.g. if the window manager fails,
+enter \textit{vncserver -kill :1}.
+
+Users on any machine with a VNC client can connect to the server on command1m, 
+and thus control the telescope. On-site, simply enter: \textit{vncserver command1m:1}. If you are off-site, you must channel the
+VNC viewer through an SSH channel to be able to access the VNC server:
+enter \textit{ssh -L 5909:command1m.apo.nmsu.edu:5901 tcomm@command1m.apo.nmsu.edu} to open a channeled SSH session, then from another window, enter
+\textit{vncviewer :9}.
+
+Ideally, the set of telecope programs will already be running in the VNC
+window. Under some conditions, however, you may need to know how to restart them.
+
+You can start the suite of telescope control programs by entering
+\begin{quote} tcomm \end{quote} in an xterm window; usually, we use
+an xterm in the bottom left of the screen.
+You can create new xterms using the icon on the control bar
+at the bottom of the display.
+When you start the telescope control programs, a variety of windows will
+be opened.
+
+The tcomm script  will actually start several different programs:
+
+\begin{itemize}
+\item command : main command window from which ALL commands should
+              be entered.
+\item telescope control (port) : lower right, used to communicate with TOCC
+              computer. This progam emulates the TOCC computer display and
+              you can directly type in this program with results which are
+              the same as if you were typing in the dome. Can be started with
+              \textit{start\_port} from home directory
+\item CCD control (lccd) : talks with the ccd1m computer to control the science CCD. Can be started with \textit{start\_lccd} from home directory
+\item FLI control (fccd) : talks with the ccd1m computer to control the guider CCD. Can be started with \textit{start\_fccd} from home directory
+\item APOGEE control (accd) : talks with the eyeball computer to control the guider CCD. Can be started with \textit{start\_accd} from home directoy
+\item status : upper right, reports telescope and CCD status information to user. Can be started with \textit{start\_status}
+\item power : upper panel of screen, shows power status and can be used to
+emergency stop the telescope, and toggle individual powers (which should not
+be necessary, as these can also be controlled through the command window).
+Can be started independently using command \textit{power}
+\item rvideo : remote video, for use during telescope initialization to watch
+the telescope. Can be started with \textit{start\_rvideo}
+\item alive (runs in background): network aliveness program, sends a signal 
+every 30 seconds from
+local computer to APO; if telescope control program doesn't see this signal
+for 5 consecutive minutes, the dome is closed and tracking turned off
+\item shutter35m: monitors status of 3.5m shutter, temperature in rack, etc.
+\end{itemize}
+
+In the future, the port, ccd, and spec programs may come up in an iconified
+state, as they are really only necessary for engineering work - you should
+not need to ever type anything in these windows.
+
+When you start tcomm, the command program should automatically check to 
+see whether various devices (telescope control program, telescope and dome
+motors, science CCD, and guider CCD) are powered up and responding. If
+they are, the program will proceed without requesting any input. If not,
+the program will ask if you wish to power various devices up. 
+
+Once the powers are checked, you will be prompted to initialize the telescope
+and dome if they have not already been initialized - see below for more details on
+this. After this, there will be question about which port you are observing
+on (NA1 or NA2), which sets the camera to which commands will be directed (this
+can be changed later during a command session as well). After the startup
+questions, you will get a Command: prompt and the program is
+ready to accept normal commands.
+
+For reasons having to do with the automatic filling of the LN2 dewar for
+the NA1 camera, the command program should be left running at all times.
+For completeness, the command to gracefully quit the program is \textit{QU}.
+
+If there is a commanding problem, i.e. program lost or hung or in infinite
+waiting loop, you should be able to kill the programs by hitting a 
+CTRL-backslash
+in the command window. If any of the other windows fail to disappear with
+this, they can be killed individually.
+
+%To quit from the program, you enter the QU command. When this is entered,
+%the program will ask you if you wish to quit the telescope control program
+%running in the dome. In general, we leave the telescope control program
+%running.  It is very important, however, that you do not kill the power to the
+%telescope control program in the dome without exiting it gracefully.
+%Note that the telescope control program which runs in the dome 
+%needs to be exited gracefully
+%(i.e., commanded to exit) because the program writes out the current
+%rotator position which is essential to record to prevent cable wrapups.
+%Because of this, make sure NOT to turn off the computer power via the
+%network power switch without gracefully exiting the telescope control
+%software first!
+
+\section{Remote video cameras}
+
+There is a single Panasonic network web camera located on the north side 
+of the dome, with Internet address video1m.apo.nmsu.edu; however, this 
+address can only be seen from within the APO network, so is normally viewed
+through the VNC interface. The camera can be commanded to move in pan and
+tilt and so can see a relatively large fraction of the dome.
+
+%There are three webcams in the 1m dome: one located along the ``tube'' of 
+%telescope, one looking at the NA1 port, and another mounted on the azimuth
+%disk looking at the inside of the dome in the direction that the telescope
+%is pointing: all three rotate along with the telescope.
+%
+%All three cameras are controlled by a single program (rvideo, running on 
+%ccd1m) that can be started with the \textit{start\_rvideo} command. This
+%opens a video window that shows the image from one camera. You can switch
+%between cameras by clicking on the buttons in the lower right of the
+%video window. Hitting 's' in the video window will take a snapshot, hitting
+%'u' will toggle update mode (continuous shots) on and off. 'r' redisplays
+%the current image. 
+%
+You can turn on lights in the dome using the graphical power program (Webcam
+lights) or on a command line with \textit{power1m on lights}. Be aware that
+turning on the lights with the dome or louvers open can impact observations
+at the 3.5m and/or the 2.5m!  The lights are automatically turned off once per 
+hour.
+
+\section{Initializing the telescope}
+
+When the computers are powered up, the telescope and CCD programs go
+through some initialization commands. For the CCDs, no user input is 
+required - you will see a series of commands come up automatically in
+the CCD control windows. For the telescope, some interaction is required
+which needs user input either from the command window
+or from the TOCC computer in the dome. During initialization it is important
+to watch the rotator to make sure that cables do not wrap - as a result,
+initialization should either be done in the dome, or, if operating remotely,
+using a video camera view of the rotator.
+
+After the TOCC computer is booted up, you will see on the screen (both
+in the dome and in the telescope control window) the following question:
+
+\begin{quote}
+Do you wish to initialize the telescope with a :\\
+\ I: normal init (uses stored coords to find home positions - will be very\\
+\ \    slow if stored coords are wrong)\\
+\ F: full init - finds home positions without any previous knowledge (but note,
+telescope must be CCW of azimuth limit, and rotator position must have been
+previously stored correctly!\\
+\ M: manual init - prompts for approximate current telescope position, then 
+finds home position via full init. Use if reported rotator position does
+not match observed position\\
+\ Q: very quick init (stored coords - assumes telescope hasn't been moved!)\\
+\  S: skip initialization\\
+Enter your choice: \\
+\end{quote}
+
+If the telescope has not been moved by hand, you should be able to do a normal
+init (I): this will use the saved positions to move to the home switches, and
+then reinitialize on the home switches. If the telescope has been moved
+manually, you will need to do a full init (F), which will move the telescope
+in azimuth clockwise until it hits a limit switch, and in altitude upward 
+until it hits a limits switch, then uses these positions to go back and
+find the home switches. NOTE, however, that there is no limit switch for the
+rotator, so if the rotator is lost, doing a full init can lead to cable wrap
+and DAMAGE, so this must be done with extreme caution, and looking with the
+remote video at the rotator.
+If it appears that the cables leading to the rotator are wrapping, 
+hit the emergency stop button (on upper part of left panel in dome), or,
+if running remotely, by clicking the mouse in the red Emergency Stop section 
+of the power program at the top of the screen. If this happens, you should
+check with Jon before restarting anything.
+
+You will not be able to move the telescope until it is initialized.
+
+Next the program will ask:
+
+\begin{quote}
+Do you wish to initialize the dome (Y or N)?
+\end{quote}
+
+Enter Y. The dome will spin around until it finds its home sensor. Very
+rarely, this fails; if it fails, the countdown on the screen will expire
+without the home position being found. If it fails, this is not a disaster 
+as you can command a dome initialization from the command prompt later on
+with the DI command - you will need to remember to do this!
+
+Next the program will ask:
+
+\begin{quote}
+Do you wish to slave the dome (Y or N)?
+\end{quote}
+
+Enter Y. When the dome is slaved, it should automatically rotate so that
+the slit is oriented in front of wherever the telescope is pointed.
+
+Finally, it will ask you which camera/Nasmyth port you will be using.
+This can be changed later with the LEACH/APOGEE and INST commands.
+
+A list of available commands can be viewed at any
+time using the HP (Help) command.
+
+\section{Weather and telescope safety}
+
+You are fully responsible for the safety of the telescope in terms of
+its exposure to weather. You should \textbf{not} open the dome or the
+louvers if there is any chance that weather will damage any of the contents
+in the dome.  It is important that you must consider not only clouds 
+and the possibility of rain, but also the humidity and the dust conditions.
+
+Our normal mode of operation is to automatically follow the judgement of
+the 3.5m telescope. The 3.5m broadcasts its dome status every minute or
+so. If the 1m receives a "3.5m is closed" message, or if it does not receive
+a "3.5m is open" message, the dome should automatically close and the
+telescope should stow. Clearly, it is good to confirm that this actually
+happens if possible!
+
+It is possible, but \textbf{highly discouraged} to turn off the slaving
+to the 3.5m dome status; this might be done, for example, to allow 
+the telescope to be moved during the day without continually stowing
+itself. Slaving is turned off using the \textit{-35m} command, and can
+be turned back on using \textit{+35m}. If you turn slaving off, you 
+will need to enter \textit{clear} to clear the shutdown flags before
+you will be able to move, etc.
+
+You can monitor the APO 10-micron all sky image at:
+\begin{center}
+\htmladdnormallink{http://irsc.apo.nmsu.edu/tonight}{http://irsc.apo.nmsu.edu/tonight}
+\end{center}
+The main APO weather page is at:
+\begin{center}
+\htmladdnormallink{http://weather.apo.nmsu.edu}{http://weather.apo.nmsu.edu}
+\end{center}
+
+\section{Controlling the CCD temperature}
+
+\subsection{NA2 (Leach) camera}
+
+The NA2 camera (Leach camera) has a E2V 2048x2048 CCD that is cooled using liquid
+nitrogen (LN2). Because the dewar has a vacuum to insulate it, it is
+important that all efforts be made to keep the camera cold continuously;
+thermally cycling the camera can lead to degradation of the vacuum and
+contamination on the chip.
+
+The dewar for the science CCD needs to be filled with LN2 to keep
+the chip cold. We have a remotely operable filling system which can
+be commanded to fill the dewar. This can be done by simply typing
+FILL. If the telescope is initialized, The FILL command will move
+the telescope to the stow position, open the valve from the filling
+dewar, and then suspend things for the default fill time (currently
+5 minutes); you can specify any desired fill time using \textit{FILL
+t}, where t is the requested time in minutes.  The fill system turns
+off by timing only; the power to the autofill system is turned off
+after the requested time. There is NO sensor that actually checks
+to see if the dewar has actually filled, so if there is some pressure
+problem, the possibility exists that the dewar will not have been
+filled.  As a result, it is good to monitor the actual temperature.
+
+Note that the valve for the fill system is controlled through the
+telescope control hardware, so motor power must be on, and the telescope
+computer running, for the FILL command to actually do anything!!
+
+The current hold time for a full dewar is approximately 13 hours. It takes
+about 1.5 hours to cool the chip down completely if it starts out at
+room temperature. In general, it should be possible to fill the dewar just
+before starting observing and have it stay cold for the entire night.
+
+The normal operating temperature is -125 C; this is controlled by a
+regulated heater inside the dewar. Sometimes the chip is kept
+at -130C during the day, just to conserve a bit of LN2.
+
+Apart from manual fills, the CCD software will attempt to do autofills
+of the dewar when it detects that it has started to warm up. Autofills
+are triggered when the CCD reaches a temperature warmer than -110
+C.  If this occurs, the telescope will move to the stow position
+(if it has been initialized), and do a fill. If the motor power is
+off when the autofill is triggered (as it should be during the day),
+the software will automatically turn it on for the duration of the
+fill, then turn it off afterward; if the motor power is on at the
+trigger, it will remain on afterwards.
+
+\subsection{NA1 (Apogee) camera}
+
+The NA1 acquisition camera is an APOGEE AP7P with a 512x512 CCD. This
+is cooled thermoelectrically, and temperature cycling is not so much
+of an issue.
+
+The thermoelectic cooler can cool the chip to about 50 degrees C below the
+ambient temperature in the dome. The dark current is a strong function of
+temperature, so it is desirable to operate as cold as possible. During the
+summer, you may not be able to get the CCD colder than -30 to -35 C, while
+during the winter, you might get to -50 or -55 C. If you will be doing
+dark current subtraction, you will want to get both science and dark frames
+at the same temperature. Unfortunately since the ambient temperature 
+changes throughout the night, you may not be able to reach the coldest
+temperatures at the beginning of the night, and you will have to decide
+whether you want to change the temperature in the middle of your observing.
+
+\chapter{Operating the telescope}
+
+\section{The status window/display}
+
+The upper section of the status window gives information about the 
+telescope/dome systems. The left column gives the current RA, DEC, 
+hour angle of the telescope, coordinate epoch, and position angle.
+The next column gives the azimuth, altitude, rotator, focus positions
+for each of the three focus motors, and tertiary port. 
+The rightmost column gives the
+current UT, local sidereal time, airmass, and the focus position in
+a coordinate system which gives mean focus, xtilt, and ytilt.
+
+Other entries give the dome position and status (initialized/unitialized,
+slaved/not slaved, open/closed), and mirror cover status (open/closed).
+
+If {\it any} of the items appear in reverse video, there is likely to be
+something configured such that you will have significant problems with
+your observations (e.g., the dome is closed!). Note that no mirror 
+covers are currently installed, so the status of these can be ignored.
+
+The telescope positions are not absolutely encoded, so the status only reports
+where the computer {\it thinks} the  item is, which is not necessarily
+where it {\it really} is, although if things are working well, the
+computer should correctly know where things are.  However, if
+something seems peculiar, it is important to check with the remote
+video cameras and/or by going out and looking at the telescope/dome!
+
+If you hit a key in the status window, it will toggle into engineering
+mode, where some additional information is displayed, and where a
+graphical window will come up which shows a running plot of the current 
+encoder positions relative to the desired positions. If you accidentally
+do this, you can minimize the plot window, and switch back to normal
+mode by hitting a key again in the status window.
+
+\section{The command window}
+
+All commands should be entered in the command window. For all commands, 
+you will not get a command prompt until the previous command completes.
+
+The software allows you to write simple scripts in an external file which
+can be read in by the program to issue a series of commands automatically.
+Input script files should have commands which are identical to what you
+would need to type in the command window. To execute a script, you use
+the  command:
+
+\begin{quote}
+INPUT filename
+\end{quote}
+
+where filename is the name of the file with the commands to execute. Our 
+convention is to use .inp as the extension for script files.
+A script can call another script, up to 5 layers deep. 
+
+\subsection{Restarting tcomm}
+
+If for some reason things appear to hang up (i.e., nothing returns
+for several minutes after you'd really expect it to, you can restart
+the tcomm programs after issuing a CTRL-$\setminus$ in the command
+window. This should kill all of the windows, and then retyping tcomm
+should start everything up again. However, if this is necessary,
+please inform Jon of the circumstances - we would really like to
+get things working without ANY hangups.
+
+\section{Dome commands}
+
+\begin{hanging}
+\item {OD}
+
+The OD command will open the upper dome slit. It will prompt for a confirmation 
+before opening.
+
+\item {CD}
+
+The CD command will close the upper dome slit. 
+
+\item {OLD}
+ 
+OLD will open the lower dome slit. \textbf{The upper dome slit must
+be opened first, since it has a lip over the lower dome slit}.  
+Normally, we \textit{do not open} the lower dome
+slit unless we are doing absolute (all-sky) photometry; the reason
+for this is that the lower dome slit is not on a hardware watchdog
+circuit, so in case of a failure, it will likely not get closed.
+
+\item {CLD}
+
+OLD will close the lower dome slit. \textbf{The lower dome slit must be closed
+before the upper dome slit is closed.}
+
+\item {ODS}
+
+ODS will open both upper and lower dome slits in conjunction.
+However, normally we \textit{do not open} the lower dome slit unless we are
+doing absolute (all-sky) photometry; the reason for this is that the lower
+dome slit is not on a hardware watchdog circuit, so in case of a failure, it
+will likely not get closed.
+ 
+\item {CDS}
+
+CDS will open both upper and lower dome slits in conjunction.
+ 
+\item {DS (or DM)}
+
+DS toggles dome slaving on/off, i.e. the tracking of the dome position to
+the telescope azimuth position.
+
+\item {DA (or DOMEAZ or XDOME) azpos}
+
+DA will move the dome to the requested azimuth position (0 degrees is N, and
+az increases towards the east). DA will turn off dome slaving automatically 
+(otherwise the dome would just rotate back to where the telescope is pointed!).
+
+\end{hanging}
+
+\section{Telescope commands}
+
+\subsection{Moving the telescope} 
+
+The following commands can be used to move the telescope:
+
+\begin{hanging}
+\item {CO [{\it hh mm ss dd mm ss}]}
+
+The CO command will move the telescope to some user-specified coordinates. 
+If you do not specify a position on the command line, the program
+will prompt for an RA and DEC, and then ask you to confirm the
+move. The coordinates will be interpreted using the current epoch,
+which defaults to 1950 (the default epoch can be changed using the
+NE command which will prompt you for a new epoch). Format is hh mm ss,
+separated by spaces (you can omit the mm or ss if they are zero).
+
+\item{SA}
+
+Move the telescope to an SAO star. The program will ask whether you
+want an SAO near near the current telescope position (T), near
+some other specified RA/DEC (O), or some specified ALT/AZ (A). If
+you choose one of the latter two options, you will be prompted for
+coordinates. You will then be prompted for an acceptable magnitude 
+range for the SAO star ($<$CR$>$ to allow any brightness). Note that
+the on-line SAO catalog only contains stars down to 7th magnitude
+and does not have fainter catalog members at this time.
+The program will find the nearest SAO star to your coordinates, and
+ask if you want to move there; enter Y to move.
+
+\item{SAFOC}
+
+Same as SA, but for a SAO catalog sample that contains only fainter
+stars with $V>9$.
+
+\item{ALTAZ}
+
+Move the telescope to specified azimuth and altitude.
+
+\item{RF [{\it id}]}
+
+Move the telescope to the position of star {\it id} in an open user
+coordinate file (see section ??). If not specified on the command line,
+{\it id} will be prompted for.
+
+\item {PM}
+
+Recalls the last 5 previously commanded moves and allows you to select
+one to move back to.
+
+\item{QM [{\it $\Delta\alpha \Delta\delta$}]}
+
+Offset the coordinate by $\Delta\alpha$ arcseconds in right ascension and
+$\Delta\delta$ arcseconds in declination. If not specified on the command
+line, the offsets will be prompted for.
+
+\item{OFFSET [{\it $\Delta x \Delta y$}]}
+
+Offsets the telescope by $\Delta x$ \textit{pixels} along rows and
+$\Delta y$ pixels along columns of the CCD. If not specified on the command
+line, the offsets will be prompted for. These allow ``instrument plane''
+offsets, i.e., in the coordinate system of the CCD even if the instrument
+is rotated with N no longer oriented along columns. Unlike the 3.5m,
+the instrument plane offsets are specified in pixels, not arcseconds.
+The offset is for the \textit{telescope}, so stars will move by 
+($-\Delta x,-\Delta y$).
+
+\item{CENTER}
+
+Move the telescope such that a marked location on the CCD frame will be
+moved to the center of the CCD frame. This requires that an image has
+already been obtained. If you use this command, you will be prompted to mark the
+location of an object in the CCD frame; use C to centroid on the position
+of the cursor, or I to just take the integer pixel location of the cursor.
+
+\item{LOCATE}
+
+Move the telescope such that a marked location on the CCD frame will be
+moved to any another desired location. Again, this requires that an image
+has already been obtained. If you use this command, you will be prompted
+to mark the location of an object in the CCD frame, then prompted to
+mark a second position to which the object will be moved. Mark these
+positions using C to centroid at the location of the cursor, 
+or I to use the integer pixel location of the cursor.
+
+\item{PA}
+
+Change the position angle to the specified PA. The position angle is
+measured from north to vertical on the chip when the image is displayed
+in sky orientation (for the PI CCD, this is (1,1) in the upper left).
+
+\item{INIT}
+
+Go through startup sequence that is run when starting tcomm, i.e.
+telescope initialization, dome initialization, and louver query.
+
+%\item{HO}
+%
+%Reinitialize the telescope with a full initialization.
+%
+%\item{IN}
+%
+%Reinitialize the telescope with a normal initialization.
+
+\end{hanging}
+
+\subsection{User catalogs}
+
+Users can create catalogs of object positions which can be referenced by
+an ID number to maximize efficiency and minimize input error during the
+night. The format of the user catalogs is identical to that used by REMARK
+on the 3.5m. Each object should be put on a separate line with the following
+format:
+\begin{quote}
+object name $<$TAB$>$ RA (hh:mm:ss) $<$TAB$>$ DEC (dd:mm:ss) $<$TAB$>$ epoch $<$TAB$>$ (proper motion in RA) $<$TAB$>$(proper motion in DEC)
+\end{quote}
+
+The following commands can then be used with these files:
+
+\begin{hanging}
+\item{OF}
+
+Open a new input file. The file name will be prompted for.
+
+\item{RF [{\it id}]}
+
+Move to object {\it id}. If no {\it id} is given, it will be prompted for
+
+\end{hanging}
+
+\subsection{Coordinate epoch and update commands}
+
+The default coordinate epoch on startup in 1950. The default epoch for
+coordinate entry can be changed using:
+
+\begin{hanging}
+\item{NE}
+
+Change the input epoch to a new value. The program will give the current
+epoch, and prompt for a new value. Note that the epoch on the display will
+not change until you move to an object using the new epoch.
+
+\item{UC}
+
+Update coordinates, i.e. set the current position of the telescope. With
+the command, the telescope will display a list of the last 5 commanded
+positions; you enter the index of the object that the telescope is 
+currently pointed at, and the positions of the azimuth and altitude
+axes will be adjusted. The normal mode of operation is to slew to an
+SAO star (SA command), take an exposure (EXP or QCK), center star (CENTER),
+then update coordinates (UC).
+
+
+\end{hanging}
+
+\subsection{Focus commands}
+
+The telescope can be focussed by moving the position of the secondary. 
+The secondary position is controlled by three separate motors, so the
+mirror can be tilted as well as pistoned. Tilting the mirrors changes
+the collimation and thus is not a motion which should normally be
+done! All focus positions are negative: (0,0,0) is when the secondary
+is at the home position, farthest from the primary.
+
+Note that the focus is a function of temperature, since the telescope
+structure expands/contracts as a function of temperature. As the
+temperature increases, the focus decreases, i.e. goes more negative.
+%A \textit{rough} 
+%guess of the approximate focus can be found from the expression:
+%$$focus = -12580 - 18 \mathrm{auxtemp}$$
+%where $\mathrm{auxtemp}$ is the auxiliary temperature measured at the
+%side of the mirror cell that can be determined by using the WE command
+%and looking at the output in the telescope control window.
+
+The focus commands are:
+
+\begin{hanging}
+\item{FOCRUN}
+
+Take a series of exposures at different focus values. You will be prompted
+for a starting focus value, a delta focus (amount to change focus between
+each exposure), a number of exposures, and an exposure time. After entering
+these, the program will automatically take the requested number of exposures.
+The program will always approach a given focus value from the same direction,
+\textit{assuming you specify a positive delta focus value}. When using
+FOCRUN, the CCD will automatically switch into a ``fast'' readout mode
+(which still isn't that fast!) which has increased readout noise; 
+when done, the CCD will be switched back into the normal readout mode.
+
+\item{FO {$f$}}
+
+Move the focus to position $f$. This command will automatically approach
+the desired position from the same direction.
+
+\item{DF {$\Delta f$}}
+
+Moves the focus by a relative amount, $\Delta f$. If not specified on the
+command line, the amount to move will be prompted for
+
+\item{XTILT $tilt$ (ENGINEERING)}
+\item{YTILT $tilt$ (ENGINEERING)}
+
+Tilt the secondary mirror to the specified angle.
+
+\item{SHO (ENGINEERING)}
+
+Move the secondary to the home position (i.e. farthest from primary).
+
+\end{hanging}
+
+\section{Camera programs}
+
+All camera commands are normally entered in the command window, but these
+are passed to the appropriate camera control program, which are usually
+run from separate windows on the right part of the desktop.
+
+After images are taken, they are normally written out to disk in FITS
+format. The images go into directory \textit{images/yymmdd} under the
+tcomm home directory, where \textit{yymmdd} refers to the current UT
+date. The default filenames are \textit{yymmdd.index.fits} where \textit{index}
+is a running index number: both the root filename and the index number
+can be changed, see below.
+
+\subsection{The image display window}
+
+The first time an image is taken, each camera program opens an Image Display
+window on the console; each subsequent image will be displayed in this
+window.  Once an image has been displayed, some interactive commands
+are available in the display window,
+provided that a wait for input or any other I/O is not pending.  To
+interact with the image, simply move the mouse onto the display window.
+The current pixel location of the cursor will be displayed in a frame at
+the base of the image display along with the pixel intensity.  The arrow
+keys are used for fine control (one pixel at a time) of the cursor
+position. Note that, to maintain a small window, the image as originally
+displayed will likely only show every other, or even every 4th pixel 
+(depending on the detector)
+
+The following mouse buttons and keyboard keys are active while the mouse
+is located on the image display:
+
+\begin{center}
+{\bf Mouse Buttons}\\
+\begin{tabular}{ll}
+\hline
+Button & Function\\
+\hline
+LEFT  &ZOOM IN, centered on the cursor\\
+MIDDLE&ZOOM OUT, centered on the cursor\\
+RIGHT &PAN, move the pixel under the cursor to the center\\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+{\bf Keyboard Commands}\\
+\begin{tabular}{cl}
+\hline
+Key & Function\\
+\hline
+ R &RESTORE image to the original zoom/pan\\
+ + &BLINK Forwards through the last 4 images.\\
+ - &BLINK Backwards through the last 4 images.\\
+ P &Find the PEAK pixel near the cursor \& jump the cursor there\\
+ V &Find the LOWEST pixel ("Valley") near the cursor \& jump the cursor there\\
+ \# &"Power Zoom" zoom at the cursor to the maximum zoom factor\\
+ H &Toggle between small and full-screen cross-hairs\\
+ ] &Clear boxes and stuff off the image display\\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent{\bf Color Bar Adjustment:}
+
+If you place the mouse on the color bar, these commands are available
+to adjust the contrast of the image:
+\begin{example}
+  \item[LOW CONTRAST]{Hold down the LEFT Mouse button, drag the left
+       end of the color bar.}
+
+  \item[HIGH CONTRAST]{Hold down the RIGHT Mouse button, drag the right
+       end of the color bar.}
+
+  \item[ROLL COLOR MAP]{Hold the MIDDLE Mouse button, "roll" the
+       color bar left or right.}
+\end{example}
+The position of the mouse cursor displays the range of intensities
+represented by that color.
+
+Pressing the R key while the mouse is on the color bar restores the
+original color map (undoing any change of the contrast or "roll" changes
+made with the mouse buttons).
+
+Note that you can also redisplay the current image with a different
+stretch using the SCALE command, see below. 
+
+\subsection{Camera Commands}
+
+The following commands are available:
+\begin{hanging}
+\item{EXP [$time$]}
+
+Take an exposure of length $time$ seconds.
+
+\item{QCK [$time$]}
+
+Same as EXP, but filename index exposure is \textbf{not} incremented, so 
+next image will overwrite current one, i.e., exposure will not be 
+permanently saved.
+
+\item{SETFILT [$name$]}
+
+Change the filter wheel to filter $name$. You must supply a name which
+matches that in the current filter table. For a list of available filters,
+use SETFILT without any arguments. SETFILT allows you to operate without
+knowing the details of which filter is located in which slot. 
+SETFILT will also adjust the telescope focus for the relative focus
+difference between the filters (the filter specific offset is shown in
+parentheses in the status window).
+
+\item{FILTINIT}
+
+Initializes the filter wheel if it has gotten lost.
+
+\item{FILENAME [$name$]}
+
+Change the default root file name for output images to $name$.
+
+\item{NEWEXT [$ext$]}
+
+Change the extension for the next filename to be the number $ext$.
+
+\item{FITS}
+
+Set filetype for future image stores to be FITS.
+
+\item{-DISK/+DISK}
+
+Turn off/on autosaving of images. 
+
+\item{+DISPLAY/-DISPLAY}
+
+Turn on/off autodisplay of images after they are taken.
+
+%\item{+XFER/-XFER}
+%
+%Turn on/off auto-transfer of images to NMSU after they are taken. Currently,
+%automatic transfer occurs to the subdirectory under /home/1m (on the NMSU
+%Linux machines) corresponding to the observation date.
+
+\item{SCALE $low\ high$}
+
+Redisplay the current image with greyscale scaling between $low$ and $high$.
+
+\item{SKYSCALE}
+
+Sets mode for autoscaling to have black level somewhat below mean level in
+image, and white level above it. This is the default.
+
+\item{FULLSCALE}
+
+Sets mode for autoscaling of images to be from minimum pixel (black) to
+maximum pixel (white).
+
+\item{SAMESCALE}
+
+Sets mode for autoscaling of images to be identical to the current scale.
+
+%\item{CENTER}
+%
+%Move the telescope so that an object/location marked on the display window
+%will move to the center of the CCD field. You will be prompted to mark the
+%location of an object in the CCD frame; use C to centroid on the position
+%of the mouse, or I to just take the integer pixel location of the mouse.
+
+\item{WINDOW  [xs xe ys ye] or [FULL]}
+
+Sets CCD windowing. If 4 coordinates are given, CCD will be set to window
+to requested region. If FULL is specified, windowing will be set back to
+full chip mode. If nothing is specified, user will be prompted to mark
+two opposite corners on the current image display to define the window
+region. In all cases, the final requested window position will be displayed
+on the current image.
+
+\item{FLAT \textit{ndesired nmax startexp fudge}}
+
+Takes a series of flat fields, adjusting exposures times to maintain good
+S/N, for use in taking twilight flats. A ``good'' flat is defined as one
+with a mean level (over bias) of somewhere between 5000 and 20000 DN, with
+a minimum exposure time of 1 second. The
+routine will start out by taking an exposure of length \textit{startexp}.
+From this, it will compute a new exposure time which is required to obtain
+a mean of 10000, after multiplying by the fudge factor \textit{fudge},
+which accounts for the changing brightness of the twlight sky (\textit{fudge}
+should be $\sim 1.5$ for evening twilight and arounge $\sim 0.7$ for
+morning twilight. In no case will the program let the exposure time be longer
+than 30 seconds, and any 30 second flat will be counted as a ``good'' flat
+to prevent a large number of unsuccessful flats being taken when it is too
+dark.  The program will continue taking flats until it gets
+\textit{ndesired} ``good'' flats or until it has taken ``nmax'' flats.
+
+%\item{CCDFAST}
+%
+%\textit{Princeton Instruments CCD only}.
+%Switches the CCD into ``fast'' readout mode, in which a full exposure takes
+%about 30 seconds instead of a minute, at the price of increased readout
+%noise.
+%
+%\item{CCDSLOW}
+%
+%\textit{Princeton Instruments CCD only}.
+%Switches the CCD into ``normal'' readout mode, in which a full exposure takes
+%about 60 seconds.
+
+\item{SETTEMP} \textit{temp}
+%\textit{Apogee CCD only}.
+Set the desired CCD temperature (degrees C). See discussion in previous
+section.
+
+\end{hanging}
+
+\subsection{Standard star observations}
+
+Several commands are available to increase your efficiency in observing
+standard stars. There is a full catalog of all of the Landolt standards,
+plus several others, in the top level observe directory, with filename
+standards.apo. To allow use of this catalog in conjuction with your own
+catalog of objects, there are separate commands to open and read from the
+standards file, so you can have both the standards file and a user file open
+simultaneously. The standards file also includes the UBVRI magnitudes of
+the stars, and the observing program knows about the throughput of the
+1m telescope, so the program is also capable of choosing reasonable exposure
+times for you.
+
+The relevant commands are:
+
+\begin{hanging}
+
+\item{OS}
+
+Open the standards file (analagous to OF for user files). 
+If you are running in a subdirectory under the
+top level observe login directory, you will enter: ../standards.apo
+
+\item{RS [{\it id}]}
+
+Move to standard {\it id}. If no {\it id} is given, it will be prompted for.
+
+\item{STAN [\textit{filtname}]}
+
+Take an exposure of the current standard through filter \textit{filtname}. You
+must have already moved to the star using the RS command. The program will move
+the filter automatically and will take an exposure based on the known
+magnitude of the star and the throughput of the system.
+
+\item{FUDGE [\textit{fudge}]}
+
+Sets a fudge factor for the automatic expossure time calculation of the STAN
+commands. All standard star exposure times will be multiplied by the fudge
+factor specified. 
+
+%\item{MAG m1 m2 m3 m4 m5 m6}
+%
+%\textit{Do not use this command unless instructed to - defaults should be
+%correct!)}
+%Tell the program which magnitude to use for the exposure time calculation
+%for each filter. There are 6 filter slots, so 6 integers must be specified.
+%The possible choices for the magnitude codes are 1, 2, 3, 4, or 5, corresponding
+%to U,B,V,R,or I. So, for example, if UBVRI are loaded in slots 12345, you
+%would use the command MAG 1 2 3 4 5 0. The correct defaults are loaded at
+%startup.
+%
+%\item{ZERO z1 z2 z3 z4 z5 z6}
+%
+%\textit{Do not use this command unless instructed to - defaults should be
+%correct!)}
+%Tell the program which zeropoints to use for the exposure time calculation
+%for each filter. There are 6 filter slots, so 6 zeropoints must be specified.
+%The zeropoint gives the magnitude which gives 1 DN/second through the
+%desired filters.
+
+\end{hanging}
+
+\section{Guiding commands}
+
+The current guider CCD is a camera purchased from 
+\htmladdnormallink{Finger Lakes Instrumentation}{http://www.fli.com}; it
+uses a E2V 1024$\times$1024 CCD with 13.5$\mu$ pixels.
+%\htmladdnormallink{Spectrasource Inc.}{http://www.spectrasource.com}; it
+%uses a Kodak 512$\times$512 CCD with 20$\mu$ pixels.
+
+In general, you can issue the same commands to the guider CCD as you
+can to the science CCD. To do so, use the same command names but preceeded
+by the letter ``G'', e.g., GEXP \textit{t} will take a guider exposure
+of length \textit{t} seconds.
+
+Since our telescope is a three-axis telescope (alt-az-rot) and a single
+guide star only contains two positions (x-y), the absolute quality of 
+the guiding depends on an accurate pointing model (although less so than
+if there were no guider at all!). We use the guider observations to
+update altitude and azimuth, and assume that the rotator angle is correct.
+Since the guider is located off axis, errors in the rotator angle will
+manifest themselves as small arcs of stars in the science camera, centered
+around the position of the guide camera (which is off of the chip). 
+
+%To minimize errors from inaccuracies in the pointing model, we recommend that,
+%before starting to guide,
+%you go to an SAO star near your object, take an exposure, do a CENTER command,
+%and then update the telescope coordinates with a UC command before moving
+%to your object and starting to guide. 
+
+To start guiding, first take a guider exposure to see if there is an
+acceptable guide star and to determine a good exposure time. Ideally, you
+will have a star which has good S/N with an exposure time of less than
+or approximately equal to 1 second. Once you have a picture taken with
+a good exposure time, you can start guiding by issuing the GUIDE command.
+This will take a picture with your exposure time, ask you to mark the
+guide star in the guide CCD image, and will then start autoguiding on
+this star. 
+
+If your original image was taken in full frame mode (WINDOW FULL), then
+all guiding images will be done with a small subframe around the
+guide star. If your original image was taken in windowed mode, then
+all guiding images will be taken with the same windowing.
+
+Guiding will continue until you do a slew with the telescope or unless
+you issue a GUIDEOFF command.
+
+Other commands relevant to guiding:
+
+\begin{hanging}
+
+\item GUPDATE \textit{n}
+
+Sets the number of guide exposures to average centroids from before sending
+a position update command to the telescope. Default is 5.
+
+\item GSIZE \textit{n}
+
+Sets the size of the box used for computing centroids. Default is 11 pixels.
+
+\item NOSHUTTER
+
+Puts guider in NOSHUTTER mode where exposures are taken without using the
+shutter. You must remember to issue the OPEN command to open the shutter
+before starting to guide! 
+%Currently, this command must be issued from the
+%guider CCD control window (not the command window).
+
+\item SHUTTER
+
+Puts guider into normal SHUTTER mode.
+%Currently, this command must be issued from the
+%guider CCD control window (not the command window).
+
+\item OPEN
+
+Opens the guider shutter.
+%Currently, this command must be issued from the
+%guider CCD control window (not the command window).
+
+\item CLOSE
+
+Closes the guider shutter.
+%Currently, this command must be issued from the
+%guider CCD control window (not the command window).
+
+\item WRITE
+
+Toggles mode where each individual guide exposure is saved to disk. Default
+is \textit{not} to save each image.
+Currently, this command must be issued from the
+guider CCD control window (not the command window).
+
+\item GUIDEFOC
+
+\item GUIDEADJ
+
+\item GUIDEMOVE
+
+\item GUIDEINIT
+
+Initializes the guider stages by moving them to their home positions. Users
+should \textbf{not} issue this command without being instructed to do so!
+
+\end{hanging}
+
+\chapter{Shutting down}
+
+To close the telescope down, you need to move the telescope to its stow
+position, close the dome, and turn off motor power. In general, you should
+NOT quit the command program or the telescope control program!
+
+The following commands are used:
+
+\begin{hanging}
+%\item{CM}
+%
+%Closes the mirror covers. The telescope will automatically move to be 
+%pointing nearly vertically, since this reduces stress on the mirror cover
+%motors. 
+
+\item{ST}
+
+Stows the telescope in the default stow position.
+
+\item{CD}
+
+Closes the dome.
+
+\item{CL}
+
+Closes the louvers. Make sure that dome fans are off first (\textit{power1m
+off domefan})!
+
+%\item{QU}
+%
+%Quits the program. When you enter QU from the command window in the control 
+%room,  the program will ask you if you wish to quit the telescope control
+%program in the dome as well as the remote programs. Generally, you should
+%answer Y to this question; doing so, will require that you restart the
+%dome telescope program (by rebooting the telescope control PC) and reinitialize
+%the telescope. If you will be restarting tcomm soon and do not want to be
+%forced to reinitialize, you can enter N. However,
+%\textit{Do not kill the power to the telescope control computer in the dome
+%until you have gracefully exited the program running there, or else you
+%will not be able to get started again!.}
+%If you enter QU on the TOCC PC in the dome, you can quit the program running
+%in the dome.
+%
+%Finally, the program will ask if you wish to kill power to everything in
+%the dome. If you have quit the telescope control program in the dome, you
+%can answer Y here; if not, answer no.
+
+\end{hanging}
+
+\appendix
+
+\chapter{Command summary}
+
+\input commands
+
+\chapter{Standard stars }
+
+For user convenience, a master coordinate/standards file with a large number 
+of standard stars is available which can be used with the OS/RS and STAN
+commands. OS/RS allow ease of pointing to a desired standard, and the STAN
+command can be used to take an exposure, letting the software calculate a
+good exposure time based on the standard magnitude and the system
+throughput through a desired filter.
+
+The master standards file is called standards.apo, and resides in the top
+level observe directory (/home/loki2/observe/standards.apo). The current
+version contains 918 entries. Entries 1-223 come from Landolt 1982,
+224-250 are dummy entries, 251-280 are standards in M67 from Montgomery,
+281-300 are dummy entries, 301-826 are from Landolt 1992 (some of which
+duplicate entries from Landolt 1982), 827-900 are
+dummy entries, 901-918 are southern spectrophotometric standards
+from Landolt 1992a.
+
+%An abbreviated list of recommended single star standards is presented below.
+%These stars were chosen to be at a good brightness for the 1m, sample
+%stars around the sky, with care given to include a red and blue star at
+%all right ascensions. Stars marked with an asterisk are especially preffered.
+%
+%The ID numbers are the numbers by which the star is referred to in the
+%standards.apo file, i.e., you should do a RS id to move to a given
+%star.
+%
+%\pagebreak
+%\begin{tabular}{llllllll}
+% &  ID& NAME &   RA    &      DEC  &  Epoch&     V  &     B-V    \\
+%$\ast$&  3&BD -15 115&00:37:36.00&-15:04:51.0&1985.0 & 10.881 & -0.190  \\
+%$\ast$&324&SA 92 409&00:55:14.00&+00:56: 7.0&2000.0 & 10.627 &  1.138  \\
+% &  4&BD -12 134&00:46:19.00&-11:57:32.0&1985.0 & 11.775 & -0.294  \\
+%$\ast$&311&SA 92 235&00:53:16.00&+00:36:18.0&2000.0 & 10.595 &  1.638  \\
+% &322&SA 92 342&00:55:10.00&+00:43:14.0&2000.0 & 11.613 &  0.436  \\
+% &333&SA 92 263&00:55:40.00&+00:36:18.0&2000.0 & 11.782 &  1.048  \\
+%\multicolumn{8}{l}{ }\\
+%$\ast$& 21&HD 12021&01:57:10.00&-02:10:37.0&1985.0 &  8.874 & -0.082  \\
+%$\ast$&356&SA 93 424&01:55:26.00&+00:56:43.0&2000.0 & 11.620 &  1.083  \\
+% &352&F 16&01:54: 8.00&-06:42:54.0&2000.0 & 12.406 & -0.012  \\
+%$\ast$& 15&SA 93 326&01:54: 4.00&+00:42:40.0&1985.0 &  9.569 &  0.454  \\
+%\multicolumn{8}{l}{ }\\
+%$\ast$& 29&BD -02 524&02:56:54.00&-02:03:26.0&1985.0 & 10.307 & -0.104 \\
+%$\ast$&374&SA 94 251&02:57:46.00&+00:16: 2.0&2000.0 & 11.204 &  1.219 \\
+% &361&F 22&02:30:17.00&+05:15:51.0&2000.0 & 12.799 & -0.054 \\
+% &375&SA 94 702&02:58:13.00&+01:10:53.0&2000.0 & 11.594 &  1.418 \\
+% &373&SA 94 242&02:57:21.00&+00:18:38.0&2000.0 & 11.728 &  0.301 \\
+%\multicolumn{8}{l}{ }\\
+%$\ast$&381&SA 95 96&03:52:54.00&+00:00:19.0&2000.0 & 10.010 &  0.147\\
+% &420&SA 95 236&03:56:13.00&+00:08:43.0&2000.0 & 11.491 &  0.736\\
+%$\ast$&415&SA 95 74&03:55:31.00&-00:09:13.0&2000.0 & 11.531 &  1.126\\
+%$\ast$& 36&SA 95 52&03:53:28.00&-00:10:58.0&1985.0 &  9.574 &  0.529\\
+%\multicolumn{8}{l}{ }\\
+%$\ast$&422&SA 96 36&04:51:43.00&-00:10:12.0&2000.0 & 10.591 &  0.247 \\
+%$\ast$&426&SA 96 235&04:53:19.00&-00:05: 4.0&2000.0 & 11.140 &  1.074 \\
+% &425&SA 96 83&04:52:59.00&-00:14:44.0&2000.0 & 11.719 &  0.179 \\
+% &423&SA 96 737&04:52:35.00&+00:22:29.0&2000.0 & 11.716 &  1.334 \\
+%$\ast$& 43&SA 96 393&04:51:44.00&+00:00:39.0&1985.0 &  9.652 &  0.598 \\
+%\multicolumn{8}{l}{ }\\
+%$\ast$&433&SA 97 351&05:57:37.00&+00:13:42.0&2000.0 &  9.781 &  0.202 \\
+% & 51&SA 97 346&05:56:41.00&+00:13:17.0&1985.0 &  9.260 &  0.594 \\
+% &429&GD 71&05:52:28.00&+15:53:15.0&2000.0 & 13.032 & -0.249 \\
+%$\ast$&435&SA 97 284&05:58:25.00&+00:05:12.0&2000.0 & 10.788 &  1.363 \\
+% &434&SA 97 75&05:57:55.00&-00:09:29.0&2000.0 & 11.483 &  1.872 \\
+%\multicolumn{8}{l}{ }\\
+%$\ast$&462&SA 98 653&06:52: 5.00&-00:18:19.0&2000.0 &  9.539 & -0.004 \\
+%$\ast$&461&SA 98 193&06:52: 4.00&-00:27:18.0&2000.0 & 10.030 &  1.180 \\
+% &443&SA 98 978&06:51:34.00&-00:11:28.0&2000.0 & 10.572 &  0.609 \\
+% &459&SA 98 185&06:52: 2.00&-00:27:21.0&2000.0 & 10.536 &  0.202 \\
+% &467&SA 98 670&06:52:12.00&-00:19:17.0&2000.0 & 11.930 &  1.356 \\
+%\multicolumn{8}{l}{ }\\
+%$\ast$&498&SA 99 438&07:55:54.00&-00:16:51.0&2000.0 &  9.398 & -0.155 \\
+% & 69&SA 99 367&07:53:26.00&-00:23:13.0&1985.0 & 11.149 &  1.005 \\
+% & 73&SA 99 418&07:54:41.00&-00:15: 7.0&1985.0 &  9.474 & -0.041 \\
+%$\ast$& 65&BD+05 1668&07:26:36.00&+05:16:16.0&1985.0 &  9.843 &  1.557 \\
+% & 72&SA 99 408&07:54:27.00&-00:23: 8.0&1985.0 &  9.807 &  0.407 \\
+%\multicolumn{8}{l}{ }
+%\end{tabular}
+%%\pagebreak
+%
+%\begin{tabular}{llllllll}
+% &  ID&    RA    &      DEC  &  Epoch&     V  &     B-V    \\
+%$\ast$&500&SA 100 241&08:52:35.00&-00:39:48.0&2000.0 & 10.139 &  0.157 \\
+%$\ast$&505&SA 100 394&08:53:55.00&-00:32:21.0&2000.0 & 11.384 &  1.317 \\
+% & 79&SA 100 606&08:52:12.00&-00:06: 4.0&1985.0 &  8.641 &  0.052 \\
+% &504&SA 100 280&08:53:36.00&-00:36:41.0&2000.0 & 11.799 &  0.494 \\
+% &501&SA 100 162&08:53:15.00&-00:43:29.0&2000.0 &  9.150 &  1.276 \\
+%\multicolumn{8}{l}{ }\\
+%$\ast$&551&SA 101 363&09:58:19.00&-00:25:35.0&2000.0 &  9.874 &  0.261 \\
+%$\ast$&536&SA 101 281&09:57: 5.00&-00:31:38.0&2000.0 & 11.575 &  0.812 \\
+%$\ast$&511&BD -12 2918&09:31:18.00&-13:29:20.0&2000.0 & 10.067 &  1.501 \\
+% & 85&HD 84971&09:47:59.00&-02:38:29.0&1985.0 &  8.636 & -0.159 \\
+%\multicolumn{8}{l}{ }\\
+%$\ast$&100&SA 102 58&10:54:32.00&-01:20:38.0&1985.0 &  9.380 &  0.060 \\
+%$\ast$&562&SA 102 620&10:55: 6.00&-00:48:19.0&2000.0 & 10.069 &  1.083 \\
+% &561&G44 40&10:50:54.00&+06:48:57.0&2000.0 & 11.675 &  1.644 \\
+% &564&SA 102 1081&10:57: 4.00&-00:13:10.0&2000.0 &  9.903 &  0.664 \\
+%\multicolumn{8}{l}{ }\\
+% &566&G163 50&11:08: 0.00&-05:09:26.0&2000.0 & 13.059 &  0.035 \\
+%$\ast$&107&HD 100340&11:32: 3.00&+05:21:40.0&1985.0 & 10.117 & -0.242 \\
+%$\ast$&112&SA 103 526&11:56: 8.00&-00:25:13.0&1985.0 & 10.903 &  1.089 \\
+%$\ast$&106&BD+05 2468&11:14:46.00&+05:02:20.0&1985.0 &  9.348 & -0.116 \\
+% &568&G10 50&11:47:44.00&+00:48:55.0&2000.0 & 11.153 &  1.752 \\
+% &569&SA 103 302&11:56: 6.00&-00:47:54.0&2000.0 &  9.861 &  0.368 \\
+%\multicolumn{8}{l}{ }\\
+%$\ast$&595&SA 104 461&12:43: 7.00&-00:32:21.0&2000.0 &  9.705 &  0.476 \\
+%$\ast$&605&SA 104 598&12:45:17.00&-00:16:37.0&2000.0 & 11.479 &  1.106 \\
+% &114&SA 104 337&12:41:42.00&-00:29:21.0&1985.0 & 11.207 &  0.768 \\
+%\multicolumn{8}{l}{ }\\
+% &615&BD+2 2711&13:42:21.00&+01:30:17.0&2000.0 & 10.367 & -0.166 \\
+%$\ast$&124&SA 105 66&13:38:49.00&-01:08:53.0&1985.0 &  9.426 &  0.977 \\
+% &616&HD 121968&13:58:52.00&-02:55:12.0&2000.0 & 10.254 & -0.186 \\
+%$\ast$&612&SA 105 505&13:35:25.00&-00:23:38.0&2000.0 & 10.270 &  1.422 \\
+% &614&SA 105 815&13:40: 4.00&-00:02:10.0&2000.0 & 11.453 &  0.385 \\
+% &606&G14 55&13:28:22.00&-02:21:28.0&2000.0 & 11.336 &  1.491 \\
+%\multicolumn{8}{l}{ }\\
+%$\ast$&133&SA 106 485&14:43:28.00&-00:33:20.0&1985.0 &  9.484 &  0.380 \\
+% &128&SA 106 834&14:38:43.00&-00:11: 0.0&1985.0 &  9.088 &  0.701  \\
+%$\ast$&619&SA 106 700&14:40:52.00&-00:23:36.0&2000.0 &  9.785 &  1.362  \\
+%\multicolumn{8}{l}{ }\\
+%$\ast$&135&SA 107 544&15:36: 3.00&-00:12:14.0&1985.0 &  9.037 &  0.401  \\
+%$\ast$&657&SA 107 484&15:40:17.00&-00:21:13.0&2000.0 & 11.311 &  1.237  \\
+% &139&SA 1006 544&15:37:48.00&+00:17:16.0&1985.0 & 11.715 &  0.764  \\
+%\multicolumn{8}{l}{ }
+%\end{tabular}
+%\pagebreak
+%
+%\begin{tabular}{llllllll}
+% &  ID&    RA    &      DEC  &  Epoch&     V  &     B-V    \\
+% &145&HD 149382&16:33:36.00&-03:58:59.0&1985.0 &  8.944 & -0.281  \\
+% &146&SA 108 1332&16:34:35.00&-00:02:18.0&1985.0 &  9.199 &  0.384  \\
+% &149&SA 108 1491&16:36:28.00&-00:00:54.0&1985.0 &  9.059 &  0.965  \\
+%$\ast$&673&SA 108 551&16:37:47.00&-00:33: 6.0&2000.0 & 10.703 &  0.179  \\
+%$\ast$&671&SA 108 475&16:37: 0.00&-00:34:40.0&2000.0 & 11.309 &  1.380  \\
+% &674&SA 108 1918&16:37:50.00&-00:00:37.0&2000.0 & 11.384 &  1.432  \\
+%\multicolumn{8}{l}{ }\\
+%$\ast$&154&HD 160233&17:37:56.00&+04:21:19.0&1985.0 &  9.095 & -0.054  \\
+%$\ast$&690&SA 109 537&17:45:42.00&-00:21:34.0&2000.0 & 10.353 &  0.609  \\
+%$\ast$&682&BD -4 4226&17:05:15.00&-05:05: 5.0&2000.0 & 10.071 &  1.415  \\
+% &688&SA 109 199&17:45: 2.00&-00:29:28.0&2000.0 & 10.990 &  1.739  \\
+% &683&SA 109 71&17:44: 6.00&-00:24:59.0&2000.0 & 11.493 &  0.323  \\
+%\multicolumn{8}{l}{ }\\
+%$\ast$&170&HD 173637&18:45:50.00&-07:56:56.0&1985.0 &  9.375 &  0.236  \\
+%$\ast$&727&SA 110 450&18:43:52.00&+00:22:58.0&2000.0 & 11.585 &  0.944  \\
+%$\ast$&698&SA 110 340&18:41:29.00&+00:15:22.0&2000.0 & 10.025 &  0.303  \\
+% &730&SA 110 319&18:43:55.00&+00:02: 1.0&2000.0 & 11.861 &  1.309  \\
+% &724&SA 110 441&18:43:34.00&+00:19:40.0&2000.0 & 11.121 &  0.555 \\
+% &703&SA 110 355&18:42:19.00&+00:08:24.0&2000.0 & 11.944 &  1.023 \\
+%\multicolumn{8}{l}{ }\\
+%$\ast$&174&SA 111 2522&19:36:19.00&+00:35:31.0&1985.0 &  9.706 &  0.164 \\
+% &178&SA 111 2009&19:37: 9.00&+00:24:24.0&1985.0 & 10.608 &  0.889 \\
+%$\ast$&731&SA 111 775&19:37:16.00&+00:12: 5.0&2000.0 & 10.744 &  1.738 \\
+% &177&SA 111 1969&19:36:58.00&+00:23:44.0&1985.0 & 10.384 &  1.961 \\
+% &733&SA 111 1925&19:37:29.00&+00:25: 1.0&2000.0 & 12.388 &  0.395 \\
+%\multicolumn{8}{l}{ }\\
+%$\ast$&744&SA 112 805&20:42:46.00&+00:16: 8.0&2000.0 & 12.086 &  0.152 \\
+%$\ast$&743&SA 112 275&20:42:36.00&+00:07:21.0&2000.0 &  9.905 &  1.210 \\
+% &739&SA 112 595&20:41:18.00&+00:16:28.0&2000.0 & 11.352 &  1.601 \\
+% &741&SA 112 223&20:42:14.00&+00:09: 1.0&2000.0 & 11.424 &  0.454 \\
+% &745&SA 112 822&20:42:55.00&+00:15: 4.0&2000.0 & 11.549 &  1.031 \\
+%\multicolumn{8}{l}{ }\\
+%$\ast$&764&SA 113 466&21:41:28.00&+00:40:14.0&2000.0 & 10.004 &  0.454 \\
+%$\ast$&767&SA 113 475&21:41:51.00&+00:39:19.0&2000.0 & 10.306 &  1.058 \\
+%$\ast$&194&HD 205556&21:35:11.00&+05:25:11.0&1985.0 &  8.301 & -0.054 \\
+% &765&SA 113 259&21:41:44.00&+00:17:37.0&2000.0 & 11.742 &  1.194 \\
+%\multicolumn{8}{l}{ }\\
+% &215&HD 216135&22:49:41.00&-13:23:12.0&1985.0 & 10.112 & -0.115 \\
+%$\ast$&806&SA 114 750&22:41:45.00&+01:12:38.0&2000.0 & 11.916 & -0.041 \\
+%$\ast$&807&SA 114 670&22:42:10.00&+01:10:17.0&2000.0 & 11.101 &  1.206 \\
+% &805&SA 114 548&22:41:37.00&+00:59: 7.0&2000.0 & 11.601 &  1.362 \\
+% &209&SA 114 755&22:41:22.00&+01:12: 6.0&1985.0 & 10.908 &  0.571 \\
+%\multicolumn{8}{l}{ }\\
+%$\ast$&823&SA 115 420&23:42:36.00&+01:05:58.0&2000.0 & 11.161 &  0.468 \\
+% &824&SA 115 271&23:42:41.00&+00:45:10.0&2000.0 &  9.695 &  0.615 \\
+%$\ast$&825&SA 115 516&23:44:15.00&+01:14:13.0&2000.0 & 10.434 &  1.028 \\
+%\multicolumn{8}{l}{ }
+%\end{tabular}
+
+\chapter{Transferring files to NMSU}
+
+There is a simple script available to transfer image files from
+a given night down to a disk on ganymede at NMSU. Using this script, you
+can specify which images to transfer, and also, at what time
+the transfer will take place. 
+
+%It is important to try to minimize the
+%network traffic from APO during the night when possible, because the 3.5m
+%is often operated remotely and can suffer from poor network performance.
+%Consequently, we recommend doing large image transfers early in the morning,
+%after the 3.5m has closed, but before the network down at NMSU gets busy;
+%7 am is a generally good time. Of course, if you are observering remotely
+%and have been using +XFER, then your images will have already been
+%transfered as you took them.
+
+To run the transfer script, simply use:
+\begin{quote}
+dosftp \textit{date} \textit{time}
+\end{quote}
+This will transfer all the images from the specified date at the
+specified time; if \textit{now} is specified, the image transfer will
+start immediately.
+
+For example, to transfer images from 981108 at 7am, use
+\begin{quote}
+dosftp 981108 7am
+\end{quote}
+
+The images will be placed in /home/1m/\textit{date}, viewable from all of
+the Linux machines at NMSU.
+
+%\chapter{Transferring files to the telescope control program}
+%
+%You may wish to access two types of files from the telescope control
+%program: script files with lists of commands, and user coordinate files
+%with your object names and positions. To do so, you must first transfer
+%these files to the appropriate location on the telescope control computer
+%(loki).
+%
+%You can do this using the command
+%\begin{quote}
+%copyscript \textit{filename}
+%\end{quote}
+%
+%This will put the specified file (either script or coordinate file) in
+%a scripts directory on loki under a subdirectory given by the username
+%of the account from which you are running the command. For example,
+%if you are logged in as holtz, the files will go in a holtz/ subdirectory.
+%This allows different users to have script/coordinate files of the same
+%name without conflicting with each other.
+%
+%To access files copied with copyscript using the INPUT or OF commands,
+%specify the file as username/scriptname, e.g.:
+%\begin{quote}
+%INPUT username/scriptname
+%\end{quote}
+
+\chapter{Robotic operation notes}
+
+\section{Input file format}
+
+\input robotic.tex
+
+\chapter{Telescope recovery notes}
+
+%\begin{itemize}
+%
+%\item Positive z motion sends rotator counterclockwise
+%
+%\item Positive x motion sends azimuth counterclockwise from above
+%
+%\item Recovery mode. 
+%\begin{enumerate}
+%  \item Start code (telpos.sav) and position rotator (PC) to be clockwise 
+%from home position.
+%  \item Stop tocc.
+%  \item Set last position of rotator to 0 in toccscf.new, and saved\_pos to
+%be -9999.
+%  \item Restart tocc, and initialize
+%\end{enumerate}
+%
+%\end{itemize}
+
+\include{refs}
+\printindex
+
+\end{document}

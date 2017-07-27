@@ -1,0 +1,10 @@
+#!/bin/csh
+mkdir small
+echo "<html><body>"
+foreach file ($*)
+  convert -size 300x200 $file small/$file
+  echo "<a href=$file> <img src=small/$file width=45%> </a>"
+end
+echo "</body></html>"
+
+

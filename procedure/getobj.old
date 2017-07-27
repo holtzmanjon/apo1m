@@ -1,0 +1,146 @@
+
+error goto definp
+open objinp ./{root}.inp
+goto readobj
+
+definp:
+open objinp ./default.inp
+
+readobj:
+eof goto noobj
+
+error goto noobj
+
+! Read header lines
+string line '{objinp}'
+string line '{objinp}'
+string line '{objinp}'
+string line '{objinp}'
+string line '{objinp}'
+
+nobj=0
+nextobj:
+string line '{objinp}'
+nobj=nobj+1
+xlow=@objinp.5
+xhigh=@objinp.6
+tlow=@objinp.7
+thigh=@objinp.8
+halow=@objinp.9
+hahigh=@objinp.10
+maxphase=@objinp.11
+mindist=@objinp.12
+nvisits=@objinp.13
+dtvisit=@objinp.14
+dofoc=@objinp.15
+guide=@objinp.16
+npar=16
+do ifilt=1,nfilt
+  string var 'objinp.%i2.2' npar+ifilt
+  string t 'exp%i2.2' ifilt
+  {t}=@{var}
+end_do
+string var 'objinp.%i2.2' npar+nfilt+1
+nexp=@{var}
+
+! Have we done all the requested visits yet?
+string var 'ndone%i3.3' nobj
+if {var}==nvisits
+  printf 'Object: %i3 already done requested visits' nobj
+  goto nextobj
+end_if
+
+call time
+! Has it been long enough since the last visit?
+string var 't%i3.3' nobj
+if (uttim-{var}<dtvisit)
+  printf 'Object: %i3.3 has been observed too recently to repeat (%f4.1)' |
+     nobj uttim-{var}
+  goto nextobj
+end_if
+
+! Is local time acceptable?
+if (uttim<tlow)|(uttim>thigh)
+  printf 'Object: %i3 out of localtime range' nobj
+  goto nextobj
+end_if
+
+! Is airmass acceptable?
+printf '{objinp.-1}	{objinp.-2}	{objinp.-3}	{objinp.-4}' >./tmp.apo
+call airmass ./tmp.apo 1
+if (airmass<xlow)|(airmass>xhigh)
+  printf 'Object: %i3 out of airmass range (%f5.2) ' nobj airmass
+  goto nextobj
+end_if
+! Is moon acceptable?
+if (phase>maxphase)&(dmoon<mindist)
+  printf 'Object: %i3 too near to moon (phase: %f5.2  dmoon: %f5.2) ' phase dmoon
+  goto nextobj
+end_if
+
+! Is hour angle acceptable
+string rra {objinp.-2}
+getcoord {rra}
+rah=hh+mm/60+ss/3600
+string ddec {objinp.-3}
+getcoord {ddec}
+decd=sg*(abs[hh]+mm/60+ss/3600)
+epoch0=@objinp.4
+precess ra=rah dec=decd epoch0=epoch0 epoch=2002.
+hha=lst-raf
+if hha>12
+  hha=hha-24
+end_if
+if hha<-12
+  hha=hha+24
+end_if
+if (hha<halow)|(hha>hahigh)
+  printf 'Object: %i3 out of hour angle range (%f4.1) ' nobj hha
+  goto nextobj
+end_if
+
+! Make the observation!!
+string name {objinp.-1}
+printf 'OBSERVE: {name}'
+call writesum 3 'OBSERVE: {name}'
+
+! Get a guide star file
+error goto newusno
+open usno ./{name}.usno
+close usno
+goto newobj
+
+newusno:
+$square {objinp.-2} {objinp.-3} 0.813333 {objinp.-4} >./{name}.usno
+
+newobj:
+if nobj==curobj
+  acquire=0
+else
+  acquire=1
+end_if
+string var 't%i3.3' nobj
+{var}=uttim
+
+! Do we have a custom procedure to run?
+if nexp<0
+  string var 'objinp.-%i2.2' npar+nfilt+2
+  string proc '{{var}}'
+  call {proc}
+else_if nexp>0
+  call newobject {name} guide acquire
+end_if
+
+curobj=nobj
+string var 'ndone%i3.3' nobj
+{var}={var}+1
+
+close objinp
+goto doneobj
+
+noobj:
+nobj=-1
+printf 'No acceptable object found'
+
+doneobj:
+end

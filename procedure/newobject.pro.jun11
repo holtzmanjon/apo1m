@@ -1,0 +1,541 @@
+parameter string=catalog guide acquire guide0 nskip guidemon gpa nwind
+
+nskip0=nskip
+objerr=0
+nmove=0
+error goto objerr
+call check 1
+if domeopen==0&daytest==0
+  goto objerr
+end_if
+if acquire==0
+  ! Put in focus shift if requested
+  if delfoc~=0
+    string com 'df %i' delfoc
+    send '{com}'
+    string com 'guidefoc %i' delfoc
+    send '{com}'
+  end_if
+  goto expos
+end_if
+
+! Check to see if specified user catalogs exists, and if so, open in in tcomm
+err goto nocat
+open cat usno/{catalog}.usno
+close cat
+goto move
+
+nocat:
+printf 'ERROR: catalog not found: /home/tcomm/scripts/{catalog}'
+goto ending
+error goto objerr
+
+! Move to desired star
+move:
+nmove=nmove+1
+send 'inst 1'
+! File is a USNO output file
+getguide=0
+if getguide==1
+  call readusno usno/{catalog}.usno nskip guide0
+else
+  gmag=11
+end_if
+send 'NE {epochs}'
+
+! Set desired PA (note gpa is set in readusno)
+!string command 'pa %f8.2' gpa
+!send '{command}'
+
+!targrot=-999
+!targrot=60
+!if guide<=0
+!  gpa=abs[guide]
+!else
+!  gpa=1060
+!end_if
+
+reslew:
+string com 'window full'
+send '{com}'
+string command 'CO %2f12.6 %f10.2' rah decd gpa
+printf 'echo {command} >>master2com' >./obj.inp
+printf 'echo "Y" >>master2com ' >>./obj.inp
+printf 'echo {command} >>master2com' 
+printf 'echo "Y" >>master2com ' 
+$csh obj.inp
+call get
+!if targrot>-360
+!  call readstat
+!  gpa=int[(targrot-rot)/90.]*90
+!  if gpa>180
+!   gpa=gpa-360
+!  else_if gpa<-180
+!   gpa=gpa+360
+!  end_if 
+!  targrot=-999
+!  goto reslew
+!end_if
+  
+gtime=int[3*10^(0.4*(gmag-11))]
+gtime=min[18,gtime]
+gtime=max[1,gtime]
+gtime0=gtime
+gupdate=int[guide/gtime]
+
+focfilt=5 cfilt=3
+do i=1,nfilt
+  string var 'exp%i2.2' i
+  texp={var}
+  if abs[texp]>0
+    focfilt=i
+  end_if
+  if abs[texp]>0&i>6
+    cfilt=7 
+!    cfilt=10
+  end_if
+end_do
+if focfilt==1
+  focfilt=2
+end_if
+if focfilt==10|focfilt==1
+  saotype=2
+else_if focfilt==6
+  saotype=1
+else
+  saotype=0
+end_if
+
+string var 'filt%i2.2' cfilt
+string filt {{var}}
+
+! if were acquiring a new object, check ccdtemp
+!call time
+!if localtim<12
+!  call ccdtemp 1
+!end_if
+
+! Coordinate update
+if abs[acquire]<3
+  send 'setfilt {filt}'
+  ! Update coordinates on bright star near the target
+  call coord 1 0 1 1
+
+  ! Use guider to update rotator position
+ !  call coord -1 1
+end_if
+
+! Focus update. Do focus in last filter than has nonzero exposure
+!   (filters should be ordered by wavelength!!)
+string var 'filt%i2.2' focfilt
+string filt {{var}}
+if abs[acquire]<2
+  send 'setfilt {filt}'
+end_if
+if nmove==1&abs[acquire]<2
+  call getfoc focus 1 1 saotype 4
+  if abs[guide]>0&acquire<=0
+    send 'guidehome'
+    call getfoc focus -2 2 0 4
+  end_if
+end_if
+
+! Put in focus shift if requested
+if delfoc~=0
+    string com 'df %i' delfoc
+    send '{com}'
+    string com 'guidefoc %i' delfoc
+    send '{com}'
+end_if
+
+call check 1
+if check==0&daytest==0
+  goto objerr
+end_if
+
+! Move back to target
+$csh obj.inp
+call get
+! Is CCD windowing requested? If so, window to desired size, and set CCD in fast mode
+if scidet==32
+ if nwind>0
+  string com 'window %i %i %i %i' 1100-nwind/2 1100+nwind/2-1 1024-nwind/2 1024+nwind/2-1
+  send '{com}'
+  send '-display'
+!  send 'ccdfast'
+!  send 'qck 0'
+!  send 'qck 0'
+!  send 'ccdfast' 
+!  send 'object BIAS'
+!  send 'mexp 0 10'
+!  ccdfast=1
+ else_if ccdfast==1
+  send 'ccdinit'
+  send 'qck 0'
+  send 'qck 0'
+  send 'ccdinit' 
+  ccdfast=0
+ else
+  send '+display'
+ end_if
+end_if
+! Is offset requested? If so, offset
+if xoffset~=0|yoffset~=0
+  string com 'offset %i %i' xoffset yoffset
+  send '{com}'
+end_if
+
+! Start guiding
+if guide<=0
+  goto expos
+end_if
+acktime=gtime*2
+gsize=41
+gsize=61
+if nset==-9
+  gsize=101
+end_if
+
+$date >./date.txt
+open dd ./date.txt
+string date '{dd}'
+close dd
+
+! take one guider image to flush chip in case shutter has been open
+send g-disk
+send gccdinit
+send 'gexp 0'
+if guidedet==15
+  highmax=2000
+else
+  highmax=12000 lowmin=-100
+end_if
+nguide=0
+unmask
+gacq:
+call getdet guidedet
+! first take short exposure to mask very bright stars
+send g+disk
+call readgccd
+string command 'gqck 0.5' 
+send '{command}'
+call readg gincval
+unmask
+clip $ireadbuf max=highmax min=lowmin maskonly
+save mask=./guide.msk
+
+! now take acquisition guider image and see if we can see a star
+send g+disk
+call readgccd
+string command 'gexp %f8.1' acktime
+send '{command}'
+string log 'Initial guide star acquisition: {catalog} %3f6.1' gx gy gmag
+call writelog 0 gincval '{log}'
+call readg gincval
+zap $ireadbuf sig=0 size=3
+if gmag<90
+  xs=max[5,gx-125]
+  xe=min[ncol-5,gx+125]
+  ys=max[5,gy-125]
+  ye=min[nrow-5,gy+125]
+  box 10 nr=ye-ys nc=xe-xs sr=ys sc=xs
+else_if getguide==1
+  printf 'No guide star found. Not guiding'
+  if nskip<nskip0+2&photom==0
+    nskip=nskip+1
+    goto move
+  end_if
+  goto expos
+  printf ' {date} %3f6.1 : No guide star identified' gx gy gmag >>../guider.sum
+end_if
+
+! Just use full image!
+if getguide>0
+  nsearch=250
+  xs=max[5,gx-nsearch]
+  xe=min[ncol-5,gx+nsearch]
+  ys=max[5,gy-nsearch]
+  ye=min[nrow-5,gy+nsearch]
+else
+  xs=10 xe=ncol-10 ys=10 ye=nrow-10
+end_if
+box 10 nr=ye-ys nc=xe-xs sr=ys sc=xs
+get mask=./guide.msk
+abx $ireadbuf 10 high_row=hr high_col=hc high=high mask
+
+if high<50&daytest==0
+  printf 'No guide star found. Not guiding'
+  call writesum 1 '{catalog}: No guide star found!'
+  printf ' {date} %3f6.1 %f7.2: No guide star found'  gx gy gmag high >>../guider.sum
+  nguide=nguide+1
+  if nguide==1
+    send 'goffset 100 0'
+    goto gacq
+  else_if nguide==2
+    send 'goffset -200 0'
+    goto gacq
+  else_if nguide==3
+    send 'goffset 100 100'
+    goto gacq
+  else_if nguide==4
+    send 'goffset 0 -200'
+    goto gacq
+  else_if nguide==5
+    send 'goffset 0 100'
+  end_if
+  if nskip<nskip0+2
+    nskip=nskip+1
+    goto move
+  end_if
+  goto expos
+end_if
+if getguide==1
+  !gx=max[40,hc]
+  gx=max[40,hc]
+  gx=min[ncol-50,gx]
+  !gy=max[40,hr]
+  gy=max[40,gy]
+  gy=min[ncol-50,gy]
+  string com 'goffset %2f8.1' hc-gx hr-gy
+  send '{com}'
+else
+  gx=hc gy=hr
+end_if
+
+guidex=gx guidey=gy
+
+call readgccd
+$sleep 5
+ntry=0
+dofinal:
+string command 'gexp %f8.2' gtime
+send '{command}'
+call writelog 0 gincval 'Final guide acquisition: {catalog}'
+call writesum 0 '{catalog}: Guide star acquired'
+call readg gincval
+zap $ireadbuf sig=0 size=3
+type guidey guidex
+xs=max[gsize/2+7,guidex-35]
+xe=min[ncol-gsize/2-7,guidex+35]
+ys=max[gsize/2+7,guidey-35]
+ye=min[nrow-gsize/2-7,guidey+35]
+box 10 nr=ye-ys nc=xe-xs sr=ys sc=xs
+abx $ireadbuf 10 high_row=hr high_col=hc high=high low=low
+if ((high>highmax|low<lowmin)&gtime>0.4&ntry<6)
+  if high>highmax
+    gtime=gtime*(highmax/2)/high
+  else
+    gtime=gtime/2
+  end_if
+  gtime=max[0.38,gtime]
+  gtime=min[6,gtime]
+  gupdate=int[guide/(gtime+1)]
+  ntry=ntry+1
+  goto dofinal
+end_if
+
+printf ' {date} %3f6.1 %f7.2 %2f6.1 : guiding'  guidex guidey gmag high hc hr >>../guider.sum
+
+string com 'newguide %2f8.1 %i4 %f8.2 %i4' hc-1 hr-1 gsize gtime gupdate
+send '{com}'
+string com 'sleep %i' min[20,2*guide]
+${com}
+if acquire<0
+  send '+fochold'
+  string com 'guideadj %i 20' 10*gupdate
+  send '{com}'
+end_if
+
+!call readgccd
+!string command 'gexp %f8.1' gtime
+!send '{command}'
+!string comment 'Guide star before sequence: {catalog}, %2f8.2' hc hr
+!call writelog 0 gincval 'Guide star before sequence: {catalog}'
+
+expos:
+if guidemon>0
+  string com 'gwrite %i8' guidemon
+  send '{com}'
+  send 'g+disk'
+else
+  send 'gnowrite'
+  send 'g-disk'
+end_if
+
+if nexp==0
+  goto ending
+end_if
+if nset==0
+  nset=1
+end_if
+send 'OBJECT {catalog}'
+call readccd
+printf '%i4 %i4 {root}' incval incval+abs[nset]*nexp-1 >>../images/{root}/{catalog}.dat
+printf '{catalog}' >>../images/{root}/{group}.dat
+printf '{group}' >>../images/{root}/{root}.props
+
+$'rm' f.dat
+$awk -F\\t '\{print $1,$2,$4\}' ../filters.dat > f.dat
+open infilt ./f.dat
+stat nnn=count[infilt]
+do i=1,nnn
+  read infilt
+  string var 'ofilt%i2.2' @infilt.1
+  string {var} {infilt.-2}
+  printf '{{var}}' >./tmp.tmp
+  $awk '\{print tolower($1)\}' tmp.tmp >./tmp.out
+  open tmpfilt ./tmp.out
+  string {var} {tmpfilt}
+  close tmpfilt
+  string var 'ffilt%i2.2' @infilt.1
+  {var}=@infilt.3
+end_do
+close infilt
+
+! Take specified exposures
+call getdet scidet
+string filtobs ' '
+tfact=1
+dxtot=0 dytot=0
+ffilt=-1000
+do iset=1,abs[nset]
+ if nset<0&nset>-9&iset>1
+   tfact=tfact*6
+ end_if
+ if nset==-9
+   ix=mod[iset-1,3]+1 iy=ifix[(iset-1)/3]+1
+   dx=(ix-2)*20 dy=(iy-2)*20
+   string com 'goffset %f8.2 %f8.2' dx-dxtot dy-dytot
+   dxtot=dx dytot=dy
+   send '{com}'
+   string com 'sleep %i' gtime*2
+   ${com}
+ end_if
+
+ do i=1,nfilt
+   string var 'filt%i2.2' i
+   string filt {{var}}
+   string var 'exp%i2.2' i
+   texp={var}*tfact*tfudge
+   string nvar 'nexp%i2.2' i
+!   if abs[texp]>0
+   tfact2=1
+   if abs[{nvar}]>0
+     string fvar 'ffilt%i2.2' i
+     if guide>0&ffilt>-900&(ffilt-{fvar}~=0)&delfoc==0
+       send 'guideoff'
+     end_if
+     if delfoc==0
+       send 'setfilt {filt}'
+     else
+       send 'ffilt {filt}'
+     end_if
+     if guide>0&ffilt>-900&(ffilt-{fvar}~=0)&delfoc==0
+       send 'guideon'
+       string com 'sleep %i' gtime*2
+       ${com}
+     end_if
+     ffilt={fvar}
+     if texp<0
+       tinit=0.5
+       tinit=abs[texp]
+       recalc:
+       call readccd
+       string com 'exp %f5.2' tinit
+       send '{com}' 
+       call read incval
+       box 10 nr=nr[ireadbuf]-25 sr=sr[ireadbuf]+12 nc=nc[ireadbuf]-25 sc=sc[ireadbuf]+23
+       abx $ireadbuf 10 high=high high_row=hr high_col=hc
+       printf 'Found high pixel with value %f8.1 at (%i4,%i4)' high hc hr
+       tnew=tinit*25000/high
+       if high>50000
+         tinit=tinit/2
+         goto recalc
+       end_if
+!       texp=min[abs[texp],tnew]
+       texp=min[300,tnew]
+       if abs[texp]<0.1
+         texp=0.1*texp/abs[texp]
+       end_if
+       {var}=texp
+     end_if
+
+     call readccd
+     dexp=0 
+     if (nwind>0)
+       string command 'mexp %f8.2 %i2' texp abs[{nvar}]
+       send '{command}' 
+       dexp=dexp+abs[{nvar}]
+     else
+      do iexp=1,abs[{nvar}]
+       if iexp>1&{nvar}<0
+         texp=texp*6
+       end_if
+       string command 'exp %f8.2' texp
+       send '{command}' 
+       dexp=dexp+1
+       call check 1 1
+       if check==0&daytest==0
+         objerr=1
+         goto doneexp
+       end_if
+      end_do
+     end_if
+     doneexp:
+     string filtobs '{filtobs} {filt}:%i3*%f6.1' dexp texp
+     if (incval+dexp-1<1000)
+       string head '{root}.%i3.3' incval+dexp-1
+     else
+       string head '{root}.%i4.4' incval+dexp-1
+     end_if
+     error goto nextfilt
+     rd 99 ../images/{root}/{head}.fits headonly maxtry=0
+     filtnum={99:filter} 
+     string var 'ofilt%i2.2' filtnum
+     string f '{{var}}'
+     printf '%i4 %i4 {root}' incval incval+dexp-1 |
+        >>../images/{root}/{catalog}.{f}
+     if acquire<=0
+       call focadj
+       focus={99:focus}-df-delfoc
+     end_if
+     if check==0&daytest==0
+       goto donefilt
+     end_if
+     nextfilt:
+   end_if
+ end_do
+end_do
+if nset==-9
+  string com 'goffset -20 -20'
+  send '{com}'
+end_if
+
+donefilt:
+
+call writesum 0 '{catalog} observed {filtobs}'
+
+if guidemon>0
+  send 'gnowrite'
+end_if
+!if guide>0
+!  call readgccd
+!  $sleep 5
+!  string command 'gexp %f8.1' gtime
+!  send '{command}'
+!  call writelog 0 gincval 'Guide star after complete sequence: {catalog}'
+!end_if
+if delfoc~=0
+  string com 'df %i' -delfoc
+  send '{com}'
+  string com 'guidefoc %i' -delfoc
+  send '{com}'
+end_if
+goto ending
+
+objerr:
+printf 'Error in object script'
+objerr=1
+
+ending:
+end

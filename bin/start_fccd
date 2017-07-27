@@ -1,0 +1,4 @@
+#!/bin/csh -f 
+ tcomm_xterm -fn 6x10 -sb -sl 1000 -geometry 80x10-25+500 -T "FLI CCD Control" -e \
+   ssh -l tcomm ccd1m.apo.nmsu.edu fccd &
+ 

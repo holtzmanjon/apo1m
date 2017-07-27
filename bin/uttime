@@ -1,0 +1,2 @@
+skycalc < lst.inp | grep "UT Date" | awk '{print substr($0,45,12),substr($0,27,11)}'
+skycalc < lst.inp | grep "Julian" | awk '{printf("%12.6f\n", $3-2400000.5)}'

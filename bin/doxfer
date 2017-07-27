@@ -1,0 +1,14 @@
+#!/bin/sh  
+
+i=$2
+echo $i $3
+while 
+  [ $i -le $3 ] 
+do
+#  echo "ssh -l tcomm loki.apo.nmsu.edu ssh -l observe ganymede.nmsu.edu mkdir /1m/$1/"
+  ssh -l tcomm loki.apo.nmsu.edu ssh -l observe ganymede.nmsu.edu mkdir /1m/$1/
+#  echo "ssh -l tcomm loki.apo.nmsu.edu scp $1/$1.`echo $i | awk '{printf("%3.3d",$1)}'`.fits observe@ganymede.nmsu.edu:/1m/$1/"
+  ssh -l tcomm loki.apo.nmsu.edu scp $1/$1.`echo $i | awk '{printf("%3.3d",$1)}'`.fits observe@ganymede.nmsu.edu:/1m/$1/
+  i=$[$i+1]
+done
+

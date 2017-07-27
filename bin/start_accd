@@ -1,0 +1,6 @@
+#!/bin/csh -f 
+# tcomm_xterm -fn 6x10 -sb -sl 1000 -geometry 80x10-0+380 -T "Apogee CCD Control" -e \
+#   ssh -l tcomm eyeball.apo.nmsu.edu accd &
+tcomm_xterm -fn 6x10 -sb -sl 1000 -geometry 80x10-0+380 -T "Apogee CCD Control" -e accd &
+
+ 

@@ -1,0 +1,2 @@
+skycalc < lst.inp | grep LMST | awk '{print substr($0,38,20)}'
+

@@ -1,0 +1,23 @@
+14:47:07 **** Build of configuration Release_x64 for project ArcFitsFileJAPI ****
+make all 
+Building file: ../src/ArcFitsFileJAPI.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/streit/Documents/ARC_API/3.5/CArcFitsFile/src -I/home/streit/Documents/ARC_API/3.5/cfitsio-3330/linux/x64/include -I/home/streit/Documents/ARC_API/3.5/JavaJDK/x64/include -I/home/streit/Documents/ARC_API/3.5/JavaJDK/x64/include/linux -O3 -Wall -c -fmessage-length=0 -std=c++11 -fPIC -MMD -MP -MF"src/ArcFitsFileJAPI.d" -MT"src/ArcFitsFileJAPI.d" -o"src/ArcFitsFileJAPI.o" "../src/ArcFitsFileJAPI.cpp"
+Finished building: ../src/ArcFitsFileJAPI.cpp
+ 
+Building file: ../src/DllMain.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/streit/Documents/ARC_API/3.5/CArcFitsFile/src -I/home/streit/Documents/ARC_API/3.5/cfitsio-3330/linux/x64/include -I/home/streit/Documents/ARC_API/3.5/JavaJDK/x64/include -I/home/streit/Documents/ARC_API/3.5/JavaJDK/x64/include/linux -O3 -Wall -c -fmessage-length=0 -std=c++11 -fPIC -MMD -MP -MF"src/DllMain.d" -MT"src/DllMain.d" -o"src/DllMain.o" "../src/DllMain.cpp"
+Finished building: ../src/DllMain.cpp
+ 
+Building target: libArcFitsFileJAPI.so
+Invoking: GCC C++ Linker
+g++ -L/home/streit/Documents/ARC_API/3.5/CArcFitsFile/Release_x64 -shared -o "libArcFitsFileJAPI.so"  ./src/ArcFitsFileJAPI.o ./src/DllMain.o   -lCArcFitsFile
+Finished building target: libArcFitsFileJAPI.so
+ 
+make --no-print-directory post-build
+cp /home/streit/Documents/ARC_API/3.5/ArcFitsFileJAPI/Release_x64/libArcFitsFileJAPI.so /home/streit/Documents/ARC_API/3.5/Release/x64
+ 
+
+14:47:08 Build Finished (took 961ms)
+

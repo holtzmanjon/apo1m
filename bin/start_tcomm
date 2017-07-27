@@ -1,0 +1,7 @@
+#!/bin/sh
+
+echo " Do you wish to start tcomm (Y or N)?? "
+read ans
+if [ $ans = Y ]  ||  [ $ans = y ] ; then
+  dotcomm
+fi

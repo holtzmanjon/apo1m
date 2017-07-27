@@ -1,0 +1,28 @@
+**** NOTE: All labels and data values MUST be separated by a single tab. ****
+PCI Download:	false
+Reset Controller:	true
+Hardware Test:	true
+PCI Hardware Test:	false
+Timing Hardware Test:	false
+Utility Hardware Test:	false
+Perform Download Check:	true
+Stop Download On Error:	false
+Timing Download:	true
+Utility Download:	true
+Power On:	true
+Image Dimensions:	true
+Load Controller Parameters:	false
+Use Timing File:	true
+Use Utility File:	true
+Image Resolution:	true
+Number Of PCI Tests:	10
+Number Of Timing Tests:	10
+Number Of Utility Tests:	10
+PCI Filename:	
+Timing Filename:	/home/leach/camera/LosAlamos/LN2/Feb_2006/tim.lod
+Timing Application:	
+Utility Filename:	/home/leach/camera/LosAlamos/LN2/Feb_2006/util.lod
+Utility Application:	
+Image Rows:	2048
+Image Cols:	2200
+Controller Master:	2

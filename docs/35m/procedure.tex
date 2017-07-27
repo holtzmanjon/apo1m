@@ -1,0 +1,178 @@
+\documentclass{article}
+
+\usepackage{html}
+
+\begin{document}
+
+\begin{center}
+\textbf{Throughput Monitoring for the ARC 3.5m}
+\end{center}
+\begin{center}
+Jon Holtzman, NMSU, 3/2001
+\end{center}
+
+\begin{htmlonly}
+Complete document in a single file
+(\htmladdnormallink{PostScript}{../throughput.ps.gz})
+(\htmladdnormallink{PDF}{../throughput.pdf})
+\end{htmlonly}
+
+\section{Introduction}
+
+For all instruments, monitoring throughput requires photometric conditions.
+It is not worthwhile to perform throughput monitoring in the obvious
+presence of cirrus. If a few clouds are around, one might consider a single
+point throughput measurement if the cloud camera suggests it is clear
+in the location of the object.
+
+A throughput measurement accurate to several (5-10??) percent can be made
+by assuming a typical extinction curve for the site; in this case, only a
+single object is required.  The closer the observed star is to the zenith,
+the less effect the uncertainty in the adopted extinction will have, so
+observing at as low an airmass as possible is desirable. Also, the
+use of a mean extinction curve will lead to larger uncertainties at
+shorter wavelengths.
+
+A more accurate measurement requires measuring the extinction on the
+night, which involves making several observations of objects covering
+a range of airmasses. If time permits, the latter should be done, but
+even a single object near the zenith will probably prove to be useful.
+
+\section{Monitoring with DIS}
+
+Monitoring throughput with DIS involves slitless spectroscopy of a 
+spectrophotometric standard. 
+
+\subsection{Observing procedure}
+
+\begin{itemize}
+
+\item DIS should be mounted with a slit wheel with a standard slit in
+one position, and a clear position in the other. The low resolution grating
+should be in place. The wavelength settings should be 7700/4400 in red/blue.
+
+\item You should use file names of the form yymmdd with the UT date,
+e.g., the night of March 6/7 2001 should use 010307 for the root file name.
+Keep a log of the exposures with their associated exposure numbers.
+
+\item Take 5 bias frames to be used to check the readout noise.
+
+\item Take 5 flat fields using the bright quartz lamps, mirror covers
+closed, exposure time 12 seconds
+
+\item Take a 60s He exposure, 30s Ne, and 90s Ar exposure
+
+\item Slew to one of the following flux standards using the listed rotation.
+I have a  REMARK coordinate file (\htmladdnormallink{throughput.rmk}{../throughput.rmk}) which has these coordinates already entered. \textbf{Please note the
+requested rotation!}
+
+\begin{tabular}{llllll}
+Name&$\alpha_{1950}$&$\delta_{1950}$&Rotation&Exptime w/slit& Exptime slitless\\
+PG0216+032&02:16:43&03:13:08&0&180?&60?\\
+G191B2B&05:01:31.5&52:45:52&20&60&30\\
+Feige 34&10:36:41.2&43:21:50&0&30&15\\
+Feige 66&12:34:54.7&25:20:31&0&15&15\\
+Feige 67&12:39:18.9&17:47:24&0&60&30\\
+PG1708+602&17:08:35.9&60:13:52&90&180?&60?\\
+BD+28 4211&21:48:57.1&28:37:48&0&15&15\\
+Feige 110&23:17:23.5&-05:26:22&0&60&30
+\end{tabular}
+
+\item Put the object on the slit using the slitviewer. Take a DIS exposure
+of the specified time. Confirm exposures aren't saturated.
+
+\item Move the slit wheel to the clear position. Take a DIS exposure of the
+specified time. Confirm exposures aren't saturated; note that sky will be
+\textit{much} brighter with slitless observations (hence the shorter
+exposure times generally).
+
+\item Take additional stars as time permits.
+
+\end{itemize}
+
+\subsection{Reduction procedure}
+\begin{itemize}
+\item Construct flat field
+\item Do wavelength calibration
+\item Reduce frames and extract spectra 
+\item Correct for extinction
+\item Get flux curve, ratio of true flux to observed counts
+\item Derive throughput. 
+$$Counts(DN/pix) = Flux (ergs/cm^2/s/\AA) A T t {\lambda\over hc} D {1\over G}$$
+where $A$ is the telescope collecting area, $T$ is the system throughput,
+$t$ is the exposure time, $D$ is the spectrograph dispersion, and $G$ is
+the gain. The flux curve, $F$ is $Flux/Counts$ So we have:
+$$T = {hc \over \lambda} {G\over F A t D}$$
+
+\end{itemize}
+
+\section{Monitoring with SPICAM}
+
+Monitoring throughput with SPICAM involves observations of some photometric
+standards; fields are available which have several stars in a single
+pointing.
+
+\subsection{Observing procedure}
+
+\begin{itemize}
+
+\item SPICAM should be mounted with a filter wheel which contains the standard
+UBVRI filters. It is important that we always use the same set of filters!
+
+\item You should use file names of the form yymmdd with the UT date,
+e.g., the night of March 6/7 2001 should use 010307 for the root file name.
+Keep a log of the exposures with their associated exposure numbers.
+
+\item Take 5 biases, to be used to check the readout noise.
+
+\item Take 5 flat fields with the V filter using the bright quartz lamps, 
+mirror covers closed, exposure time 2 seconds, to be used to check the gain.
+If no twilight flats can be obtained, take mirror flats in all filters.
+
+\item If at all possible, obtain twilight flats, with the shortest
+wavelengths being taken closest to sunset/sunrise.
+
+\item Slew to one of the following photometric standards fields.
+I have a  REMARK coordinate file (\htmladdnormallink{throughput.rmk}{../throughput.rmk}) which has these coordinates already entered.
+
+\begin{tabular}{lllllllll}
+Name&$\alpha_{2000}$&$\delta_{2000}$&Rotation&U Exptime&B Exptime& V exptime & R exptime & I exptime\\
+PG0231+051&02:33:41.00&+05:18:40.0&0&120&30&10&5&5\\
+RU149     &07:24:16.00&-00:32:17.0&0&120&30&10&5&5\\
+PG0942-029&09:45:12.00&-03:08:00.0&0&120&30&10&5&5\\
+PG1047+003&10:50:06.00&-00:01:00.0&0&120&30&10&5&5\\
+PG1323-086&13:25:44.00&-08:49:50.0&0&120&30&10&5&5\\
+PG1525-071&15:28:13.00&-07:15:54.0&0&120&30&10&5&5\\
+PG1528+062&15:30:45.00&+06:01:11.0&0&120&30&10&5&5\\
+PG1633+099&16:35:34.00&+09:46:22.0&0&120&30&10&5&5\\
+PG1657+078&16:59:32.00&+07:42:50.0&0&120&30&10&5&5\\
+PG2213-006&22:16:22.00&-00:21:49.0&0&120&30&10&5&5\\
+PG2331+055&23:33:49.00&+05:46:49.0&0&120&30&10&5&5\\
+PG2336+004&23:38:43.00&+00:42:24.0&0&120&30&10&5&5
+\end{tabular}
+
+\item Take observations using exposure times 120, 30, 10, 5, and for UBVRI.
+
+\item Do multiple fields, trying to span a range of airmass between
+an airmass of 1 and 2.
+
+\end{itemize}
+
+\subsection{Reduction procedure}
+
+\begin{itemize}
+\item Construct flat fields for each filter
+
+\item Do stellar photometry on reduced frames
+
+\item Solve for photometric zeropoints and transformation coefficients,
+extinction coefficients if multiple airmasses were observe, else using
+standard extinction coefficients.
+\end{itemize}
+
+\section{Monitoring with NA2 guider}
+
+Monitoring throughput with the NA2 guider is essentially the same as
+using SPICAM.
+
+\end{document}

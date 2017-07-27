@@ -1,0 +1,70 @@
+Catalogs
+dss        ONOFF    0
+dss_dir    URL
+gsc        ONOFF    1
+gsc_dir    URL
+gsc_min    1.0:19.0 9.0
+gsc_max    1.0:19.0 12.0
+rngc       ONOFF    1
+rngc_dir   URL
+rngc_min   1.0:19.0 5.0
+rngc_max   1.0:19.0 15.0
+usno_dir   URL
+usno       ONOFF    0
+usno_min   1.0:19.0 9.0
+usno_max   1.0:19.0 12.0
+System
+Base       READONLY
+Register_Offset READONLY 0 
+Mode       0:15     0
+Shutter_speed  normal|fast|dual normal
+Test       0:15     0
+Test2      0:15     0
+Guider_Relays    ONOFF    0
+Trigger    ONOFF    0
+Frame_Timeout 0:60  60
+Line_Timeout  0:60  1
+Cable      READONLY 0
+Data_Bits  READONLY 16
+MaxBinX    1:8      8
+MaxBinY    1:63     63
+Geometry
+Columns    1:4096  
+Rows       1:4096
+BIC        1:4096   5
+BIR        1:4096   3
+SkipC      0:32767  4
+SkipR      0:32767  2
+StartCol   1:4096   1
+StartRow   1:4096   1
+NumCols    1:4096
+NumRows    1:4096
+BinX       1:8      1
+BinY       1:63     1
+HFlush     1:8      1
+VFlush     1:63     1
+Driftscan  ONOFF    0
+Temperature
+Control    ONOFF    1
+Target     -40.0:40.0  0.0
+Backoff    0.01:10.00  2.0
+Cal        -40.0:40.0  0.0
+Scale      -10.0:10.0  1.0
+CCD
+Sensor     READONLY 0
+Color      READONLY 0
+Gain       READONLY 0
+Noise      READONLY 0
+PixelXSize READONLY 0
+PixelYSize READONLY 0
+Filter
+Type       READONLY None
+Position   0:16     0
+StepPos    0:32767  0
+Telescope
+scope      Manual|LX200|LX8|ETX90  Manual
+link       none|serial|parallel|usb|network  none
+remote     localhost|   localhost
+fratio     1.0:30.0 8.0
+guide      ONOFF    0
+perrcor    ONOFF    0

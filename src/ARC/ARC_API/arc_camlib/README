@@ -1,0 +1,12 @@
+Doing a top-level make (from this directory) should compile everything
+except cfitsio (which generally should already be compiled).
+
+See the README file in ./astropciV1.7 for instructions on installing
+the astropci module.  Basically run make and then run the astropci_load
+script as root.  The astropci_load and astropci_unload scripts have
+been aliased as apci_load and apci_unload in the observer account
+.bashrc with authority to run them as sudo root.
+
+After this, you can try running the testcam program located in ./testcam.
+There is a link to the file in ~/bin which should be in the path for
+the observer account.

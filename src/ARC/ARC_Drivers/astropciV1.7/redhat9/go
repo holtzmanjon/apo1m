@@ -1,0 +1,1 @@
+cp astropci.o /lib/modules/2.4.20-8/kernel/drivers/astropci/astropci.o

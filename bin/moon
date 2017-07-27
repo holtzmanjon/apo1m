@@ -1,0 +1,10 @@
+#!/bin/csh
+set phase = `skycalc < airmass.inp | grep illum | awk -F\; '{print $2}' | awk '{print $1}'`
+if ( $phase == "" ) then
+  echo 0
+  echo 1000
+else 
+  echo $phase
+#  skycalc < airmass.inp | grep moon | awk '{print $8}'
+  skycalc < airmass.inp | grep moon | awk -Fdegr '{print $1}' | awk '{print $NF}'
+endif

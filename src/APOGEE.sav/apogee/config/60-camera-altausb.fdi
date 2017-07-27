@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1"?> <!-- -*- SGML -*- -->
+<deviceinfo version="0.2">
+ <device>
+  <match key="info.bus" string="usb">
+   <match key="usb.vendor_id" int="4700">
+    <match key="usb.product_id" int="16">
+     <merge key="info.category" type="string">camera</merge>
+     <append key="info.capabilities" type="strlist">camera</append>
+     <merge key="camera.access_method" type="string">proprietary</merge>
+     <merge key="camera.altausb.name" type="string">Apogee ALTA-U</merge>
+     <merge key="camera.altausb.support" type="bool">true</merge>
+    </match>
+   </match>
+  </match>
+  <match key="info.bus" string="usb">
+   <match key="usb.vendor_id" int="4700">
+    <match key="usb.product_id" int="32">
+     <merge key="info.category" type="string">camera</merge>
+     <append key="info.capabilities" type="strlist">camera</append>
+     <merge key="camera.access_method" type="string">proprietary</merge>
+     <merge key="camera.altausb.name" type="string">Apogee ALTA-F/ASCENT</merge>
+     <merge key="camera.altausb.support" type="bool">true</merge>
+    </match>
+   </match>
+  </match>
+  <match key="info.bus" string="usb">
+   <match key="usb.vendor_id" int="4700">
+    <match key="usb.product_id" int="48">
+     <merge key="info.category" type="string">camera</merge>
+     <append key="info.capabilities" type="strlist">camera</append>
+     <merge key="camera.access_method" type="string">proprietary</merge>
+     <merge key="camera.altausb.name" type="string">Apogee Aspen</merge>
+     <merge key="camera.altausb.support" type="bool">true</merge>
+    </match>
+   </match>
+  </match>
+ </device>
+</deviceinfo>

@@ -1,0 +1,106 @@
+#!/bin/csh
+
+set index = -1
+
+if ( $2 == tocc ) then
+  set index = 1
+else if ( $2 == eyeball ) then
+  set index = 2
+else if ( $2 == weather ) then
+  set index = 3
+else if ( $2 == autofill ) then
+  set index = 7
+else if ( $2 == tempagera ) then
+  set index = 8
+else if ( $2 == video ) then
+  set index = 10
+else if ( $2 == domefan ) then
+  set index = 12
+else if ( $2 == louvers ) then
+  set index = 13
+else if ( $2 == lights ) then
+  set index = 14
+else if ( $2 == rackfan ) then
+  set index = 15
+else if ( $2 == motors ) then
+  set index = 16
+#else if ( $2 == fiberusb ) then
+#  set index = 17
+#else if ( $2 == mirfan ) then
+#  set index = 18
+else if ( $2 == hsp ) then
+  set index = 18
+else if ( $2 == alta ) then
+  set index = 19
+#  set index = 20
+#else if ( $2 == netswitch ) then
+#  set index = 19
+else if ( $2 == apogee ) then
+  set index = 20
+#  set index = 19
+else if ( $2 == leach ) then
+  set index = 21
+#  set index = 18
+#else if ( $2 == roper ) then
+#  set index = 22
+#else if ( $2 == dorothea ) then
+#  set index = 23
+#else if ( $2 == astrotimer ) then
+#  set index = 24
+else if ( $2 == tempagerb ) then
+  set index = 24
+#  set index = 17
+else if ( $2 == ccd1m ) then
+  set index = 32
+else
+  echo "Target must be one of: "
+  echo " 1. tocc"
+  echo " 2. eyeball"
+  echo " 3. weather"
+  echo " 7. autofill"
+  echo " 8. tempagera"
+  echo " 10. video"
+  echo " 12. domefan"
+  echo " 13. louvers"
+  echo " 14. lights"
+  echo " 15. rackfan"
+  echo " 16. motors"
+
+# 4-switch
+#  echo " 17. tempagerb"
+#  echo " 18. leach"
+#  echo " 19. apogee"
+#  echo " 20. hsp"
+
+# APC
+#  echo " 17. fiberusb"
+#  echo " 18. mirfan"
+  echo " 18. hsp"
+  echo " 19. alta"
+  echo " 20. apogee"
+  echo " 21. leach"
+  echo " 24. tempagerb"
+
+  echo " 32. ccd1m"
+endif
+
+if ( $index > 0 ) then
+  set motoron = Off
+  if ( $2 == tocc && $1 == on ) then
+    set motoron = `power1m list motors | awk '{print $2}'`
+    if ( $motoron == On ) then
+      echo "Turning motor power off first!"
+      /usr/local/bin/ms off 16
+    endif
+  endif
+  /usr/local/bin/ms $1 $index
+  if ( $motoron == On ) then
+    sleep 40
+    /usr/local/bin/ms on 16
+    echo "Turning motor power back on!"
+    sleep 7
+  endif
+  if ( $2 == motors && $1 == on ) then
+    sleep 7
+  endif
+endif

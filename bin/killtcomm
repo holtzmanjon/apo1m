@@ -1,0 +1,36 @@
+#!/bin/sh
+PS=ps
+BIN=/usr/local/bin
+kill -KILL `$PS ax | grep "accd" | grep -v "grep" | \
+  awk '{print $1 }'` 2> /dev/null
+#kill -KILL `$PS x | grep "$BIN/lccd" | grep -v "grep" | \
+#  awk '{print $1 }'` 2> /dev/null
+kill -KILL `$PS x | grep "$BIN/fccd" | grep -v "grep" | \
+  awk '{print $1 }'` 2> /dev/null
+kill -KILL `$PS x | grep "$BIN/gccd" | grep -v "grep" | \
+  awk '{print $1 }'` 2> /dev/null
+#kill -KILL `$PS x | grep "$BIN/ccd" | grep -v "grep" | \
+#  awk '{print $1 }'` 2> /dev/null
+kill -KILL `$PS x | grep "$BIN/port"  | grep -v "grep" | \
+  awk '{print $1 }'` 2> /dev/null
+kill -KILL `$PS x | grep "$BIN/status"  | grep -v "grep" | \
+  awk '{print $1 }'` 2> /dev/null
+kill -KILL `$PS x | grep "$BIN/command"  | grep -v "grep" | \
+  awk '{print $1 }'` 2> /dev/null
+kill -KILL `$PS x | grep "tcomm_xterm" | grep -v "grep"  | \
+  awk '{print $1 }'` 2> /dev/null
+kill -KILL `$PS x | grep "tcomm_xterm" | grep -v "grep"  | \
+  awk '{print $1 }'` 2> /dev/null
+kill -KILL `$PS x | grep "tcomm_xterm" | grep -v "grep"  | \
+  awk '{print $1 }'` 2> /dev/null
+kill -KILL `$PS x | grep "tcomm_xterm" | grep -v "grep"  | \
+  awk '{print $1 }'` 2> /dev/null
+kill -KILL `$PS x | grep "tcomm_xterm" | grep -v "grep"  | \
+  awk '{print $1 }'` 2> /dev/null
+kill -KILL `$PS x | grep "power" | grep -v "grep"  | \
+  awk '{print $1 }'` 2> /dev/null
+kill -KILL `$PS x | grep "power" | grep -v "grep"  | \
+  awk '{print $1 }'` 2> /dev/null
+kill -KILL `$PS x | grep "shutter35m" | grep -v "grep"  | \
+  awk '{print $1 }'` 2> /dev/null
+

@@ -1,0 +1,28 @@
+14:48:46 **** Incremental Build of configuration Release_x64 for project CArcDeinterlace ****
+make all 
+Building file: ../src/ArcDeinterlaceCAPI.cpp
+Invoking: GCC C++ Compiler
+g++ -O3 -Wall -c -fmessage-length=0 -std=c++11 -fPIC -MMD -MP -MF"src/ArcDeinterlaceCAPI.d" -MT"src/ArcDeinterlaceCAPI.d" -o"src/ArcDeinterlaceCAPI.o" "../src/ArcDeinterlaceCAPI.cpp"
+Finished building: ../src/ArcDeinterlaceCAPI.cpp
+ 
+Building file: ../src/CArcDeinterlace.cpp
+Invoking: GCC C++ Compiler
+g++ -O3 -Wall -c -fmessage-length=0 -std=c++11 -fPIC -MMD -MP -MF"src/CArcDeinterlace.d" -MT"src/CArcDeinterlace.d" -o"src/CArcDeinterlace.o" "../src/CArcDeinterlace.cpp"
+Finished building: ../src/CArcDeinterlace.cpp
+ 
+Building file: ../src/DllMain.cpp
+Invoking: GCC C++ Compiler
+g++ -O3 -Wall -c -fmessage-length=0 -std=c++11 -fPIC -MMD -MP -MF"src/DllMain.d" -MT"src/DllMain.d" -o"src/DllMain.o" "../src/DllMain.cpp"
+Finished building: ../src/DllMain.cpp
+ 
+Building target: libCArcDeinterlace.so
+Invoking: GCC C++ Linker
+g++ -shared -o"libCArcDeinterlace.so"  ./src/ArcDeinterlaceCAPI.o ./src/CArcDeinterlace.o ./src/DllMain.o   -ldl
+Finished building target: libCArcDeinterlace.so
+ 
+make --no-print-directory post-build
+cp /home/streit/Documents/ARC_API/3.5/CArcDeinterlace/Release_x64/libCArcDeinterlace.so /home/streit/Documents/ARC_API/3.5/Release/x64
+ 
+
+14:48:47 Build Finished (took 811ms)
+

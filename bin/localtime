@@ -1,0 +1,2 @@
+skycalc < lst.inp | grep -i "Local Date" | awk '{print substr($0,45,12)}'
+

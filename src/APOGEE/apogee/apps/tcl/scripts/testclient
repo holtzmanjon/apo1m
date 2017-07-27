@@ -1,0 +1,44 @@
+#!/bin/sh
+
+echo "Running apogeeserver test"
+echo "Testing status"
+/opt/apogee/apps/tcl/scripts/apogeeclient status
+echo "Testing snapshot, image is testserver.fits"
+/opt/apogee/apps/tcl/scripts/apogeeclient snapshot testserver 2 1
+echo "Testing fan speed ..... fast"
+/opt/apogee/apps/tcl/scripts/apogeeclient fan fast
+sleep 5
+echo "Testing fan speed ..... off"
+/opt/apogee/apps/tcl/scripts/apogeeclient fan off
+sleep 5
+echo "Testing fan speed ..... medium"
+/opt/apogee/apps/tcl/scripts/apogeeclient fan medium
+echo "Testing setpoint on"
+/opt/apogee/apps/tcl/scripts/apogeeclient setpoint on
+echo "Testing setpoint set -20"
+/opt/apogee/apps/tcl/scripts/apogeeclient setpoint set -20.0
+echo "Testing getpoint"
+/opt/apogee/apps/tcl/scripts/apogeeclient getpoint
+echo "Testing header items"
+/opt/apogee/apps/tcl/scripts/apogeeclient setinfo ra 12:34:56.7
+/opt/apogee/apps/tcl/scripts/apogeeclient setinfo dec 45:32:10.0
+/opt/apogee/apps/tcl/scripts/apogeeclient setinfo equinox 2008.1
+/opt/apogee/apps/tcl/scripts/apogeeclient setinfo latitude 20:00:00
+/opt/apogee/apps/tcl/scripts/apogeeclient setinfo longitude 30:00:00
+/opt/apogee/apps/tcl/scripts/apogeeclient setinfo name John Doe
+/opt/apogee/apps/tcl/scripts/apogeeclient setinfo observer John Q Doe
+/opt/apogee/apps/tcl/scripts/apogeeclient setinfo telescope Dob1
+/opt/apogee/apps/tcl/scripts/apogeeclient setinfo instrument prime
+/opt/apogee/apps/tcl/scripts/apogeeclient setinfo target of opportunity
+/opt/apogee/apps/tcl/scripts/apogeeclient setinfo filtername clear
+/opt/apogee/apps/tcl/scripts/apogeeclient setinfo site Tucson
+echo "Testing snapshot, image is testheader.fits"
+/opt/apogee/apps/tcl/scripts/apogeeclient snapshot testheader 2 1
+sleep 3
+echo "Tests completed"
+exit
+
+
+
+
+

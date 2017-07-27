@@ -1,0 +1,2823 @@
+/* program to accept commands from command program over fifo and send them
+    to ccd camera, get responses and send them back */
+#undef DEBUG
+#define HAVELOG
+#define ROT
+#define DISPLAY
+#undef HAVEDARK
+#undef HAVEFLAT
+
+#include <stdio.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/uio.h>
+#include <unistd.h>
+#include <sys/time.h>
+#include <time.h>
+#include <signal.h>
+#include <string.h>
+#include <math.h>
+#include <sys/resource.h>
+
+#include "mytype.h"
+#include "filter.h"
+#include "slalib.h"
+#include "slamac.h"
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/keysym.h>
+#include <X11/Xresource.h>
+//#include "xtv/zimage.h"
+Display *dpy;
+int imtvnum_ = 0;
+
+#include "power.h"
+int plug_status[9];
+
+#include "ccd.h"
+
+void inheadset(char *, int, char *);
+void fheadset(char *, double, char *);
+void lheadset(char *, int, char *);
+void cheadset(char *, char *, char *);
+int process_command(char *);
+int process_exposure();
+void record_command();
+char *read_fromcom();
+#ifdef REMOTE
+char *getresp(FILE *);
+void send_message();
+char *get_message();
+char *restart = "/export/spec/restart";
+#endif
+int display_command(char *, float *);
+int misc_command(char *);
+int camera_command(char *);
+int remote_command(char *);
+void command_help();
+#if defined(sun) || defined(linux)
+int nint(float val);
+#endif
+void writeccdstatus(struct CCDSTATUS,char *,char *);
+void myremove(char *);
+void inittv();
+void setup_server(int *sock,int port,char *server);
+void setup_client(int *client,int port,char *server);
+void writeterm(char *);
+void readterm(char *);
+void inttvbox(int *x0, int *y0, int *nx, int *ny);
+void inttvcross(int *xc, int *yc);
+float median(unsigned long, float *);
+float variance(unsigned long, float *, double);
+void update_status(int);
+void readusno(char *, double, double, struct CCDSTATUS *);
+#define COM_UNREC 1
+#define COM_WRONG 2
+#define COM_UNSUCCESSFUL 3
+
+#define MAXCOMMAND 8000
+
+#define MIN(a,b) (((a) < (b)) ? (a) : (b))
+#define MAX(a,b) (((a) > (b)) ? (a) : (b))
+
+struct CCDSTATUS ccdinfo;
+struct STATUS telinfo;
+
+unsigned char *ccddata;
+//unsigned char ccddata[NSPE+2];
+#ifdef HAVEDARK
+unsigned char darkdata[NSPE+2];
+#endif
+#ifdef HAVEFLAT
+float flatdata[1080960];
+#endif
+
+double x_home_pos_arcsec = 900.;
+
+
+FILE *file;
+char message[MAXCOMMAND];
+
+FILE *infile, *frommasterfp, *tomasterfp;
+int idepth=0;
+int havepipe=0;
+
+struct sockstruct {
+  int port;
+  char server[24];
+} toport;
+
+#ifdef REMOTE
+#ifdef SPEC
+char *comfile = "/export/spec/speccmd.doc";
+char *comfilecheck = "/export/spec/speccmd.fin";
+char *respfile = "/export/spec/specresp.doc";
+char *respfilecheck = "/export/spec/specresp.fin";
+char *ccdtempfile = "/export/spec/temp.spe";
+#else
+char *comfile = "/export/pi/picmd.doc";
+char *comfilecheck = "/export/pi/picmd.fin";
+char *respfile = "/export/pi/pirespon.doc";
+char *respfilecheck = "/export/pi/pirespon.fin";
+char *ccdtempfile = "/export/pi/temp.spe";
+#endif
+#endif
+
+#ifdef GUIDER
+char *cstatusfile = "guidestatus.doc";
+char *cstatusreadyfile = "guidestatus.fin";
+#else
+char *cstatusfile = "ccdstatus.doc";
+char *cstatusreadyfile = "ccdstatus.fin";
+#endif
+
+char *tstatusfile = "/export/tocc/statr.doc";
+char *tstatusreadyfile = "/export/tocc/statr.doc";
+
+FILE *lfile, *rfile, *cfile;
+int ropen = 0;
+int copen = 0;
+
+#ifdef DISPLAY
+extern int tvinit;
+int fullscale = 0;
+int skyscale = 0;
+int newscale = 1;
+double dspan, dzero;
+int ncol = NCOL ;
+int nrow = NROW ;
+float tvimage[NROW][NCOL];
+int i;
+int status;
+#endif
+
+char term[2];
+double ccdmean, ccdbias, ccdsky, ccdmax, ccdmin, ccdvar;
+int bell = 1;
+
+#ifdef HAVETOCC
+BOOL havetocc = TRUE;
+#else
+BOOL havetocc = FALSE;
+#endif
+BOOL repeat = FALSE;
+BOOL fast = FALSE;
+
+double **ifoc;
+double **foc;
+int calc_focus(double **, struct STATUS *);
+
+char destdir[80];
+char destmach[80];
+char destacct[80];
+
+BOOL ctrlc=FALSE;
+void trap();
+void window_resize();
+
+int client;
+int dothresh=1;
+
+main(argc, argv)
+int argc;
+char *argv[];
+{
+  double **junk;
+  double vec[3], out[3];
+  int status, n, nselect, statusoffset, uid;
+  char command[MAXCOMMAND], ans[10];
+  char *s, *buf;
+  fd_set readfds;
+  struct timeval timeout;
+  int maxset;
+  int sock, port;
+  char server[24];
+  int ts, nfail;
+  double t;
+
+#ifdef CURSES
+  win_init();
+  signal(SIGINT,trap);
+  signal(SIGWINCH,window_resize);
+#else
+  signal(SIGINT,SIG_IGN);
+#endif
+
+/* Autoftp destination */ 
+  umask(000);
+  sprintf(destdir,"/1m");
+  sprintf(destmach,"ganymede.nmsu.edu");
+  sprintf(destacct,"observe");
+
+/* Invert the focus matrix */
+  foc = (double **)malloc(3*sizeof(double *));
+  ifoc = (double **)malloc(3*sizeof(double *));
+  junk = (double **)malloc(3*sizeof(double *));
+  setup_focus(foc);
+  setup_focus(ifoc);
+  setup_focus(junk);
+  gaussj(ifoc,3,junk,3);
+
+/* Open the socket for communication with UNIX command program */
+  writeterm("startup up ccd server socket...\n");
+  port = -1;
+  uid=0;
+#ifdef GUIDER
+  port = 0;
+  statusoffset=100;
+  sprintf(server,"togccd");
+#endif
+#ifdef SLITVIEW
+  uid=500;
+  port = -1;
+  sprintf(server,"192.41.211.110");
+#endif
+#ifdef CCD1M
+  port = 1050;
+  statusoffset=200;
+#ifdef APOGEE
+  sprintf(server,"192.41.211.21");
+  while (power_status(plug_status) < 0) {
+    sleep(2);
+  }
+  if (plug_status[APOGEEPOW] == OFF) {
+    fprintf(stderr,"Apogee power is OFF\n");
+    fprintf(stderr,"Turning it on now...\n");
+    power_on(APOGEEPOW);
+    sleep(2);
+  }    
+#endif
+#ifdef LCCD
+  sprintf(server,"192.41.211.219");
+#endif
+#endif
+
+  if (port>=0) setup_server(&sock,port,server);
+
+  /* Information for socket connection to port program */
+  toport.port =-1;
+#ifdef GUIDER
+  toport.port = 0;
+  sprintf(toport.server,"toport");
+#endif
+#ifdef CCD1M
+  toport.port = 1050;
+  sprintf(toport.server,"192.41.211.18");
+#endif
+
+#ifdef REMOTE
+  file = fopen(restart,"r");
+  if (file != NULL) {
+      fclose(file);
+      if (ropen == 1) {
+        writeterm("closing rfile\n");
+        fclose(rfile);
+      }
+      ropen = 0;
+      remove(restart);
+  }
+#endif
+
+#ifdef APOGEE
+  ccd_initialize(uid);
+#endif
+#ifdef LCCD
+  lccd_initialize(buf);
+#else
+  buf = (char *)malloc(NSPE*sizeof(char));
+#endif
+  ccddata = buf;
+
+/* Initialize some stuff */
+  sprintf(ccdinfo.filename,"dummy");
+  sprintf(command,"FILTER 4");
+  process_command(command);
+  sprintf(command,"EXPOSURE 1.");
+  process_command(command);
+  writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+  sprintf(command,"INITCCD");
+  process_command(command);
+
+  writeterm("Command (? for help): ");
+
+/* Now we just sit and wait until we get a command to send */
+  nselect = 0;
+
+  while (1) {
+
+#ifdef REMOTE
+/* Has the CCD program sent a message? If so, print it out */
+#ifdef NEWCOM
+    while ((s=get_message())!=NULL) 
+      writeterm(s);
+#else
+    s=get_message();
+    if (s != NULL) writeterm(s);
+#endif
+#endif
+
+#ifdef APOGEE
+/* Update CCD temperature */
+    if (nselect==0) {
+      sprintf(command,"CCDTEMP");
+      process_command(command);
+    }
+#endif
+
+    if (ctrlc) repeat=FALSE;
+    ctrlc = FALSE;
+
+    if (repeat) {
+      sprintf(command,"EXP %lf",ccdinfo.exposure);
+      process_command(command);
+    }
+
+/*  Update information on telescope status */
+#ifdef HAVETOCC
+      // while (readstatus(tstatusfile, tstatusreadyfile, &telinfo) != 0) {} 
+#endif
+
+/* Check to see whether anything has come in on the fifos or STDIN
+   If not, just wait */
+    FD_ZERO(&readfds);
+    FD_CLR(sock,&readfds);
+    FD_CLR(STDIN_FILENO,&readfds);
+#ifdef DISPLAY
+    if (tvinit==1) FD_CLR(ConnectionNumber(dpy),&readfds);
+#endif
+    if (sock>0) FD_SET(sock,&readfds);
+    FD_SET(STDIN_FILENO,&readfds);
+#ifdef DISPLAY
+    if (tvinit==1) FD_SET(ConnectionNumber(dpy),&readfds);
+#endif
+    if (repeat)
+      timeout.tv_sec = 0;
+    else
+      timeout.tv_sec = 5;
+    timeout.tv_usec = 100000;
+
+#ifdef linux
+    maxset = 0;
+    maxset = sock+1 > maxset ? sock+1 : maxset ;
+    #ifdef DISPLAY
+    if (tvinit==1) 
+      maxset = 
+       ConnectionNumber(dpy)+1 > maxset ? ConnectionNumber(dpy)+1 : maxset ;
+    #endif
+    maxset = STDIN_FILENO+1 > maxset ? STDIN_FILENO+1 : maxset ;
+    if ((nselect=select(maxset,&readfds,NULL,NULL,&timeout))>0 ) {
+#else
+    if (select(FD_SETSIZE,&readfds,NULL,NULL,&timeout)>0 ) {
+#endif
+
+/* Process a keyboard command */
+      if (FD_ISSET(STDIN_FILENO,&readfds)) {
+        readterm(command);
+        status = process_command(command);
+        writeterm("Command (? for help): ");
+      }
+
+/* Process command from command pipe */
+      else if (FD_ISSET(sock,&readfds)) {
+        read_server(&sock,&client,port,server,command,sizeof(command));
+        /* Echo command */
+        sprintf(message,"%s\n",command);
+        writeterm(message);
+        status = process_command(command);
+        if (status == 0) 
+          write (client,"DONE: 0\n",8);
+        else {
+          sprintf(command,"DONE: %3d\n",statusoffset+status);
+          write (client,command,10);
+          writeterm("Command: ");
+        }
+        close(client);
+      }
+
+#ifdef DISPLAY
+/* Process display input */
+      else if (tvinit==1 && FD_ISSET(ConnectionNumber(dpy),&readfds)) {
+        xtv_refresh();
+      }
+#endif
+    }
+  }
+}
+
+/* process_command takes care of actually processing commands.
+   It also updates the CCD status information depending
+   on the command given. It also will handling writing/displaying image if
+   command involves an exposure */
+int process_command(char *command)
+{
+  char message[MAXCOMMAND];
+  char com1[80], com2[80], newcom[80];
+  char *s;
+  int status, n, i,j, ifile, nfail;
+  BOOL is_exposure;
+  size_t nin = NSPE;
+#ifdef DISPLAY
+  float *fdata, amin, amax;
+#endif
+  double junk;
+  unsigned short *data;
+
+/* split up command into words */
+   com1[0] = 0;
+   com2[0] = 0;
+   sscanf(command,"%s%s",com1, com2);
+   strupr(com1);
+
+/* If command was for an exposure, then query the telescope status file
+         for telescope information to go into fits header */
+   is_exposure = FALSE;
+   #if defined(SPEC)||defined(APOGEE)
+   if (strcmp(com1,"EXP") == 0 || strcmp(com1,"DARK") == 0) {
+         sscanf(com2,"%lf",&ccdinfo.exposure);
+#ifndef STANDALONE
+         ccdinfo.exposure /= 1000.;
+#endif
+	 usleep(1000000);
+   #else
+   if (strcmp(com1,"COLLECTDATA") == 0) {
+   #endif
+         is_exposure = TRUE;
+         ccdinfo.expstatus = 1;
+         #ifdef HAVETOCC
+         nfail=0;
+         while (havetocc && nfail<100 &&
+                readstatus(tstatusfile, tstatusreadyfile, &telinfo) != 0) {
+           fprintf(stderr,"x");
+           nfail++;
+         }
+         if (nfail>=100) telinfo.current_utc=-99;
+         #endif
+#ifdef STANDALONE
+         ccdinfo.end_time = time(NULL) + ccdinfo.exposure;
+#else
+         ccdinfo.end_time = telinfo.current_utc + ccdinfo.exposure/24./3600.;
+         ccdinfo.end_time += 2*DTIME/3600./24.;
+#endif
+#ifdef PI
+	 ccdinfo.ccd_temp = telinfo.ccd_temp;
+#endif
+#ifdef APOGEE
+         sprintf(newcom,"CCDTEMP");
+         process_command(newcom);
+#endif
+         writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+   } 
+
+/* Process any misc commands - these don't require CCD communication. If
+   command is recognized, misc_command returns 0 if no error, >0 if error.
+   If command is unrecognized by misc_command, -1 is returned and we proceed 
+   on. 
+*/
+   status = misc_command(command);
+   if (status>=0) return(status);
+
+#ifdef DISPLAY
+/* Process any display commands - these don't require CCD communication */
+   fdata = (float *)tvimage;
+   status = display_command(command,fdata);
+   if (status>=0) return(status);
+#endif
+
+/* Process any direct CCD commands */
+   status = camera_command(command);
+   if (status>=0) return(status);
+
+/* If we are here, we have a command to send to remote computer */
+#ifdef REMOTE
+   status = remote_command(command);
+   if (status>0) return(status);
+
+/* Command has returned successfully!
+   Update the ccdinfo block and output the new status */
+   record_command(command);
+
+   if (is_exposure) {
+     /* open the input SPE file */
+     if ((ifile=open(ccdtempfile,O_RDWR)) <= 0) {
+       writeterm("error opening input temp.spe file\n");
+       return(-1);
+     }
+ 
+     /* read the input SPE file */
+     if (read(ifile,ccddata,nin)==-1)
+           perror("read error");
+     close(ifile);
+     #ifdef SPEC
+     remove(ccdtempfile);
+     #endif
+     status = process_exposure();
+   }
+   return(status);
+#endif
+   if (strlen(command) > 0) {
+     sprintf(message,"unknown command: %s\n", command);
+     writeterm(message);
+   }
+   return(0);
+
+}
+
+void record_command(char *command)
+{
+  char com1[80], com2[80], newcom[80];
+
+  com1[0]=0;
+  com2[0]=0;
+  sscanf(command,"%s%s",com1, com2);
+  strupr(com1);
+
+  readccdstatus(cstatusfile,cstatusreadyfile,&ccdinfo);
+  if (strcmp(com1,"CLEANS") == 0) 
+    sscanf(com2,"%d",&ccdinfo.cleans);
+  else if (strcmp(com1,"EXPOSURE") == 0)  
+    sscanf(com2,"%lf",&ccdinfo.exposure);
+  else if (strcmp(com1,"FILTER") == 0)  
+    sscanf(com2,"%d",&ccdinfo.filter);
+  else if (strcmp(com1,"FILTFOC") == 0) 
+    sscanf(com2,"%d",&ccdinfo.filtfoc);
+  else if (strcmp(com1,"NUMSEQ") == 0) 
+    sscanf(com2,"%d",&ccdinfo.numseq);
+  else if (strcmp(com1,"SETINCVAL") == 0) 
+    sscanf(com2,"%d",&ccdinfo.incval);
+  else if (strcmp(com1,"SHUTTERCMD") == 0) 
+    sscanf(com2,"%d",&ccdinfo.shutter);
+  else if (strcmp(com1,"NAME") == 0) 
+    sscanf(com2,"%s",ccdinfo.filename);
+  else if (strcmp(com1,"EXPOSURE") == 0) 
+    sscanf(com2,"%lf",&ccdinfo.exposure);
+#ifdef SPEC
+  else if (strcmp(com1,"UPDATE") == 0) 
+    sscanf(com2,"%d",&ccdinfo.guide_update);
+  else if (strcmp(com1,"SIZE") == 0) 
+    sscanf(com2,"%d",&ccdinfo.guide_size);
+  else if (strcmp(com1,"GUIDELOC") == 0)  {
+    sscanf(com2,"%lf",&ccdinfo.cy);
+    sprintf(message,"Issue: SETINST 2 %f %f %f %f %f\n",
+            ccdinfo.sx, ccdinfo.sy, ccdinfo.cx, ccdinfo.cy, ccdinfo.theta);
+    writeterm(message);
+    sprintf(newcom,"SETINST 2 %f %f %f %f %f\n",
+            ccdinfo.sx, ccdinfo.sy, ccdinfo.cx, ccdinfo.cy, ccdinfo.theta);
+    status = sendport(toport.port,toport.server,newcom);
+  }
+  else if (strcmp(com1,"GUIDEHOME") == 0)  {
+    sprintf(message,"Issue: SETINST 2 %f %f %f %f %f\n",
+         ccdinfo.sx, ccdinfo.sy, ccdinfo.cx, x_home_pos_arcsec, ccdinfo.theta);
+    writeterm(message);
+    sprintf(newcom,"SETINST 2 %f %f %f %f %f\n",
+         ccdinfo.sx, ccdinfo.sy, ccdinfo.cx, x_home_pos_arcsec, ccdinfo.theta);
+    status = sendport(toport.port,toport.server,newcom);
+  }
+  else if (strcmp(com1,"GUIDEOFF") == 0) 
+    ccdinfo.guiding = 0;
+#endif
+  writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+}
+
+int process_exposure()
+{
+  char command[200];
+  int ifile,i,j;
+#ifdef DISPLAY
+  float *fdata, amin, amax;
+#endif
+  FILE *fp;
+  static int image=0;
+
+  /* Write out FITS image */
+  ccdinfo.expstatus = 2;
+  writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+  writefits(&ccdinfo,&telinfo);
+
+  /* Transfer file if necessary */
+  if (ccdinfo.autoxfer) {
+     /* Copy the file */
+#ifdef STANDALONE
+     sprintf(command, "scp %s/%s.%04d.fits %s@%s:%s/%s &",
+               ccdinfo.dirname,ccdinfo.filename,ccdinfo.incval,
+               destacct, destmach, destdir,ccdinfo.dirname);
+#else
+     sprintf(command, "scp %s/%s.%03d.fits %s@%s:%s/%s &",
+               ccdinfo.dirname,ccdinfo.filename,ccdinfo.incval,
+               destacct, destmach, destdir,ccdinfo.dirname);
+#endif
+     sprintf(message,"%s\n",command);
+     writeterm(message);
+     system(command);
+
+  }
+
+#ifdef DISPLAY
+  if (ccdinfo.autodisplay) {
+    /* Convert image to floating point, and compute bias and mean in process */
+    fdata = (float *)tvimage;
+    convert_image(fdata, ccdinfo.ny, ccdinfo.nx, &amin, &amax, &ccdinfo);
+  
+    /* Display image */
+    ccdinfo.expstatus = 3;
+    writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+
+    if (tvinit==0) inittv();
+
+    if (fullscale == 1) {
+            dspan = amax-amin;
+            dzero = amin;
+    } else if (skyscale == 1) {
+	    dspan = MAX(50.,4.*ccdmean);
+            dzero = ccdbias - 25;
+	    dspan = MAX(50.,4.*(ccdsky-ccdbias));
+            dzero = ccdsky - 25;
+    } else if (newscale == 1) {
+	    dspan = 200.;
+            dzero = ccdsky - 50;
+	    dspan = MAX(50.,10*ccdvar);
+            dzero = ccdsky - 3*ccdvar;
+    } else {
+            sprintf(message,"dzero: %lf  dspan: %lf  fullscale: %d\n",
+                    dzero,dspan,fullscale);
+            writeterm(message);
+    }
+    fdata = (float *)tvimage;
+    if (tvinit==1) {
+	    nrow = ccdinfo.ny;
+	    ncol = ccdinfo.nx;
+            tvload(fdata,nrow,ncol,ncol,0,0,ccdinfo.y0,ccdinfo.x0,
+               dspan,dzero,tvflip,1,0);
+            tvimnum("IMAGE",ccdinfo.incval);
+            updatename(ccdinfo.object,strlen(ccdinfo.object));
+    }
+#ifndef STANDALONE
+#ifdef WEBVIEW
+    sprintf(command, "fitstopnm -min %f -max %f %s/%s.%03d.fits > /export/tocc/image.pnm ",
+            dzero,dzero+dspan,
+            ccdinfo.dirname,ccdinfo.filename,ccdinfo.incval);
+    fprintf(stderr,"%s\n",command);
+    system(command);
+    sprintf(command,"convert /export/tocc/image.pnm /export/tocc/image%03d.jpg ",ccdinfo.incval);
+    fprintf(stderr,"%s\n",command);
+    system(command);
+    sprintf(command,"ln -s /export/tocc/image%03d.jpg /loki/httpd/html/1mcontrol/image%03d.jpg",ccdinfo.incval,ccdinfo.incval);
+    fprintf(stderr,"%s\n",command);
+    system(command);
+    fp = fopen("/export/tocc/image.html","w");
+    //fprintf(fp," <HTML><BODY> <meta http-equiv=Refresh content=5>\n");
+    fprintf(fp," <HTML><BODY>\n");
+    fprintf(fp," <CENTER> %s/%s.%03d.fits </center>\n",
+            ccdinfo.dirname,ccdinfo.filename, ccdinfo.incval);
+    fprintf(fp," <img src=http://loki.apo.nmsu.edu/1mcontrol/image%03d.jpg width=100%>\n",ccdinfo.incval);
+    fprintf(fp," </BODY></HTML>\n");
+    fclose(fp);
+    image = ++image%2;
+#endif
+#endif
+
+  }
+#endif
+
+  if (ccdinfo.filetype > 0) {
+#ifdef HAVELOG
+    writelog(&ccdinfo,&telinfo);
+#endif
+    ccdinfo.incval++;
+  }
+  writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+  if (bell) printf("%c%c",7,7);
+
+  ccdinfo.expstatus = 0;
+  return(0);
+}
+
+#define NHEADER 5760
+
+/* function to write a FITS file given a .spe file and structures with CCD
+   and telescope status information. Also loads data into floating point array*/
+writefits(struct CCDSTATUS *ccdinfo, struct STATUS *G)
+{
+      int sr, sc, ncol, nrow, status;
+      char header[NHEADER];	
+      int ifile, i, j;
+      char *c;
+      unsigned short *sdata;
+      char file[80];
+      char buf[64];
+      double ut, lst, s;
+      int h, m, sign;
+      struct tm *utd;
+      time_t ut0;
+      double el, az, pa, eld, azd, pad, eldd, azdd, padd, ha, secz;
+
+      double latitude = 0.572124 ;
+      double longitude = -1.846907 ;
+
+      sr = ccdinfo->y0;
+      sc = ccdinfo->x0;
+      ncol = ccdinfo->nx;
+      nrow = ccdinfo->ny;
+
+    /* set up the FITS header */
+      memset(header,(int)' ',NHEADER);
+      sprintf(header,"END ");
+      header[4] = ' ';
+      header[NHEADER-1] = '\0';
+      lheadset("SIMPLE",TRUE,header);
+      inheadset("BITPIX",16,header);
+      inheadset("NAXIS",2,header);
+      inheadset("NAXIS1",ncol,header);
+      inheadset("NAXIS2",nrow,header);
+      inheadset("CRVAL1",sc,header);
+      inheadset("CRVAL2",sr,header);
+      inheadset("CDELT1",1,header);
+      inheadset("CDELT2",1,header);
+      fheadset("EXPOSURE",ccdinfo->exposure,header);
+      fheadset("CLEANS",ccdinfo->cleans,header);
+      inheadset("FILTER",ccdinfo->filter,header);
+      cheadset("FILTNAME",longfiltname[ccdinfo->filter],header);
+      if (ccdinfo->shutter == 0)
+        cheadset("IMAGTYPE","DARK",header);
+      else
+        cheadset("IMAGTYPE","OBJECT",header);
+      inheadset("OBSNUM",ccdinfo->incval,header);
+
+      gethms(G->current_obs_ra*DR2H,&h,&m,&s,&sign);
+      sprintf(buf,"%02d:%02d:%04.1f",h,m,s);
+      cheadset("RA",buf,header);
+
+      getdms(fabs(G->current_obs_dec*DR2D),&h,&m,&s,&sign);
+      if (G->current_obs_dec >= 0)
+        sprintf(buf,"%02d:%02d:%04.1f",h,m,s);
+      else
+        sprintf(buf,"-%02d:%02d:%04.1f",h,m,s);
+      cheadset("DEC",buf,header);
+
+      fheadset("EPOCH",G->current_mean_epoch,header);
+      fheadset("PA",G->current_pa*DR2D,header);
+
+      ha = slaDrange(G->current_lasth*DH2R - G->current_obs_ra)*DR2H;
+      gethms(fabs(ha),&h,&m,&s,&sign);
+      if (ha >= 0)
+        sprintf(buf,"%02d:%02d:%04.1f",h,m,s);
+      else
+        sprintf(buf,"-%02d:%02d:%04.1f",h,m,s);
+      cheadset("HA",buf,header);
+
+  /* for the UT and LST, add DTIME seconds */
+      ut = G->current_utc + DTIME/3600./24.;
+#ifdef STANDALONE
+      time(&ut0);
+      utd = gmtime(&ut0);
+      ut = ut0/24./3600.+40587;
+#endif
+      fheadset("UTC",ut,header);
+      gethms((ut - (long)ut)*24,&h,&m,&s,&sign);
+      sprintf(buf,"%02d:%02d:%04.1f",h,m,s);
+      cheadset("UT",buf,header);
+
+  /* convert the UT into a DATE-OBS string */
+      ut0 = (ut - 40587.)*24*3600.;
+      utd = gmtime(&ut0);
+    /*  sprintf(buf,"%02d/%02d/%02d",utd->tm_mday,utd->tm_mon+1,utd->tm_year);*/
+     sprintf(buf,"%04d-%02d-%02d",utd->tm_year+1900,utd->tm_mon+1,utd->tm_mday);
+      cheadset("DATE-OBS",buf,header);
+
+   /* Sidereal time */
+      lst = G->current_lasth + DTIME/3600.;
+      gethms(lst,&h,&m,&s,&sign);
+      sprintf(buf,"%02d:%02d:%02d",h,m,(int)s);
+      cheadset("LST",buf,header);
+
+   /* Airmass calculation */
+      slaAltaz(ha*DH2R,G->current_obs_dec,latitude,
+        &az,&azd,&azdd,&el,&eld,&eldd,&pa,&pad,&padd);
+      secz = 1.0/cos(DPIBY2-el);
+      G->airmass=secz+(secz-1.0)*(-0.0018167+(secz-1.0)*
+          (-0.002875-0.0008083*(secz-1.0)));
+      fheadset("AIRMASS",G->airmass,header);
+
+   /* put az-el-phi in header */
+      slaAltaz((lst*DH2R-G->current_obs_ra),G->current_obs_dec,latitude,
+          &az,&azd,&azdd,&el,&eld,&eldd,&pa,&pad,&padd);
+      fheadset("AZ",az*DR2D,header);
+      fheadset("ALT",el*DR2D,header);
+      fheadset("PARANG",pa*DR2D,header);
+      fheadset("OBS_AZ",G->current_obs_az,header);
+      fheadset("OBS_ALT",G->current_obs_alt,header);
+      fheadset("OBS_ROT",G->current_obs_rot,header);
+
+    /* put in object name */
+      cheadset("OBJECT",ccdinfo->object,header);
+
+    /* put in object number if not zero */
+      if (ccdinfo->objnum != 0) 
+        inheadset("OBJNUM",ccdinfo->objnum,header);
+      if (ccdinfo->stannum != 0) 
+        inheadset("STANNUM",ccdinfo->stannum,header);
+
+    /* put in temperature */
+      fheadset("OUT_TEMP",G->current_out_temp,header);     
+      fheadset("CAB_TEMP",G->current_cab_temp,header);     
+      fheadset("AUX_TEMP",G->current_aux_temp,header);     
+      inheadset("WIND_DIR",G->current_winddir,header);     
+      inheadset("WIND_VEL",G->current_windspeed,header);     
+      fheadset("CCD_TEMP",ccdinfo->ccd_temp,header);     
+   
+    /* put in secondary information */
+      calc_focus(ifoc,G);
+      fheadset("FOCUS",G->foc-(ccdinfo->filtfoc),header);
+      fheadset("FILTFOC",ccdinfo->filtfoc,header);
+      fheadset("X_TILT",G->foc_theta,header);
+      fheadset("Y_TILT",G->foc_phi,header);
+      fheadset("RAWFOCUS",G->foc,header);
+      inheadset("T_POS",G->t_step_pos,header);
+      inheadset("U_POS",G->u_step_pos,header);
+      inheadset("V_POS",G->v_step_pos,header);
+
+    /* put in mount correction information */
+      inheadset("MC_ENAB",G->mc_enabled,header);
+      cheadset("MC_FILE",G->mc_file,header);
+
+    /* Guider information */
+      fheadset("GUIDELOC",ccdinfo->cy,header);
+
+    /* open the output FITS file */
+#ifdef STANDALONE
+      sprintf(file,"%s/%s.%04d.fits",ccdinfo->dirname,ccdinfo->filename,ccdinfo->incval); 
+#else
+      sprintf(file,"%s/%s.%03d.fits",ccdinfo->dirname,ccdinfo->filename,ccdinfo->incval); 
+#endif
+      if ((ifile=open(file,O_CREAT | O_WRONLY, 0666)) <= 0) {
+        sprintf(message, "error opening output fits file: %s %d\n", file,ifile);
+        writeterm(message);
+	perror(" ");
+        return(-1);
+      }
+
+#ifdef APOGEE
+      fheadset("BZERO",32768.,header);
+      fheadset("BSCALE",1.,header);
+//      sdata = (short *)ccddata+offset;
+//      for (i=0; i<nrow*ncol; i++) *sdata++ -= 32768;
+//      sdata = (short *)ccddata+offset;
+//      for (i=0; i<nrow*ncol; i++) *sdata++ ^= 0x8000;
+#endif
+
+    /* byte swap the data */
+      packfit(ccddata+offset,ccddata+offset,nrow*ncol*2);
+
+    /* write the FITS header */
+      write(ifile,header,NHEADER);
+    /* write the data */
+      write(ifile,ccddata+offset,nrow*ncol*2);
+
+    /* pad to fill the FITS record */
+      write(ifile,ccddata,960);
+      close(ifile); 
+ 
+#ifndef MSBF
+    /* byte swap the data back into native machine byte order if necessary */
+      packfit(ccddata+offset,ccddata+offset,nrow*ncol*2);
+#endif 
+}
+
+#ifdef DISPLAY 
+convert_image(float *fdata, int nrow, int ncol, 
+              float *amin, float *amax, struct CCDSTATUS *ccdinfo)
+{
+      #ifdef APOGEE
+      unsigned short *sdata;
+      unsigned short *ddata;
+      #else
+      short *sdata;
+      short *ddata;
+      #endif
+      float *pflat;
+      int nmean, nbias, i, j;	 
+      float temp[NROW*NCOL], *t;
+      double ccdbias1;
+
+    /* fill in floating data */
+      sdata = (short *)(ccddata+offset);
+#ifdef HAVEDARK
+      ddata = (short *)(darkdata+offset);
+#endif
+#ifdef HAVEFLAT
+      pflat = flatdata;
+#endif
+      *amax = -32768;
+      *amin = 32767;
+      ccdmean = 0;
+      ccdbias = 0;
+      ccdbias1 = 0;
+      nmean = 0;
+      nbias = 0;
+      t = temp;
+#ifdef HAVEFLAT
+      if (ccdinfo->autoflat && !ccdinfo->autodark) {
+        for ( i=0;  i<nrow; i++){
+          for (j=0; j<ncol; j++) {
+            if (j>(ncol-ccdinfo->nbias)) {
+              ccdbias1 += (float)*sdata;
+              nbias++;
+            }
+            sdata++;
+          }
+        }
+        ccdbias1/=nbias;
+        nbias = 0;
+        sdata = (short *)(ccddata+offset);
+      }
+#endif
+      for ( i=0;  i<nrow; i++){
+        for (j=0; j<ncol; j++) {
+          *amin = MIN(*amin,*sdata);
+          *amax = MAX(*amax,*sdata);
+#ifdef HAVEDARK
+          if (ccdinfo->autodark && ccdinfo->darkexposure == ccdinfo->exposure) {
+            *fdata = (float)(*sdata++) - *ddata++ + 32768;
+          } else {
+#ifdef APOGEE
+            *fdata = (float)((*sdata++)^0x8000);
+#else
+            *fdata = (float)(*sdata++);
+#endif
+          }
+#else
+          *fdata = (float)(*sdata++);
+#endif
+#ifdef HAVEFLAT
+          if (ccdinfo->autoflat) {
+            if (!ccdinfo->autodark) *fdata -= ccdbias1;
+            if (j<(ncol-ccdinfo->nbias)) *fdata /=*pflat;
+            pflat++;
+          }
+#endif
+
+          if (i>nrow/4 && i < 3*nrow/4 && j>ncol/4 && j<3*ncol/4) {
+            ccdmean += (double)(*fdata);
+            nmean++;
+            *t++ = (double)(*fdata);
+          } 
+          if (j>(ncol-ccdinfo->nbias) && j<ncol) {
+            ccdbias += (double)(*fdata);
+            nbias++;
+          }
+          fdata++;
+        }
+      }
+      if (nbias>0) ccdbias /= nbias;
+      ccdmean /= nmean;
+      ccdmean -= ccdbias;
+      ccdsky = median(nmean,temp);
+      ccdvar = variance(nmean,temp,ccdsky);
+      ccdmax = *amax;
+      ccdmin= *amin;
+      sprintf(message,"ccdmean: %8.1lf  ccdbias: %8.1lf ccdsky: %8.1lf ccdvar: %8.2lf\n",ccdmean,ccdbias,ccdsky,ccdvar);
+      writeterm(message);
+      write(client,message,strlen(message));
+
+      return(0); 
+}
+#endif
+
+/* misc_command process misc commands. It returns 0 if command was succesful,
+   >0 if command was unsuccessful, and -1 if command was unrecognized */
+int misc_command(char *inputline)
+{ 
+  char newcom[300], command[80];
+  int nin,offset,ifile,n;
+  FILE *fp;
+  double ccdtemp;
+
+  sscanf(inputline,"%s",command);
+  strupr(command);
+
+  if (strcmp(command,"QU") == 0 || strcmp(command,"QUIT") ==0 || strcmp(command,"EXIT") ==0) {
+#ifdef APOGEE
+        ccd_close();
+#endif
+#ifdef LCCD
+        lccd_close();
+#endif
+#ifdef CURSES
+        win_close();
+#endif
+        exit(0);
+  }
+  else if (strcmp(command,"HELP") ==0 || strcmp(command,"?") == 0) {
+        command_help();
+  }
+  else if (strcmp(command,"REPEAT") ==0 || strcmp(command,"LOOP") == 0) {
+        repeat = TRUE;
+        return(0);
+  }
+  else if (strcmp(command,"STOP") ==0) {
+        writeterm("auto-exposure loop will stop after next exposure is complete\n");
+        repeat = FALSE;
+        return(0);
+  }
+  else if (strcmp(command,"FITS") ==0 || strcmp(command,"+DISK")==0) {
+        ccdinfo.filetype = 1;
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        return(0);
+  }
+  else if (strcmp(command,"IRAF") ==0) {
+        ccdinfo.filetype = 2;
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        return(0);
+  }
+  else if (strcmp(command,"-DISK") ==0) {
+        ccdinfo.filetype = 0;
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        return(0);
+  }
+  else if (strcmp(command,"SDAS") ==0) {
+        ccdinfo.filetype = 2;
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        return(0);
+  }
+  else if (strcmp(command,"+THRESH") == 0) {
+        dothresh=1;
+        return(0);
+  }
+  else if (strcmp(command,"-THRESH") == 0) {
+        dothresh=0;
+        return(0);
+  }
+  else if (strcmp(command,"-XFER") == 0) {
+        ccdinfo.autoxfer = FALSE;
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        return(0);
+  }
+  else if (strcmp(command,"+XFER") == 0) {
+        ccdinfo.autoxfer = TRUE;
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        return(0);
+  }
+  else if (strcmp(command,"DESTMACH") == 0) {
+        sprintf(destmach,"%s",inputline+9);
+  }
+  else if (strcmp(command,"DESTACCT") == 0) {
+        sprintf(destacct,"%s",inputline+9);
+  }
+  else if (strcmp(command,"DESTDIR") == 0) {
+        sprintf(destdir,"%s",inputline+9);
+  }
+  else if (strcmp(command,"-DARK") == 0) {
+        ccdinfo.autodark = FALSE;
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        return(0);
+  }
+  else if (strcmp(command,"+DARK") == 0) {
+        ccdinfo.autodark = TRUE;
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        return(0);
+  }
+#ifdef HAVEFLAT
+  else if (strcmp(command,"-FLAT") == 0) {
+        ccdinfo.autoflat = FALSE;
+        return(0);
+  }
+  else if (strcmp(command,"+FLAT") == 0) {
+        ccdinfo.autoflat = TRUE;
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        if ((ifile=open("/home/arc/flat.fits",O_RDONLY)) <= 0) {
+          writeterm("error opening input flat.fits file\n");
+          return(1);
+        }
+        nin=525*512*4;
+        offset=5760;
+        status=0;
+        if ((n=read(ifile,flatdata,offset))==-1) {
+          perror("read error");
+          status=1;
+        }
+        if ((n=read(ifile,flatdata,nin))==-1) {
+          perror("read error");
+          status=1;
+        } else
+          packfit4(flatdata,flatdata,525*512*4);
+        close(ifile);
+        return(status);
+  }
+#endif
+  else if (strcmp(command,"AUTODARK") == 0) {
+        strupr(inputline);
+        if (strstr(inputline,"ON") != 0)
+          ccdinfo.autodark = TRUE;
+        else if (strstr(inputline,"OFF") != NULL)
+          ccdinfo.autodark = FALSE;
+        else {
+          sprintf(message,"You must specify ON or OFF with AUTODARK command\n");
+          writeterm(message);
+        }
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        return(0);
+  }
+  else if (strcmp(command,"OBJECT") ==0) {
+        memset(ccdinfo.object,0,NOBJECT);
+        // Remember to strip off trailing CR
+        strncpy(ccdinfo.object,inputline+7,strlen(inputline+7)-1);
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        return(0);
+  }
+  else if (strcmp(command,"OBJNUM") ==0) {
+        sscanf(inputline+7,"%d",&ccdinfo.objnum);
+        ccdinfo.stannum = 0;
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        return(0);
+  }
+  else if (strcmp(command,"SETINCVAL") == 0) {
+        sscanf(inputline+10,"%d",&ccdinfo.incval);
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        return(0);
+  }
+  else if (strcmp(command,"NAME") == 0) {
+        sscanf(inputline+5,"%s",ccdinfo.filename);
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        return(0);
+  }
+  else if (strcmp(command,"STANNUM") ==0) {
+        sscanf(inputline+8,"%d",&ccdinfo.stannum);
+        ccdinfo.objnum = 0;
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        return(0);
+  }
+  else if (strcmp(command,"NOTOCC") ==0) {
+        havetocc = FALSE;
+        return(0);
+  }
+  else if (strcmp(command,"TOCC") ==0) {
+        havetocc = TRUE;
+        return(0);
+  }
+  else if (strcmp(command,"NOFAST") ==0) {
+        fast = FALSE;
+        return(0);
+  }
+  else if (strcmp(command,"FAST") ==0) {
+        fast = TRUE;
+        return(0);
+  }
+  else if (strcmp(command,"BELL") ==0 || strcmp(command,"BEEP") == 0) {
+        if (strstr(inputline,"y") != NULL || strstr(inputline,"Y") !=NULL ||
+            strstr(inputline,"ON") != NULL || strstr(inputline,"on") !=NULL)
+           bell = 1;
+        else if (strstr(inputline,"n") != NULL || strstr(inputline,"N") !=NULL ||
+            strstr(inputline,"OFF") != NULL || strstr(inputline,"off") !=NULL)
+           bell = 0;
+        
+        return(0);
+  }
+#ifndef SPEC
+// IF the PI gets a filter command, just change the internal software setting,
+// since the filter is actually changed through the guider computer. This
+// assumes that the software will reliably always actually move the filter
+// wheel successfully through the guider computer first!!
+  else if (strcmp(command,"FILTER") ==0) {
+        sscanf(inputline+7,"%d",&ccdinfo.filter);
+	sprintf(message,"setting filter: %d\n",ccdinfo.filter);
+        writeterm(message);
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        return(0);
+  }
+#endif
+  else if (strcmp(command,"FILTFOC") ==0) {
+        sscanf(inputline+8,"%d",&ccdinfo.filtfoc);
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        return(0);
+  }
+  else if (strcmp(command,"INITCCD") ==0) {
+//        sprintf(ccdinfo.filename,"junk");
+        ccdinfo.x0 = 1;
+        ccdinfo.y0 = 1;
+        ccdinfo.nx = NCOL;
+        ccdinfo.ny = NROW;
+        ccdinfo.xc = (NCOL-NBIAS)/2.;
+        ccdinfo.yc = NROW/2.;
+        ccdinfo.nbias = NBIAS;
+        ccdinfo.expstatus = 0;
+        ccdinfo.end_time = 0;
+        ccdinfo.filetype = 1;
+        ccdinfo.autodisplay = TRUE;
+        ccdinfo.offsettype = 1;
+        ccdinfo.guiding = 0;
+        ccdinfo.guide_update = 5;
+        ccdinfo.guide_size = 15;
+        memset(ccdinfo.object,0,NOBJECT);
+#ifdef HAVEDARK
+        ccdinfo.autodark = FALSE;
+        ccdinfo.darkexposure = -1;
+#endif
+#ifdef HAVEFLAT
+        ccdinfo.autoflat = FALSE;
+#endif
+#ifdef SPEC
+        ccdinfo.autoxfer = FALSE;
+
+        ccdinfo.ax = -0.11;
+        ccdinfo.bx = 0.525;
+        ccdinfo.ay = -0.445;
+        ccdinfo.by = -0.125;
+        ccdinfo.filetype = 0;
+
+        ccdinfo.sx =0.455;
+        ccdinfo.sy =0.52;
+        ccdinfo.theta = 90.8;
+        ccdinfo.cx = -110;
+        ccdinfo.cx = -60;
+        ccdinfo.cy = 900;
+#else
+#ifdef STANDALONE
+        ccdinfo.autoxfer = FALSE;
+        ccdinfo.xc = 198.;
+        ccdinfo.yc = 296;
+        double ccdxscale=0.298;
+        double ccdyscale=0.298;
+	fp = fopen("/home/arc/slitview.dat","r");
+        if (fp != NULL) {
+          fgets(message,MAXCOMMAND-1,fp);
+          sscanf(message,"%lf%lf\n",&ccdinfo.xc,&ccdinfo.yc);
+          fgets(message,MAXCOMMAND-1,fp);
+          sscanf(message,"%lf\n",&ccdtemp);
+          if (fgets(message,MAXCOMMAND-1,fp) != NULL)
+            sscanf(message,"%lf%lf\n",&ccdxscale,&ccdyscale);
+          fclose(fp);
+          fprintf(stderr,"Using scales: %f %f \n", ccdxscale, ccdyscale);
+          sprintf(message,"SETTEMP %lf\n",ccdtemp);
+          process_command(message);
+        }
+#else
+        ccdinfo.autoxfer = FALSE;
+#endif
+        ccdinfo.ax = 0.812;
+        ccdinfo.ay = 0.;
+        ccdinfo.bx = 0.;
+        ccdinfo.by = 0.812;
+	ccdinfo.sx = -0.812;
+	ccdinfo.sy = 0.812;
+	ccdinfo.theta = 0.;
+	ccdinfo.cx = -48;
+	ccdinfo.cy = 20;
+#endif
+/* Initialize filter information */
+#ifdef STANDALONE
+	for (i=0; i<MAXFILT; i++) {
+          sprintf(filtname[i]," ");
+          sprintf(longfiltname[i],"None");
+        }
+#else
+        status = initfilt();
+        if (status != 0) {
+          writeterm("error initialing filter data!\n");
+//          exit();
+        }
+#endif
+
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        initccd();
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        return(0);
+  }
+  return(-1);
+}
+
+/* display_command process display commands. It returns 0 if command was 
+   successful, >0 if command was unsuccessful, and -1 if command was 
+   unrecognized */
+#define MAXCMD 300
+#define MAXARG 8
+int display_command(char *inputline, float *fdata)
+{
+  double row, col, torow, tocol, offset;
+  float rasec, decsec; 
+  char newcom[80], command[300], file[80];
+  char sargv[MAXARG][MAXCMD];
+  double d[6][3], x1[10], x2[10], y1[10], y2[10], xold, yold;
+  int ix, iy, i, j, k, l, npar, istar, istat, flip, n, nfail;
+  double **c, **v, xs, ys, omega1, omega2;
+  static double flatexp = 0.5, fudge = 1.5;
+  static int nflat = 3, maxtry = 10;
+#ifdef SPEC
+  static int inst = 2;
+#else
+  static int inst = 1;
+#endif
+#ifdef STANDALONE
+  int compute_offset();
+#endif
+
+  double newflatexp=0., newfudge=0.;
+  int newnflat=0, newmaxtry=0, ndone, ntry;
+
+  sscanf(inputline,"%s",command);
+  strupr(command);
+
+#ifdef DISPLAY      
+   /* First consider commands which do NOT actually communicate with the CCD */
+  if (strcmp(command,"LOCATE")==0 || strcmp(command,"CENTER")==0) {	
+        if (tvinit==0) return(COM_UNSUCCESSFUL);
+        sprintf(message,
+"Hit I (cursor position) or C (centroid around cursor) on position to move from\n");
+        writeterm(message);
+#ifdef STANDALONE
+        imageuninstallkey('c');
+        imageuninstallkey('C');
+        imageuninstallkey('i');
+        imageuninstallkey('I');
+#endif
+        write(client,message,strlen(message));
+        status = getcentroid(fdata,&row,&col);
+        if (status == 0) {
+          if (strcmp(command,"LOCATE")==0) {
+            sprintf(message,"Hit I or C on position you want to move to\n");
+            writeterm(message);
+            write(client,message,strlen(message));
+            status = getcentroid(fdata,&torow,&tocol);
+          }
+          else {
+            torow = ccdinfo.yc;
+            tocol = ccdinfo.xc;
+          }
+#ifdef STANDALONE
+          sprintf(newcom,"OFFSET %8.2f %8.2f\n",
+              -(col-tocol)*ccdxscale,(row-torow)*ccdyscale);
+          writeterm(newcom); 
+#else
+          sprintf(newcom,"OFFSET %d %f %f",inst,col-tocol,row-torow);
+          status = sendport(toport.port,toport.server,newcom);
+          if (status != 0)
+            status = COM_UNSUCCESSFUL;
+#endif
+        } else {
+          writeterm("Error computing centroid\n");
+          status = COM_UNSUCCESSFUL;
+        }
+#ifdef STANDALONE
+        imageinstallkey('c',0,compute_offset);
+        imageinstallkey('C',0,compute_offset);
+        imageinstallkey('i',0,compute_offset);
+        imageinstallkey('I',0,compute_offset);
+#endif
+        return(status);
+  }
+
+  else if (strcmp(command,"FIND")==0) {
+        status = findstar(fdata,&row,&col,NROW/4,NROW*3/4,NCOL/4,NCOL*3/4);
+	sprintf(message,"found star: %d %f %f\n",status,row,col);
+        writeterm(message);
+  }
+
+  else if (strcmp(command,"NEWCENT")==0) {
+    for (i=0 ; i<strlen(inputline); i++)
+      if (inputline[i] == ':' || inputline[i] == ',') inputline[i] = ' ';
+        if ( (n=sscanf(inputline+7,"%lf %lf\n",&ccdinfo.xc,&ccdinfo.yc)) <= 0) {
+          if (tvinit) {
+            vecclear();
+            inttvcross(&ix, &iy);
+            imagecross(ix,iy);
+            ccdinfo.xc = ix;
+            ccdinfo.yc = iy;
+          }
+        }
+        else if (n!=2) {
+          sprintf(message,"You must enter either 0 or 2 arguments with NEWCENT\n");
+          writeterm(message);
+        }
+        update_status(-1);
+        return(0);
+  }
+  
+  else if (strcmp(command,"INST")==0) {
+        sscanf(inputline+4,"%d",&inst);
+        return(0);
+  }
+  
+  else if (strcmp(command,">GUIDE")==0 || strcmp(command,">CAMERA")==0 ) {
+        if (tvinit==0)
+          return(COM_UNSUCCESSFUL);
+        if (getcentroid(fdata,&row,&col) == 0) {
+          rasec = (ccdinfo.xc-col)*ccdinfo.ax + (ccdinfo.yc-row)*ccdinfo.bx;
+          decsec = (ccdinfo.xc-col)*ccdinfo.ay + (ccdinfo.yc-row)*ccdinfo.by;
+          if (strcmp(command,">GUIDE")==0) {
+	    // rasec-=212;
+	    rasec-=92;
+            decsec-=1028;
+          } else {
+	    rasec+=212;
+            decsec+=1028;
+          }
+          sprintf(message,"issue: QM %lf %lf\n",rasec,decsec);
+          writeterm(message);
+          write(client,message,strlen(message));
+          sprintf(newcom,"XQM %f %f",rasec,decsec);
+          status = 0;
+          // status = sendport(toport.port,toport.server,newcom);
+          if (status == 0)
+            return(0);
+          else
+            return(COM_UNSUCCESSFUL);
+        } else {
+          writeterm("Error computing centroid\n");
+          return(COM_UNSUCCESSFUL);
+        }
+        return(0);
+  }
+
+  else if (strcmp(command,"FULLSCALE") == 0) {
+        fullscale = 1;
+        skyscale = 0;
+        newscale = 0;
+        dspan = ccdmax-ccdmin;
+        dzero = ccdmin;
+        resetcolors();
+        tvload(fdata,nrow,ncol,ncol,0,0,ccdinfo.y0,ccdinfo.x0,
+               dspan,dzero,tvflip,1,0);
+        return(0);
+  }
+
+  else if (strcmp(command,"SKYSCALE") == 0) {
+        skyscale = 1;
+	fullscale = 0;
+        newscale = 0;
+	dspan = MAX(50.,4.*ccdmean);
+        dzero = ccdbias - 25;
+        resetcolors();
+        tvload(fdata,nrow,ncol,ncol,0,0,ccdinfo.y0,ccdinfo.x0,
+               dspan,dzero,tvflip,1,0);
+        return(0);
+  }
+  else if (strcmp(command,"NEWSCALE") == 0) {
+        skyscale = 0;
+	fullscale = 0;
+        newscale = 1;
+	dspan = 100.;
+        dzero = ccdsky - 25;
+	dspan = MAX(50.,10*ccdvar);
+        dzero = ccdsky - 3*ccdvar;
+        resetcolors();
+        tvload(fdata,nrow,ncol,ncol,0,0,ccdinfo.y0,ccdinfo.x0,
+               dspan,dzero,tvflip,1,0);
+        return(0);
+  }
+  else if (strcmp(command,"SAMESCALE") == 0) {
+        fullscale = skyscale = newscale = 0;
+        return(0);
+  }
+
+  else if (strcmp(command,"-DISPLAY") == 0) {
+        ccdinfo.autodisplay = FALSE;
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        return(0);
+  }
+
+  else if (strcmp(command,"+DISPLAY") == 0) {
+        ccdinfo.autodisplay = TRUE;
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        return(0);
+  }
+
+  else if (strcmp(command,"+REMARK") == 0) {
+        ccdinfo.offsettype |= 0x1;
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        return(0);
+  }
+
+  else if (strcmp(command,"-REMARK") == 0) {
+        ccdinfo.offsettype &= 0xe;
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        return(0);
+  }
+
+  else if (strcmp(command,"+TUI") == 0) {
+        ccdinfo.offsettype |= 0x2;
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        return(0);
+  }
+
+  else if (strcmp(command,"-TUI") == 0) {
+        ccdinfo.offsettype &= 0xd;
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        return(0);
+  }
+
+  else if (strcmp(command,"SCALE") == 0) {
+        if (tvinit==0)
+          return(COM_UNSUCCESSFUL);
+        n=sscanf(inputline+5,"%lf %lf\n",&dzero,&dspan);
+        if (n==2) {
+          dspan = dspan - dzero;
+          resetcolors();
+          tvload(fdata,nrow,ncol,ncol,0,0,ccdinfo.y0,ccdinfo.x0,
+               dspan,dzero,tvflip,1,0);
+        } else 
+          writeterm("You must enter two parameters with SCALE command\n"); 
+        return(0);
+  }
+
+  else if (strcmp(command,"FLAT")==0) {
+        sprintf(ccdinfo.object,"Flat, filter %d",ccdinfo.filter);
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+
+        sscanf(inputline+4,"%d %d %lf %lf",
+               &newnflat,&newmaxtry,&newflatexp,&newfudge);
+        if (newnflat > 0 ) nflat = newnflat;
+        if (newmaxtry > 0 ) maxtry = newmaxtry;
+        if (newflatexp > 0 ) flatexp = newflatexp;
+        if (newfudge > 0 ) fudge = newfudge;
+        ndone = 0;
+        ntry = 0;
+        while (ndone < nflat && ntry < maxtry) {
+          ntry++;
+          sprintf(message,"ntry: %d  ndone:  %d  flatexp: %lf\n",
+                  ntry, ndone, flatexp);
+          writeterm(message);
+#if defined(SPEC) || defined(APOGEE)
+          sprintf(newcom,"EXP %ld",(long)(flatexp*1000));
+#else
+          sprintf(newcom,"EXPOSURE %lf",flatexp);
+#ifdef HAVECCD
+          process_command(newcom);
+#endif
+          sprintf(newcom,"COLLECTDATA 0");
+#endif
+#ifdef HAVECCD
+          process_command(newcom);
+#endif
+          // Increment the done counter if count level is acceptable or if
+          //  we're at maximum exptime in the evening or
+          //  we're at minimum exptime in the morning
+          if ((flatexp>29&&fudge>1) ||
+              (flatexp<1&&fudge<1) ||
+              (flatexp >=1 && ccdmean > 5000 && ccdmean < 20000) ) ndone++;
+          // If we're too bright and in the evening, wait 60 seconds before
+          //  trying again, and decrement the file counter and ntry counter
+          if ((ccdmean>20000||flatexp<1)&&fudge>1) {
+              sleep(60);
+              ccdinfo.incval--;
+              ntry--;
+          }
+          flatexp = (int)(10 * flatexp * 10000./ccdmean * fudge) / 10.;
+          flatexp = (flatexp > 30) ? 30 : flatexp;
+          flatexp = (flatexp > 0.5 && flatexp < 1) ? 1. : flatexp;
+          flatexp = (flatexp < 0.5) ? 0.5 : flatexp;
+       
+        // Offset the telescope
+          sprintf(newcom,"XQM 0 30");
+#ifdef HAVETOCC
+          status = sendport(toport.port,toport.server,newcom);
+          if (status != 0) return(COM_UNSUCCESSFUL);
+          sleep(3);
+#endif
+        }
+        return(0);
+  }
+
+  else if (strcmp(command,"GOS") == 0 || strcmp(command,"INIT") == 0) {
+#if defined(SPEC) || defined(APOGEE)
+#ifdef SPEC
+        flip = 1;
+#else
+        flip = -1;
+#endif
+        sprintf(newcom,"EXP %ld",(long)(ccdinfo.exposure*1000));
+#else
+        flip = 1;
+        sprintf(newcom,"COLLECTDATA 0");
+#endif
+        n=sscanf(inputline+4,"%lf\n",&offset);
+        if (n!=1) offset=50;
+#ifdef HAVECCD
+        if (strcmp(command,"GOS") == 0) {
+          process_command(newcom);
+          if (getcentroid(fdata,&row,&col) == 0) {
+            sprintf(message,"centroid: %f %f\n", row, col);
+            writeterm(message);
+            write(client,message,strlen(message));
+          } else {
+            sprintf(message,"Error computing centroid\n");
+            writeterm(message);
+            write(client,message,strlen(message));
+            return(COM_UNSUCCESSFUL);
+          }
+        }
+#endif
+    // Do a couple of moves to figure out separate x and y scale
+#ifdef ROT
+        npar = 4;
+#else
+        npar = 6;
+#endif
+        // Allocate matrices
+        c = (double **)malloc(npar*sizeof(double *));
+        for (i=0; i<npar; i++) 
+          c[i] = (double *)malloc(npar*sizeof(double));
+        v = (double **)malloc(npar*sizeof(double *));
+        for (i=0; i<npar; i++) 
+          v[i] = (double *)malloc(sizeof(double));
+
+        // Initialize matrices
+        for (j=0;j<npar;j++) {
+          for (l=0;l<npar;l++) c[l][j] = 0.;
+          v[j][0] = 0.;
+        }
+
+	xold = yold = 0;
+        istar = 0;
+        for (iy=-1; iy<=1; iy=iy+1) {
+          for (ix=-1; ix<=1; ix=ix+1) {
+            x1[istar] = ix*offset;
+            y1[istar] = iy*offset;
+            sprintf(newcom,"XQM %f %f", x1[istar]-xold, y1[istar]-yold);
+#ifdef HAVETOCC
+            status = sendport(toport.port,toport.server,newcom);
+            // if (status != 0) return(COM_UNSUCCESSFUL);
+            sleep(5);
+#endif
+            xold = x1[istar];
+            yold = y1[istar];
+
+#if defined(SPEC) || defined(APOGEE)
+            sprintf(newcom,"EXP %ld",(long)(ccdinfo.exposure*1000));
+#else
+            sprintf(newcom,"COLLECTDATA 0");
+#endif
+#ifdef HAVECCD
+            do {
+             process_command(newcom);
+             if ( strcmp(command,"GOS") == 0) {
+               sprintf(message,"%d %f %f\n", findstar(fdata,&row,&col,
+                     NROW/8,NROW*7/8,NCOL/8,NCOL*7/8),row,col);
+               writeterm(message);
+               istat = getcentroid(fdata,&y2[istar],&x2[istar]);
+             } else {
+#ifdef SPEC
+               istat =  findstar(fdata,&y2[istar],&x2[istar],
+                                 NROW/8,NROW*7/8,NCOL/8,NCOL*7/8);
+#else
+               istat =  findstar(fdata,&y2[istar],&x2[istar],
+                                 NROW/4,NROW*3/4,NCOL/4,NCOL*3/4);
+#endif
+istat=0;
+             }
+             if (istat == 0) {
+              sprintf(message,"centroid: %f %f\n", x2[istar], y2[istar]);
+              writeterm(message);
+              write(client,message,strlen(message));
+#else
+            if (1) {
+              y2[istar] = NROW/2 + y1[istar]/ccdinfo.by;
+              x2[istar] = NCOL/2 + x1[istar]/ccdinfo.ax;
+#endif
+            // Load up basis vectors for full linear xformation
+              d[0][1] = flip*x2[istar] *XYRAT;
+              d[1][1] = y2[istar];
+              d[2][1] = 1.;
+              for (j=0;j<3;j++) {
+                d[j][2] = 0.;
+                d[j+3][1] = 0.;
+                d[j+3][2] = d[j][1];
+              }
+#ifdef ROT
+            // If we only want to solve for rotation, modify the basis vectors
+              d[0][2] = y2[istar];
+              d[1][2] = -flip * x2[istar] *XYRAT ;
+              d[3][2] = 1.;
+#endif
+              // Fill in matrices
+              for (l=0;l<npar;l++) {
+                for (j=0;j<npar;j++) {
+                  for (k=1;k<=2;k++) {
+                    c[j][l] += d[l][k]*d[j][k];
+                  }
+                }
+                v[l][0] += x1[istar]*d[l][1];
+                v[l][0] += y1[istar]*d[l][2];
+              }   
+              istar++;
+            } else {
+              sprintf(message,"Error computing centroid\n");
+              writeterm(message);
+              write(client,message,strlen(message));
+              // return(COM_UNSUCCESSFUL);
+            }
+           } while (istat !=0);
+          }
+        }
+      for (i=0;i<npar;i++){
+        for (j=0;j<npar;j++) {
+          sprintf(message,"%f ",c[i][j]);
+          writeterm(message);
+        }
+        writeterm("\n");
+      }
+      writeterm("\n");
+      for (i=0;i<npar;i++) {
+        sprintf(message,"%f ",v[i][0]);
+        writeterm(message);
+      }
+        gaussj(c,npar,v,1);
+        writeterm("done inverting... fit parameters:\n");
+        for (i=0;i<npar;i++) {
+          sprintf(message,"%d %f\n",i,v[i][0]);
+          writeterm(message);
+        }
+#ifdef ROT
+        ccdinfo.ax = v[0][0];
+        ccdinfo.bx = v[1][0];
+        ccdinfo.ay = -v[1][0];
+        ccdinfo.by = v[0][0];
+        xs = sqrt(v[0][0]*v[0][0] + v[1][0]*v[1][0]);
+        omega1 = acos(v[0][0]/xs) * 180./DPI;
+	ccdinfo.sx = flip*xs*XYRAT;
+	ccdinfo.sy = xs;
+	ccdinfo.theta = omega1;
+        sprintf(message,"Scale x: %f  Scale y: %f Rotation: %f\n",
+                flip*xs*XYRAT,xs,omega1);
+#else
+        ccdinfo.ax = v[0][0];
+        ccdinfo.bx = v[1][0];
+        ccdinfo.ay = v[3][0];
+        ccdinfo.by = v[4][0];
+        xs = sqrt(v[0][0]*v[0][0]+v[3][0]*v[3][0]);
+        ys = sqrt(v[1][0]*v[1][0]+v[4][0]*v[4][0]);
+        omega1 = atan2(-ccdinfo.ax,ccdinfo.ay) * 180./DPI ;
+        omega2 = atan2(ccdinfo.by,ccdinfo.bx) * 180./DPI ;
+        sprintf(message, "xscale: %f  yscale: %f  xomega: %f  yomega: %f\n",
+                  xs, ys, omega1, omega2);
+#endif
+        writeterm(message);
+        write(client,message,strlen(message));
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        // Residuals
+        sprintf(message,"Residuals: \n");
+        writeterm(message);
+        write(client,message,strlen(message));
+        for (i=0;i<istar;i++) {
+          sprintf(message,"%6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f\n",
+              x1[i],y1[i],x2[i],y2[i],
+#ifdef ROT
+              v[0][0]*flip*x2[i]*XYRAT+v[1][0]*y2[i]+v[2][0],
+              -v[1][0]*flip*x2[i]*XYRAT+v[0][0]*y2[i]+v[3][0],
+              v[0][0]*flip*x2[i]*XYRAT+v[1][0]*y2[i]+v[2][0]-x1[i],
+              -v[1][0]*flip*x2[i]*XYRAT+v[0][0]*y2[i]+v[3][0]-y1[i]);
+#else
+              v[0][0]*flip*x2[i]*XYRAT+v[1][0]*y2[i]+v[2][0],
+              v[3][0]*flip*x2[i]*XYRAT+v[4][0]*y2[i]+v[5][0],
+              v[0][0]*flip*x2[i]*XYRAT+v[1][0]*y2[i]+v[2][0]-x1[i],
+              v[3][0]*flip*x2[i]*XYRAT+v[4][0]*y2[i]+v[5][0]-y1[i]);
+#endif
+          writeterm(message);
+          write(client,message,strlen(message));
+        }
+        for (i=0;i<npar;i++) {
+          free(c[i]);
+          free(v[i]);
+        }
+	free(c);
+	free(v);
+//  Determine cx, cy to put sky coordinates in center of chip
+#ifdef ROT
+        ccdinfo.cx = -1*(v[0][0]*flip*(NCOL-NBIAS)/2.*XYRAT+v[1][0]*NROW/2.);
+        ccdinfo.cy = -1*(-v[1][0]*flip*(NCOL-NBIAS)/2.*XYRAT+v[0][0]*NROW/2.);
+#endif
+  }
+  else if (strcmp(command,"INSTBLOCK") == 0 ) {
+        double dra=0, ddec=0;
+	fprintf(stderr,"reading\n");
+        n=sscanf(inputline+9,"%lf %lf\n",&dra, &ddec);
+	fprintf(stderr,"%lf %lf",dra,ddec);
+        // Allocate matrices
+	npar=2;
+        c = (double **)malloc(npar*sizeof(double *));
+        for (i=0; i<npar; i++) 
+          c[i] = (double *)malloc(npar*sizeof(double));
+        v = (double **)malloc(npar*sizeof(double *));
+        for (i=0; i<npar; i++) 
+          v[i] = (double *)malloc(sizeof(double));
+
+        c[0][0] = ccdinfo.ax;
+        c[0][1] = ccdinfo.bx;
+        c[1][0] = ccdinfo.ay;
+        c[1][1] = ccdinfo.by;
+        v[0][0] = dra;
+        v[1][0] = ddec;
+        gaussj(c,npar,v,1);
+        printf("rotator center: %lf %lf \n", v[0][0],v[1][0]);
+        printf("issue SETINST 2 %f %f %f %f %f\n",
+                ccdinfo.sx,ccdinfo.sy,v[0][0],v[1][0],ccdinfo.theta);
+  }
+
+  else if (strcmp(command,"GUIDE") == 0 || strcmp(command,"GLS") == 0 ) {
+        sprintf(newcom,"EXP %ld",(long)(ccdinfo.exposure*1000));
+        process_command(newcom);
+        if (tvinit==0)
+          return(COM_UNSUCCESSFUL);
+        if (getcentroid(fdata,&row,&col) == 0) {
+          sprintf(message,"centroid (x,y): (%f,%f)\n", col, row);
+          writeterm(message);
+          write(client,message,strlen(message));
+   // For guider, use (0,0) coordinate system
+          ccdinfo.guide_x0 = col-1;
+          ccdinfo.guide_y0 = row-1;
+          ccdinfo.guiding = 1;
+          writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+          if (strcmp(command,"GUIDE") == 0) {
+            sprintf(newcom,"NEWGUIDE %lf %lf %d %ld %d\n", 
+              ccdinfo.guide_x0, ccdinfo.guide_y0, ccdinfo.guide_size,
+              (long)(ccdinfo.exposure*1000), ccdinfo.guide_update);
+          } else {
+            sprintf(newcom,"OLDGUIDE %lf %lf %d %ld %d %lf %lf %lf %lf\n", 
+              ccdinfo.guide_x0, ccdinfo.guide_y0, ccdinfo.guide_size,
+              (long)(ccdinfo.exposure*1000), ccdinfo.guide_update,
+              ccdinfo.ax, ccdinfo.bx, ccdinfo.ay, ccdinfo.by);
+          }
+          process_command(newcom);
+          return(0);
+        } else {
+          sprintf(message,"getcentroid failed\n");
+          writeterm(message);
+          write(client,message,strlen(message));
+          return(COM_UNSUCCESSFUL);
+        }
+  }
+
+#ifdef SPEC
+  else if (strcmp(command,"READUSNO") == 0 ) {
+        n=sscanf(inputline+9,"%s", file);
+        readccdstatus(cstatusfile,cstatusreadyfile,&ccdinfo);
+#ifdef HAVETOCC
+        nfail=0;
+        while (havetocc && nfail<100 &&
+               readstatus(tstatusfile, tstatusreadyfile, &telinfo) != 0) {
+           fprintf(stderr,"x");
+           nfail++;
+        }
+        ccdinfo.sx=telinfo.sx[2];
+        ccdinfo.sy=telinfo.sy[2];
+        ccdinfo.cx=telinfo.cx[2];
+        ccdinfo.cy=telinfo.cy[2];
+        ccdinfo.theta=telinfo.theta[2];
+#endif
+        readusno(file,telinfo.cx[1],telinfo.cy[1],&ccdinfo);
+        ccdinfo.guiding = 2;
+        writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+        return(0);
+  }
+#endif
+
+#endif
+  return(-1);
+}
+
+int camera_command(char *command)
+{
+  char com[300];
+  double temp, dummy;
+  int tempstatus, n, xe, ye, nexp;
+
+  com[0] = 0;
+  sscanf(command,"%s",com);
+  strupr(com);
+
+#ifdef APOGEE
+  if (strcmp(com,"MEXP") ==0) {
+    sscanf(command+4,"%f%d",&dummy,&nexp);
+    for (n=0; n<nexp; n++) {
+      fprintf(stderr,"exposure %d %d\n",n,nexp);
+      status=camera_command("EXP",ccddata);
+    }
+
+  } else if (strcmp(com,"EXP") ==0) {
+
+#ifdef HAVEDARK
+    if (ccdinfo.autodark && ccdinfo.darkexposure != ccdinfo.exposure) {
+       writeterm("doing dark... (CTRL-C to interrupt)\n");
+       status=ccd_expose(darkdata, ccdinfo.exposure, FALSE, fast,
+                  ccdinfo.x0, ccdinfo.x0+ccdinfo.nx-1, 
+                  ccdinfo.y0, ccdinfo.y0+ccdinfo.ny-1, 0); 
+       if (status>0) return(status);
+       ccdinfo.darkexposure = ccdinfo.exposure;
+    }
+#endif
+#ifdef STANDALONE
+    ccdinfo.end_time = time(NULL) + ccdinfo.exposure;
+#endif
+
+    writeterm("doing exposure... (CTRL-C to interrupt)\n");
+    status = 
+       ccd_expose(ccddata, ccdinfo.exposure, TRUE, fast,
+                  ccdinfo.x0, ccdinfo.x0+ccdinfo.nx-1, 
+                  ccdinfo.y0, ccdinfo.y0+ccdinfo.ny-1, 0); 
+    if (status>0) return(status);
+    status = process_exposure(ccddata);
+    return(status); 
+    
+  } 
+  else if (strcmp(com,"DARK") ==0) {
+    writeterm("doing dark... (CTRL-C to interrupt)\n");
+    status = 
+       ccd_expose(ccddata, ccdinfo.exposure, FALSE, fast,
+                  ccdinfo.x0, ccdinfo.x0+ccdinfo.nx-1, 
+                  ccdinfo.y0, ccdinfo.y0+ccdinfo.ny-1, 0); 
+    if (status>0) return(status);
+    ccdinfo.darkexposure = ccdinfo.exposure;
+    status = process_exposure(ccddata);
+    return(status); 
+  } 
+  else if (strcmp(com,"CCDTEMP") == 0) {
+    status = ccd_temp(&temp, &tempstatus);
+    ccdinfo.ccd_temp = temp;
+    ccdinfo.ccd_temp_status = tempstatus;
+    writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+    return(0);
+  }
+  else if (strcmp(com,"SETTEMP") == 0) {
+    sscanf(command+7,"%lf",&temp);
+    status = set_ccd_temp(temp);
+    sprintf(message,"ccd temp status: %d\n",status);
+    writeterm(message);
+    return(status);
+  }
+  else if (strcmp(com,"STATUS") == 0) {
+    status = ccd_status();
+    return(status);
+  }
+  else if (strcmp(com,"WINDOW") == 0 || strcmp(com,"SUBFRAME") == 0) {
+    for (i=0 ; i<strlen(command); i++)
+      if (command[i] == ':' || command[i] == ',') command[i] = ' ';
+    if (strstr(command,"FULL") != NULL) {
+      ccdinfo.x0 = 1;
+      ccdinfo.y0 = 1;
+      ccdinfo.nx = NCOL;
+      ccdinfo.ny = NROW;
+    } else if ( ( strcmp(com,"WINDOW")== 0 &&
+                  (n=sscanf(command+6,"%d %d %d %d", 
+                  &ccdinfo.x0, &ccdinfo.nx, &ccdinfo.y0, &ccdinfo.ny)) <= 0 ) ||
+                ( strcmp(com,"SUBFRAME") == 0 &&
+                  (n=sscanf(command+8,"%d %d %d %d", 
+                  &ccdinfo.x0, &ccdinfo.nx, &ccdinfo.y0, &ccdinfo.ny)) <= 0 ) ){
+       if (tvinit) {
+         vecclear();
+         inttvbox(&ccdinfo.x0, &ccdinfo.y0, &ccdinfo.nx, &ccdinfo.ny);
+       }
+    } else if (n==4) {
+      ccdinfo.nx = ccdinfo.nx - ccdinfo.x0 + 1;
+      ccdinfo.ny = ccdinfo.ny - ccdinfo.y0 + 1;
+    } else {
+      sprintf(message,"You must specify either 0 or 4 arguments with WINDOW\n");
+      writeterm(message);
+    }
+    if (tvinit) {
+      vecclear();
+      imagebox(ccdinfo.x0, ccdinfo.y0, ccdinfo.nx, ccdinfo.ny, 0);
+    }
+    ccdinfo.x0 = (ccdinfo.x0 < 1) ? 1 : ccdinfo.x0;
+    ccdinfo.y0 = (ccdinfo.y0 < 1) ? 1 : ccdinfo.y0;
+    ye = ccdinfo.y0 + ccdinfo.ny - 1;
+    xe = ccdinfo.x0 + ccdinfo.nx - 1;
+    ccdinfo.nx = (xe > NCOL) ? NCOL+1-ccdinfo.x0 : ccdinfo.nx;
+    ccdinfo.ny = (ye > NROW) ? NROW+1-ccdinfo.y0 : ccdinfo.ny;
+    sprintf(message,"New region: (%3d:%3d,%3d:%3d)\n",
+          ccdinfo.x0,ccdinfo.x0+ccdinfo.nx-1,
+          ccdinfo.y0,ccdinfo.y0+ccdinfo.ny-1);
+    writeterm(message);
+    ccdinfo.darkexposure = -1;
+    if (ccdinfo.nx<NCOL || ccdinfo.ny<NROW) ccdinfo.autoflat = FALSE;
+    return(0);
+  }
+  else if (strcmp(com,"FULL") == 0) {
+    ccdinfo.x0 = 1;
+    ccdinfo.y0 = 1;
+    ccdinfo.nx = NCOL;
+    ccdinfo.ny = NROW;
+    ccdinfo.darkexposure = -1;
+    return(0);
+  }
+#endif
+  return(-1);
+}
+
+getcentroid(float *fdata, double *row, double *col)
+{
+  int irow, icol, status, boxcolor;
+  char key;
+
+#ifdef DISPLAY
+// Mark returns coordinates with (1,1) origin
+  sprintf(message,"Mark the desired location\n");
+  writeterm(message);
+  write(client,message,strlen(message));
+  imageread(&icol,&irow,&key);
+  *row = irow;
+  *col = icol;
+  if (key=='E' || key == 'e') {
+    return(-1);
+  }
+  else if (key=='I' || key== 'i') {
+    status = 0;
+  }
+  else if (key=='C' || key== 'c') {
+    status = findcent(fdata,row,col);
+  }
+  else {
+    return(-1);
+  }
+
+  boxcolor=0;
+  icol = nint(*col)-ccdinfo.guide_size/2;
+  irow = nint(*row)-ccdinfo.guide_size/2;
+  imagerelocate(icol,irow);
+  irow = nint(*row)+ccdinfo.guide_size/2;
+  imagedraw(icol,irow,boxcolor);
+  icol = nint(*col)+ccdinfo.guide_size/2;
+  imagedraw(icol,irow,boxcolor);
+  irow = nint(*row)-ccdinfo.guide_size/2;
+  imagedraw(icol,irow,boxcolor);
+  icol = nint(*col)-ccdinfo.guide_size/2;
+  imagedraw(icol,irow,boxcolor);
+
+  return(status);
+#else
+  *row = ccdinfo.ny/2;
+  *col = ccdinfo.nx/2;
+  return(0);
+#endif
+}
+
+findstar(float *data,double *row,double *col,int sr, int er, int sc, int ec)
+{
+ float temp[NROW*NCOL], px, max, *t;
+ int asr, aer, asc, aec, size, tty, noisemod;
+ float perc, gain, rn, sig;
+ int i,j;
+
+ // Star by median filtering image
+ asr = ccdinfo.y0 + 1;
+ asc = ccdinfo.x0 + 1;
+ aer = ccdinfo.y0+ccdinfo.ny;
+ aec = ccdinfo.x0+ccdinfo.nx;
+ size = 5;
+ perc = 0.5;
+ sig = 0;
+ tty = noisemod = 0;
+ gain=1;
+ rn=0.;
+writeterm("calling zap\n");
+ zapthatsucker_(data,&asr,&aer,&asc,&aec,temp,&asr,&aer,&asc,&aec,&size,&size,&sig,
+   &perc,&tty,&noisemod,&gain,&rn);
+writeterm("back zap\n");
+
+ // Now find the peak
+ max=-100;
+ for (i=sr ; i<=er ; i++) {
+   for (j=sc ; j<=ec ; j++) {
+     px = *(temp+(i-1)*ccdinfo.nx+j-1);
+     if (px>max) {
+       *col=j;
+       *row=i;
+       max=px;
+     }
+   }
+ }
+sprintf(message,"peak: %f %f %f\n",*row,*col,max);
+writeterm(message);
+
+ // Now get the centroid
+ findcent(data,row,col);
+
+}
+// Findcent takes starting guess coordinates and does a centroid.
+// Both input and output are (1,1) origin
+findcent(float *data,double *row,double *col)
+{
+#define MAXRAD 51
+   int iter, imin, imax, jmin, jmax, i, j, icol, irow, pcol, prow;
+   int niter = 6;
+   int isize;
+   unsigned long n;
+   float temp[4*(2*MAXRAD+1)];
+   double sum, sumx, sumy, dx, dy, peak;
+   float px, thresh;
+
+   icol = nint(*col);
+   irow = nint(*row);
+   isize = ccdinfo.guide_size/2;
+   for (iter=0;iter<niter;iter++) { 
+
+      imin = MAX(1,icol-isize);
+      imax = MIN(NCOL,icol+isize);
+      jmin = MAX(1,irow-isize);
+      jmax = MIN(NROW,irow+isize);
+      //sprintf(message,"imin: %d imax: %d jmin: %d jmax: %d\n",imin,imax,jmin,jmax);
+      //writeterm(message);
+
+/* Compute a background value using a median of the box edge values */
+      n=1;
+      for (j=jmin;j<=jmax;j++) {
+        temp[n++] = *(data+(j-1)*NCOL+(imin-1));
+        temp[n++] = *(data+(j-1)*NCOL+(imax-1));
+      }
+      for (i=imin+1;i<=imax-1;i++) {
+        temp[n++] = *(data+(jmin-1)*NCOL+i-1);
+        temp[n++] = *(data+(jmax-1)*NCOL+i-1);
+      }
+      thresh = median(n-1,temp);
+      //sprintf(message,"Computed threshold: %f\n",thresh);
+      //writeterm(message);
+
+      sum = sumx = sumy = 0;
+      peak = -1e10;
+      for (j=jmin;j<=jmax;j++) {
+        for (i=imin;i<=imax;i++) {
+/* Note that passed row,col are for (1,1) origin */
+           px = *(data+(j-1)*NCOL+(i-1));
+           if (dothresh) px -= thresh;
+           sum += px;
+           sumx += px*i;
+           sumy += px*j;
+           if (px > peak) {
+             peak = px;
+             prow = j;
+             pcol = i;
+//sprintf(message,"%lf %d %d %d %d %d\n",peak,i,j,iter,icol,irow);
+//writeterm(message);
+           }
+        }
+      }
+      if (sum != 0) {
+        sumx /= sum;
+        sumy /= sum;
+      } else {
+        sumx = *col;
+        sumy = *row;
+      }
+      //sprintf(message,"found centroid: %f %f\n",sumx, sumy);
+      //writeterm(message);
+      dx = sumx - *col;
+      dy = sumy - *row;
+      *col = sumx;
+      *row = sumy;
+      if (*col>=imin&&*col<=imax&&*row>=jmin&&*row<=jmax) {
+       if (nint(*col) == icol && nint(*row) == irow) {
+        sprintf(message,"Found centroid: %8.2f %8.2f\n",sumx, sumy);
+        writeterm(message);
+        return(0);
+       }
+      } else {
+        sprintf(message,"Centroid too far, returning peak\n");
+        writeterm(message);
+        *col = (double)pcol;
+        *row = (double)prow;
+        return(-1);
+      }
+      
+      icol = nint(*col);
+      irow = nint(*row);
+   }
+   *col = (double)pcol;
+   *row = (double)prow;
+   return(-1);
+}
+
+initccd()
+{
+  char command[MAXCOMMAND],filename[200],rootname[200], dirname[64];
+  int incval;
+  time_t tloc;
+  struct tm *tt;
+  FILE *f = NULL;
+
+  time(&tloc);
+  tt = gmtime(&tloc);
+
+  // If its near end of UT date, assume we're starting early for next night,
+  //   so add 5 hours to local time
+  if (tt->tm_hour > 19) {
+    tloc += 5 * 3600;
+    tt = gmtime(&tloc);
+  }
+
+  // Set default output directory to go with current UT date and create
+#ifdef STANDALONE
+  sprintf(ccdinfo.dirname,"images");
+#else
+  sprintf(ccdinfo.dirname,"images/%02d%02d%02d",tt->tm_year%100,tt->tm_mon+1,tt->tm_mday);
+#endif
+  mkdir(ccdinfo.dirname,0755);
+  chown(ccdinfo.dirname,getuid(),-1);
+
+  // Set default root file name to go with current UT date
+#ifdef STANDALONE
+  sprintf(rootname,"%04d%02d%02d",
+          tt->tm_year+1900,tt->tm_mon+1,tt->tm_mday);
+#else
+  sprintf(rootname,"%02d%02d%02d",
+          tt->tm_year%100,tt->tm_mon+1,tt->tm_mday);
+#endif
+
+  // Set initial extension number to be first available extension 
+  //    not already written
+  incval = 0;
+  do {
+    if (f != NULL) fclose(f);
+    incval++;
+#ifdef SPEC
+    sprintf(filename,"%s/%sg.%3.3d.fits",ccdinfo.dirname,rootname,incval);
+#else
+#ifdef STANDALONE
+    sprintf(filename,"%s/%s.%04d.fits",ccdinfo.dirname,rootname,incval);
+#else
+    sprintf(filename,"%s/%s.%3.3d.fits",ccdinfo.dirname,rootname,incval);
+#endif
+#endif
+  } while ((f=fopen(filename,"r"))!=NULL);
+
+#ifndef STANDALONE
+  /* Make output directory */
+  sprintf(command, "ssh -l %s %s mkdir %s/%s &",
+               destacct, destmach, destdir, ccdinfo.dirname);
+  sprintf(message,"%s\n",command);
+  writeterm(message);
+//  system(command);
+#endif
+
+
+// NOTE: NAME must be set before doing any writeccdstatus, else blank string
+//  screws things up!!
+#ifdef SPEC
+  sprintf(command,"NAME %sg",rootname);
+  process_command(command);
+  sprintf(command,"-DISK");
+  process_command(command);
+//  sprintf(command,"GUIDEHOME");
+//  process_command(command);
+#else
+  sprintf(command,"NAME %s",rootname);
+  process_command(command);
+  sprintf(command,"FITS");
+  process_command(command);
+#ifndef APOGEE
+  sprintf(command,"CLEANS 0");
+  process_command(command);
+  sprintf(command,"NUMSEQ 1");
+  process_command(command);
+  sprintf(command,"SHUTTERCMD 1");
+  process_command(command);
+#endif
+#endif
+  sprintf(command,"FILTER %d",ccdinfo.filter);
+  process_command(command);
+  sprintf(command,"FILTFOC %d",focoff[ccdinfo.filter]);
+  process_command(command);
+  sprintf(command,"SETINCVAL %d",incval);
+  process_command(command);
+#ifndef STANDALONE
+  sprintf(command,"EXPOSURE %lf",ccdinfo.exposure);
+  process_command(command);
+#endif
+
+ /* Initialize a log file */
+  writehtml(0,ccdinfo.dirname,ccdinfo.filename);  
+ /* Update master log file */
+  writelogpage();  
+}
+
+
+#define SWAP(a,b) temp=(a);(a)=(b);(b)=temp;
+
+float median(unsigned long n, float arr[])
+{
+	unsigned long i,ir,j,l,mid,k;
+	float a,temp;
+
+        k=n/2;
+	l=1;
+	ir=n;
+	for (;;) {
+		if (ir <= l+1) {
+			if (ir == l+1 && arr[ir] < arr[l]) {
+				SWAP(arr[l],arr[ir])
+			}
+			return arr[k];
+		} else {
+			mid=(l+ir) >> 1;
+			SWAP(arr[mid],arr[l+1])
+			if (arr[l] > arr[ir]) {
+				SWAP(arr[l],arr[ir])
+			}
+			if (arr[l+1] > arr[ir]) {
+				SWAP(arr[l+1],arr[ir])
+			}
+			if (arr[l] > arr[l+1]) {
+				SWAP(arr[l],arr[l+1])
+			}
+			i=l+1;
+			j=ir;
+			a=arr[l+1];
+			for (;;) {
+				do i++; while (arr[i] < a);
+				do j--; while (arr[j] > a);
+				if (j < i) break;
+				SWAP(arr[i],arr[j])
+			}
+			arr[l+1]=arr[j];
+			arr[j]=a;
+			if (j >= k) ir=j-1;
+			if (j <= k) l=i;
+		}
+	}
+}
+#undef SWAP
+
+#if defined(sun) || defined(linux)
+int nint(float val)
+{
+  if (fmod(val,1.) < 0.5)
+    return((int)floor(val));
+  else
+    return((int)ceil(val));
+}
+#endif
+
+void myremove(char *removefile)
+{
+  int i, n, maxtry = 10;
+
+  i = 0;
+  usleep(100000);
+  while (n=remove(removefile) !=0 && i<maxtry) {
+    usleep(100000);
+    i++;
+  }
+
+  if (i == maxtry) {
+    sprintf(message,"error removing %s\n", removefile);
+    writeterm(message);
+  }
+}
+
+void inittv()
+{
+#ifdef DISPLAY
+  short r[256], g[256], b[256];
+  int ncd = 263;
+  int nrd = 256;
+  int ierr, zf=0, yup=0;
+#ifdef SPEC
+  int ncold = 16;
+  int inst=2;
+  int xoff=275;
+  int yoff=110;
+  char *resourcename="gccddisp";
+  char *windowname="1m Guider Acquisition";
+#else
+  int ncold = 32;
+#ifdef STANDALONE
+  int inst=3;
+  int xoff=1;
+  int yoff=110;
+  char *resourcename="disslit";
+  char *windowname="DIS Slit Viewer";
+#else
+  int inst=1;
+  int xoff=1;
+  int yoff=110;
+  char *resourcename="ccddisp";
+  char *windowname="1m Data Acquisition";
+#endif
+#endif
+#endif
+#ifdef STANDALONE
+  int compute_offset();
+#endif
+
+  ierr = imageinit(&ncd,&nrd,&ncold,zf,yup,resourcename,windowname,xoff,yoff);
+
+  if (ierr==0) {
+    r[0] = b[0] = 255;
+    g[0] = 0;
+    imagepalette(1,r,g,b,1);
+    for (i=0;i<256;i++)
+      r[i] = g[i] = b[i] = i;
+    imagepalette(255,r,g,b,0);
+    tvinit = 1;
+#ifdef STANDALONE
+    imageinstallkey('c',0,compute_offset);
+    imageinstallkey('C',0,compute_offset);
+    imageinstallkey('i',0,compute_offset);
+    imageinstallkey('I',0,compute_offset);
+#endif
+  } else
+    writeterm("Could not open display!!");
+}
+
+#ifdef HAVELOG
+writelog(struct CCDSTATUS *ccdinfo, struct STATUS *G)
+{
+#define MAXLINE 132
+
+  char buf[32],line[MAXLINE],comment[MAXLINE],name[64],command[80];
+  static FILE *fp = NULL, *log = NULL, *fc;
+  int h,m,sign,iline;
+  static int lopen=0;
+  double s, ut, ha;
+
+  sprintf(name,"%s/%s.log",ccdinfo->dirname,ccdinfo->filename);
+  log = fopen(name,"a");
+
+  fprintf(log,"%4d&",ccdinfo->incval);
+  fprintf(log,"%s&",ccdinfo->object);
+
+  ut = G->current_utc + DTIME/3600./24.;
+  gethms((ut - (long)ut)*24,&h,&m,&s,&sign);
+  sprintf(buf,"%02d:%02d:%02d",h,m,(int)s);
+  fprintf(log,"%s&",buf);
+
+  gethms(G->current_obs_ra*DR2H,&h,&m,&s,&sign);
+  sprintf(buf,"%02d:%02d:%04.1f",h,m,s);
+  fprintf(log,"%s&",buf);
+
+  getdms(fabs(G->current_obs_dec*DR2D),&h,&m,&s,&sign);
+  if (G->current_obs_dec >= 0)
+        sprintf(buf,"%02d:%02d:%04.1f",h,m,s);
+  else
+        sprintf(buf,"-%02d:%02d:%04.1f",h,m,s);
+  fprintf(log,"%s&",buf);
+
+  fprintf(log,"%6.1lf&",G->current_mean_epoch);
+  fprintf(log,"%5.1f&",G->current_pa*DR2D);
+
+  ha = slaDrange(G->current_lasth*DH2R - G->current_obs_ra)*DR2H;
+  gethms(fabs(ha),&h,&m,&s,&sign);
+  if (ha >= 0)
+    sprintf(buf,"%02d:%02d:%04.1f",h,m,s);
+  else
+    sprintf(buf,"-%02d:%02d:%04.1f",h,m,s);
+  fprintf(log,"%s&",buf);
+
+  fprintf(log,"%5.2f&",G->airmass);
+  fprintf(log,"%6.1lf&",ccdinfo->exposure);
+  fprintf(log,"%s&",filtname[ccdinfo->filter]);
+  //fprintf(log,"%7.1f&",G->foc-(ccdinfo->filtfoc));
+  if (G->filtfoc>0)
+    fprintf(log,"%4d(+%3d)&",(int)(G->foc-(ccdinfo->filtfoc)),ccdinfo->filtfoc);
+  else
+    fprintf(log,"%4d(%4d)&",(int)(G->foc-(ccdinfo->filtfoc)),ccdinfo->filtfoc);
+  fprintf(log,"\n");
+
+  fclose(log);
+
+/* Now write HTML file */
+  writehtml(0,ccdinfo->dirname,ccdinfo->filename);
+ 
+}
+#endif
+int sendgcs( char *comfile,char *comfilecheck,char *command)
+{
+   FILE *file;
+
+   umask(000);
+
+   /* Dont write a command file until the check file has been deleted */
+   while ((file=fopen(comfilecheck,"r")) !=NULL) {
+        fclose(file);
+   }
+
+   /* Open the command file and write the command */
+   file = fopen(comfile,"w");
+   while (file == NULL) {
+     perror("open error 7: ");
+     file = fopen(comfile,"w");
+   }
+   fprintf(file,"%s\n",command);
+   fclose(file);
+
+   /* Write the command check file */
+   file = fopen(comfilecheck,"w");
+   while (file == NULL) {
+     perror("open error 8: ");
+     file = fopen(comfilecheck,"w");
+   }
+   fclose(file);
+
+   return(0);
+}
+
+
+void readterm(char *command)
+{
+  command[0] = 0;
+#ifdef STANDALONE
+  win_read(command);
+#else
+  //fgets(command, MAXCOMMAND-1, stdin);
+  gets(command);
+#endif
+}
+
+void writeterm(char *command)
+{
+#ifdef STANDALONE
+  win_write(command,1);
+#else
+  fprintf(stderr,"%s",command);
+#endif
+}
+
+void trap()
+{
+  ctrlc = TRUE;
+  sprintf(message,
+"\nCommand string interrupted by CTRL-C. Waiting for current command to complete\n");
+  writeterm(message);
+  writeterm("You may need to hit a <CR> to get the command prompt\n");
+  signal(SIGINT,trap);
+}
+
+void command_help()
+{
+   char ans[10];
+
+#ifdef STANDALONE
+   win_write("ALL COMMANDS ARE INSENSITIVE TO CASE\n",0);
+   win_write("Exposure commands:\n",0);
+   win_write(" EXP t              : take exposure of length t seconds\n",0);
+   win_write(" REPEAT             : continue taking exposures indefinitely\n",0);
+   win_write(" STOP (or CTRL-c)   : stop exposure loop\n",0);
+   win_write(" WINDOW [x1 x2 y1 y2] : set up windowing region on chip to read\n",0);
+   win_write(" FULL               : reset to full chip\n",0);
+   win_write("Options\n");
+   win_write(" +DARK/-DARK        : turn on(+)/off(-) automatic dark subtraction\n",0);
+   win_write(" SETTEMP temp       : set target CCD temperature to temp\n",0);
+   win_write(" +DISPLAY/-DISPLAY  : turn on(+)/off(-) automatic disply\n",0);
+   win_write(" +XFER/-XFER        : turn on(+)/off(-) automatic file transfer\n",0);
+   win_write(" +REMARK/-REMARK        : turn on(+)/off(-) REMARK convention offset reporting \n",0);
+   win_write(" +TUI/-TUI        : turn on(+)/off(-) REMARK convention offset reporting \n",0);
+//   win_write("<CR> for more....\n");
+//   readterm(ans);
+   win_write("Display commands:\n",0);
+   win_write(" SCALE low high     : redisplay current image from low (black) to high(white)\n",0);
+   win_write(" NEWSCALE           : autoscale future images based on sky variance (default)\n",0);
+   win_write(" SKYSCALE           : autoscale future images based on sky level\n",0);
+   win_write(" FULLSCALE          : autoscale future images based on min to max value\n",0);
+   win_write(" SAMESCALE          : scale future images with same scaling as current image\n",0);
+   writeterm("File naming/transfer:\n");
+   writeterm("Other:\n");
+   win_write(" QU                 : exits program\n",0);
+#endif
+
+}
+void inttvcross(int *xc, int *yc)
+{
+  int row, col;
+  char key;
+
+  writeterm("Move cursor to display window and make sure mouse focus is there\n");
+  writeterm("Position cursor on desired target location and hit space bar\n");
+  imageread(&col,&row,&key);
+  *xc=col;
+  *yc=row;
+}
+void inttvbox(int *x0, int *y0, int *nx, int *ny)
+{
+  int row, col;
+  char key;
+  int x1, x2, y1, y2;
+
+  writeterm("Move cursor to display window and make sure mouse focus is there\n");
+  writeterm("Position cursor and hit space bar on desired corner \n");
+  imageread(&col,&row,&key);
+  x1=col;
+  y1=row;
+  writeterm("Position cursor and hit space bar on opposite corner \n");
+  imageread(&col,&row,&key);
+  x2=col;
+  y2=row;
+  *x0 = (x1<x2 ? x1 : x2);
+  *y0 = (y1<y2 ? y1 : y2);
+  *nx= (x2-x1)>0 ? x2-x1 : x1-x2;
+  *ny= (y2-y1)>0 ? y2-y1 : y1-y2;
+}
+#ifdef STANDALONE
+void window_resize()
+{
+ writeterm("Resizing window not yet supported: strongly recommend resizing to 80x32!\n");
+#ifdef STANDALONE
+  flushinp();
+#endif
+ // clear out keyboard buffer which can get filled on resizing
+ //while (getchar() != EOF) {}
+
+  //writeterm(getenv("TERMCAP"));
+  //use_env(TRUE);
+  //setupterm((char *)0, 1, (int *)0);
+
+  //resizeterm(0,0);
+}
+#endif
+float variance(unsigned long n,float *temp, double ccdsky)
+{
+  int i;
+  double sum=0;
+  for (i=0 ; i<n ; i++) {
+    sum += (*temp-ccdsky)*(*temp-ccdsky);
+    temp++;
+  }
+  if (sum>0)
+   return(sqrt(sum/(n-1.)));
+  else
+   return(ccdsky);
+  
+}
+void update_status(int status)
+{
+  if (status>0) ccdinfo.expstatus = status;
+  writeccdstatus(ccdinfo,cstatusfile,cstatusreadyfile);
+}
+#ifdef STANDALONE
+compute_offset(x,y,xuser,yuser,key)
+{
+  int status, nbox, irow, icol;
+  double row, col, torow, tocol, peak;
+  float *fdata;
+  char newcom[80];
+
+  //sprintf(newcom,"xuser: %d yuser: %d x: %d y: %d\n",xuser,yuser,x,y);
+  //writeterm(newcom);
+  col = xuser; 
+  row = yuser;
+  fdata = (float *)tvimage;
+  status = 0;
+  if (key == 'c' || key == 'C') status = findcent(fdata,&row,&col);
+  torow = ccdinfo.yc;
+  tocol = ccdinfo.xc;
+  if (status != 0) {
+    sprintf(newcom,"\nError computing centroid, using peak at: %6.0f %6.0f\n",col, row);
+    writeterm(newcom);
+  }
+  if (ccdinfo.offsettype&0x1 ) {
+      sprintf(newcom,"Remark offset: %8.1f %8.1f\n",
+      -(col-tocol)*ccdxscale,(row-torow)*ccdyscale);
+      writeterm(newcom);
+  }
+  if (ccdinfo.offsettype&0x2 ) {
+      sprintf(newcom,"TUI offset: %8.1f %8.1f\n",
+      (col-tocol)*ccdxscale,(row-torow)*ccdyscale);
+      writeterm(newcom);
+  }
+  nbox = ccdinfo.guide_size;
+  vecclear();
+  irow = (int)(row-nbox/2.+0.5);
+  icol = (int)(col-nbox/2.+0.5);
+  imagebox(icol, irow, nbox, nbox, 0);
+}
+#endif
+
+#ifdef REMOTE
+char *get_message()
+{
+  FILE *file;
+  char message[MAXCOMMAND];
+  int n;
+  char *s;
+
+#ifdef NEWCOM
+  file = fopen(restart,"r");
+  if (file != NULL) {
+      fclose(file);
+      if (ropen == 1) {
+        writeterm("closing rfile\n");
+        fclose(rfile);
+      }
+      ropen = 0;
+      remove(restart);
+  }
+
+  if (ropen == 0) {
+      rfile = fopen(respfile,"r");
+      if (rfile != NULL) ropen = 1;
+  }
+  return(getresp(rfile));
+
+#else
+
+    file = fopen(respfilecheck,"r");
+    if (file != NULL) {
+        fclose(file);
+        usleep(100000);
+        myremove(respfilecheck);
+        file = fopen(respfile,"r");
+        if (file == NULL) {
+          perror("open error 1: ");
+        } else {
+          n = 0;
+          while (fgets(message+n,MAXCOMMAND-1-n,file)!= NULL) {
+            n = strlen(message);
+          }
+          fclose(file);
+          writeterm(message);
+          myremove(respfile);
+        }
+        return(s=message);
+    }
+    return(NULL);
+
+#endif
+
+}
+
+void send_message(char *command)
+{
+   FILE *file;
+
+#ifdef DEBUG
+   sprintf(message,"writing command file: %s %s\n",comfile,command);
+   writeterm(message);
+#endif
+
+   /* Dont write a command file until the check file has been deleted */
+   while ((file=fopen(comfilecheck,"r")) !=NULL) {
+        fclose(file);
+   }
+
+   /* write out the command file */
+   file = fopen(comfile,"w");
+   while (file==NULL) {
+     perror("open error 2: ");
+     file = fopen(comfile,"w");
+   }
+#ifdef SPEC
+   fprintf(file,"%s%c\n",command,13);
+#else
+   fprintf(file," %s%c",command,13);
+#endif
+   fclose(file);
+
+#ifdef DEBUG
+   sprintf(message,"writing command check file: %s %s\n",comfilecheck, command);
+   writeterm(message);
+#endif
+      /* write the command check file */
+   file = fopen(comfilecheck,"w");
+   while (file==NULL) {
+     perror("open error 3: ");
+     file = fopen(comfilecheck,"w");
+   }
+
+   fclose(file);
+
+}
+
+
+int remote_command(char *command)
+{
+   char resp[300];
+   char *s;
+   int status;
+
+   strupr(command);
+   send_message(command);
+
+   /* Now sit and wait for responses. If we get a DONE message, we are done,
+      otherwise just print out whatever message comes across */
+    resp[0] = 0;
+    while(strcmp(resp,"DONE") != 0) {
+#ifdef HAVECCD
+      s = get_message();
+#else
+      strcpy(s,"DONE\0");
+#endif
+      status = 0;
+      if (s != NULL) {
+        sscanf(s,"%s", resp);
+        if (strcmp(resp,"DONE") != 0) {
+            /* If we didn't get DONE, just print out the message */
+            writeterm(s);
+        } else {
+           /* If we got DONE, did command return successfully? if not, 
+              just print out response */
+            sscanf(s,"DONE %d",&status);
+            if (status != 0) {
+              writeterm(s);
+              return(status);
+            }
+        }
+      }
+      if (tvinit) xtv_refresh(0);
+      usleep(100000);
+    }
+    return(status);
+}
+#endif
+
+#ifndef APOGEE
+int ccd_temp(double *t, int *ts)
+{
+  *t = 0;
+  *ts = 0;
+}
+#endif

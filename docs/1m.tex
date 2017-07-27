@@ -1,0 +1,756 @@
+\documentclass{article}[12pt]
+
+\usepackage{epsfig}
+\usepackage{html}
+
+\textwidth=8in
+\textheight=10in
+
+\hoffset=-1.7in
+\voffset=-1in
+
+\title{NMSU 1 meter telescope: design and performance}
+\author{Jon Holtzman, NMSU}
+
+\epsfxsize 7in 
+
+\begin{document}
+
+\maketitle
+
+\vskip 0.5in
+
+Complete document in a 
+\htmladdnormallink{single PostScript file}{../1m.ps.gz}.
+
+\section{Telescope: optical/mechanical design}
+
+\begin{itemize}
+\item Telescope is an alt-az Ritchey-Chretien design and produces an F/6.06 
+beam.
+
+\begin{latexonly}
+\epsfbox{1mlayout.eps}
+\end{latexonly}
+\begin{htmlonly}
+\begin{rawhtml}
+<IMG SRC=1mlayout.gif WIDTH=100%>
+\end{rawhtml}
+\end{htmlonly}
+
+\item Basic design optical parameters (units are inches)
+
+The telescope mirrors were refigured in 2002 because we strongly suspected that
+the surfaces were not particularly good (which was confirmed by optical
+testing before repolishing). During repolishing the followin optical 
+prescription was adopted:
+
+\begin{center}
+\begin{tabular}{lcccc}
+NAME & RADIUS & THICKNESS & DIAMETER & CONIC \\
+Primary & -200 & -62.1 & 40 & -1.202461 \\
+Secondary & -128.8185 & 47.50 & & -8.38632 \\
+Tertiary & Inf & 44.784 & & \\
+Focal plane & & & 
+\end{tabular}
+\end{center}
+
+The following discussion describes how this prescription was arrived at.
+
+\item For the original optical design, our best idea of the final prescription
+is taken from a document provided by Kurt Anderson (values labelled
+``Preferred'' for 20 Dec 1993):
+
+\begin{center}
+\begin{tabular}{lcccc}
+NAME & RADIUS & THICKNESS & DIAMETER & CONIC \\
+Primary & -200 & -62.648 & 40 & -1.202461 \\
+Secondary & -127.059 & 49.00 & & -8.434993 \\
+Tertiary & Inf & 41.648 & & \\
+Focal plane & & & 
+\end{tabular}
+\end{center}
+
+We have essentially no information as to how the as-built
+optical parameters match these design parameters.
+
+When we built our new guide box, our best measured distance from tertiary 
+to rotator mount was 30 inches (however, see below!).
+Our old guide box/filter wheel had a total thickness of 9.875 inches, for
+a total tertiary to focus distance of 39.875 inches.
+
+Our new guide box/filter wheel was designed to increase the tertiary to
+focus distance by a couple of inches to better match the design 
+prescription (under the assumption that the primary-secondary separation
+matched the design value, see below). The guide box has a thickness of
+9.25 inches, the filter wheel, 1.313 inches, and our best measurement
+for the optical distance of the Princeton CCD from the front mounting surface is
+1.125 inches, for a total tertiary to focus distance of 41.688 inches.
+
+The prescription I was then using for ray tracing in Zemax is:
+
+\begin{center}
+\begin{tabular}{lcccc}
+NAME & RADIUS & THICKNESS & DIAMETER & CONIC \\
+Primary & -200 & -62.66 & 40 & -1.202461 \\
+Secondary & -127.059 & 48.6585 & & -8.434993 \\
+Tertiary & Inf & 30 & & \\
+Rotator mount & & 11.93 & \\
+Focal plane & & & 
+\end{tabular}
+\end{center}
+
+where the focal plane location and primary-secondary separation were 
+allowed to float to get best image quality.
+
+We later switched to using an Apogee AP7P camera, which has the CCD 
+1.10 inches behind the front mounting surface (as measured by microscope);
+we added an adapter plate of width .375 inches (for a reason that
+is not totally recalled!).
+
+\item Measured separations. Several (re)measurements of separations were
+made in 2002 in preparation for mirror repolishing. 
+
+Several of these measurements were made from the edge of the primary
+to the center of another element (tertiary or secondary). To correct for
+the distance to the primary vertex requires a correction from the hypotenuse
+of a triangle to the on-axis distance, plus a correction for the vertical
+distance between the primary vertex and the edge of the mirror. For
+the hypotenuse correction, a diameter of the front surface of the mirror
+was measured (approximately) to be 41 inches; note that using a smaller
+diameter leads to some inconsistencies in measurements (see JCB 6/02 and
+JH 6/02). The vertex ``sag'' was computed using a radius of curvature
+of 200 inches, resulting in a 1 inch sag.
+
+JCB 4/02: measured distance
+from primary edge to secondary center as 166.2+/-0.3 cm (65.43 inches); 
+correcting for hypotenuse gives (62.14+/- 0.12 inches). Distance from
+vertex to "edge center" adds another inch based on radius of curvature,
+to give 63.14. Using geometric center of tertiary, measured secondary-tertiary
+to be 1227 cm (48.31 inch). Tertiary to rotator mount measured outside
+of bearing to be 79.4cm (31.25"), rotator mount to filter mount 27.3 cm
+(10.75")
+
+JH/DS 5/20: measure primary-secondary with tertiary removed. Method 1:
+mirror to mirror cover lip 2", lip to tertiary mount 5", tertiary mount
+to secondary center 55.5", total 62.5 + distance from primary vertex to
+spot on primary out at edge of central hole. Method 2: secondary center
+to primary edge (as JCB) gives 65", correcting for hypotenuse gives 61.68;
+add another inch as above to get 62.68. Using plumb line to determine tertiary
+center, get 47.56 " secondary-tertiary. Tertiary to CCD mount measured
+through the hole to give 42.185"
+
+JCB 6/02: distance from primary edge to tertiary center 24.75 inches,
+corrected for hypotenuse gives 13.87, plus 1 for sag gives 14.87 inches.
+Distance from tertiary to secondary is 47.71. Distance from primary edge
+to secondary center is 64.81, corrected for hypotenuse is 61.48, plus 1
+for sag is 62.48. (Note for consistency check: $14.87+47.71=62.58$)
+Tertiary to CCD mount is 42.19 inches. CCD mounting plate measured
+to be .375 inches. Apogee web site gives 1.161 inches for distance from
+front of camera to CCD.
+
+JH 6/02: distance from primary edge to tertiary center 24.625 inches,
+corrected for hypotenuse gives 13.64, plus 1 for sag gives 14.64 inches.
+Distance from tertiary to secondary is 47.875. Distance from primary edge
+to secondary center is 64.875, corrected for hypotenuse is 61.55, plus 1
+for sag is 62.55. (Note for consistency check: $14.64+47.875=62.515$)
+
+JH/JCB 6/02: microscope gives distance from front window of Apogee to
+CCD surface is 0.802 inches. Micrometer give 0.682 inches from front
+mounting surface to front window. Mounting plate thickness 0.375 inches.
+
+Summary (numbers in parentheses are derived from other measurements) :
+
+\begin{center}
+\begin{tabular}{lllllll}
+distance&design&Zemax&JCB 4/02&JH/DS 5/02&JCB 6/02&JH 6/02\\
+primary-secondary&62.648&62.66&63.14&62.5+,62.68&62.48&62.55\\
+secondary-tertiary&49&48.66&48.31&47.56&47.71&47.875\\
+primary-tertiary&(13.648)&(14)&(14.83)&(15.12)&14.87&14.64\\
+tertiary-rotator mount&&&31.25&(31.622)&(31.627)&(31.622)\\
+rotator mount-filter mount&&&10.75&10.563(design)&10.563&10.563\\
+tertiary-filter mount&&&(42)&42.185&42.19&42.185\\
+CCD mounting plate thickness&&&&0.375&.375&.375\\
+front of camera to CCD&&&&1.161&1.109&1.109\\
+tertiary-focal plane&41.648&41.93&(43.54)&(43.72)&(43.67)&(43.67)\\
+(secondary-focal plane)&90.648&90.59&(91.84)&(91.28)&(91.38)&(91.545)
+\end{tabular}
+\end{center}
+
+Adopt as-built:
+
+\begin{center}
+\begin{tabular}{ll}
+primary-tertiary&14.8\\
+tertiary-secondary&47.875\\
+tertiary-filter mount&42.185\\
+mounting plate&.375\\
+camera surface-CCD&1.11
+\end{tabular}
+\end{center}
+
+In measured configuration, secondary has range to move approximately 0.125
+inch away from primary, and 1 inch towards primary. Primary support could 
+be modified to move primary towards secondary (e.g. increase pad thickness),
+but not necessarily further away.
+
+For new design, modify distances conservatively given freedom to adjust
+primary towards secondary, secondary towards tertiary, and CCD away from
+tertiary:
+
+\begin{center}
+\begin{tabular}{ll}
+primary-tertiary&14.6\\
+tertiary-secondary&47.5\\
+tertiary-filter mount&42.2\\
+mounting plate&.375\\
+camera surface-CCD&1.11
+\end{tabular}
+\end{center}
+
+\item sizes of optics. JCB 4/02 measured secondary diameter 43.8+/- 0.3 cm
+(17.24 +/- 0.12 inches); secondary obscuration 45.7+/- 0.3 cm 
+(18+/-0.12 inches). Primary mirror is 41 inches diameter, center hole 
+approximately 13.5 inches diameter, thickness is 6 inches
+
+\item Primary mirror support: there is a aluminum "stovepipe" that is
+bolted to the back frame. It has anout diameter of 11.982-11.984 inches
+as measured by Rick from Sunspot. There is a blue plastic ring around
+this that is approximately 1 cm thick and 6 inches long. The mirror
+fits over this ring. The mirror rests on the ring on just the front and
+back faceplates, as the central part of the mirror is recessed. On the
+front plate, the hole is somewhat oversized when compared to the outer
+diameter of the plastic; measurements with shims gave the space between
+the mirror and the plastic as less than 0.050" everywhere, $>$0.001" 
+from 1-9:00, $>$0.015" from 2-8:45, $>$0.020" from
+2-8:00, $>$0.025" from 2-7:00, $>$0.030" from 2-6:30, and $>$ 0.040" from
+3-6:00, and had a maximum spacing of about 0.045" at 5:00, when 
+measured in April 2004 (i.e. the mirror was shifted a bit to the right).
+
+In early May 2004, we pulled the primary and removed the plastic sleeve.
+The sleeve was smoothed at the Sunspot machine lab, so the tolerances
+are now even greater than before. In addition, the sleeve was unable to
+go all the way to the bottom of the stovepipe because of the weld there, so
+the inner bottom part of the sleeve was ground away to allow the sleeve
+to go to the bottom, and hopefully, not get pushed around by thermal expansion
+at the weld.
+\item Rotator mounting details: 12(?) hole bolt pattern with 1/4-20 bolts 
+spaced evenly on a circle 14 inches diameter. From the center of the
+rotator, you can mount anything out to a radius of 12 inches. Once you
+are back 6 inches from the rotator, there is some additional clearance;
+by the time you are 8 inches from the rotator, there are no constraints
+on a mounted instrument.
+
+\item Filter wheel mounting details.
+
+\item Alt-az-rotator system has 3 axes of motion; at current time, rotator
+exists on only one of the Nasmyth ports. Altitiude and azimuth axes have
+limit switches and magnetic home sensors. Rotator axis does not have
+limit switches, only a magnetic home sensor; to avoid rotator cable wrap
+problems, the rotator position must be carefully stored using software
+and remembered from session to session.
+
+\item All drives are friction drives. Altitude and azimuth have friction
+driven encoders as well; rotator only has the motor drive. On the
+azimuth axis, there is clear evidence that the ``scale'' of the axis,
+degrees/mm, varies slowly with temperature despite the fact that the
+material of the drive shaft and drive wheel are the same. We have plans
+to implement a temperature-dependent scale to correct for this to
+first order.
+
+\end{itemize}
+
+\section{Instruments}
+
+\subsection{Current guide box/filter wheel}
+
+We had a new guider and filter wheel built by
+\htmladdnormallink{Astronomical Consultants and Equipment}
+{http://www.astronomical.com} (Peter Mack) out of Tucson. This was installed
+in mid-1999.
+The idea was to make a much thinner filter
+wheel which will allow the guider to be located much closer to the
+focal plane. This allows the guider to come closer on-axis without
+vignetting the primary beam to the science instrument. This is motivated
+so we can maximize the size of baffles in the system to minimize scattered
+light, which currently poses a problem. 
+
+The new guider consists of a guide box which is 9.25 inches thick, 
+followed by a thin (1.313 inch) filter wheel, followed by the CCD.
+The guider module plugs into the side of the guider box, and uses our
+SpectraSource CCD. The guide module has a pickoff mirror to direct light
+to the guide camera. The entire pickoff/camera assembly is on a radial
+stage; in addition, the pickoff mirror is on a separate stage to allow
+focus control.
+
+\subsection{Old guide box}
+
+\begin{latexonly}
+\epsfbox{1m.eps}
+\end{latexonly}
+\begin{htmlonly}
+\begin{rawhtml}
+<IMG SRC=1m.gif WIDTH=100%>
+\end{rawhtml}
+\end{htmlonly}
+
+Old design had a spacer box mounted on rotator mount, which has a
+back mounting plate 5.25" behing the rotator mount. An off-axis guider
+camera is located inside this box, mounted to the back plate.  This
+mount holds a 1.25" diagonal mirror along with a SpectraSource 512x512
+CCD camera with 20 micron pixels.  The center of the guider is currently
+located $\sim$ 2300 arcseconds off axis.  However, at the current time,
+the diagonal mirror housing partially vignettes the beam going to the
+science instrument.  There is currently no corrector in front of the
+guider.
+
+Behind the spacer, a filter wheel is mounted. The current filter wheel
+is 3.5" thick. It accomodates 6 2" square filters. 
+
+Behind the filter wheel, the science CCD camera is located. It has a
+focal plane which is located 1.25 " (optical distance) behind the
+mounting surface. The science CCD is 1024x1024 array put together 
+by Princeton Instruments. The CCD pixels are 24 microns square.
+
+The old design placed the CCD array about 2 inches closer to the
+secondary than is suggested by ray-tracing using the nominal optical
+parameters.
+
+\subsection{Apogee CCD camera}
+
+We are currently operating using an APOGEE AP7p camera as the science
+imager. This has a 512x512 thinned backside illuminated SITe chip  with
+24$\mu$ pixels
+in it. It is a thermoelectrically cooled camera which can operate about
+50 degrees below ambient, leading to operating temperatures between
+-50 and -30 C, depending on the season. Dark current is significant
+at the warmer temperatures.
+
+\subsection{Princeton CCD camera}
+
+We have a Princeton Instruments CCD camera which has a 1024x1024
+SITe array with 24$\mu$ pixels. This is a liquid nitrogen cooled
+system. We had a commandable fill system built for this dewar by 
+VBS industries (see systems documentation).
+
+The PI camera was purchased in the early 1990s. We have had a fair 
+amount of trouble with low level noise in the camera, and it has
+been sent back to the manufacturer several times. Princeton Instruments
+has been taken over by Roper Scientific.
+
+\section{Computer and software control}
+
+The telescope, science CCD and filter wheel, and guider CCD are each
+controlled by a separate PC. The telescope is controlled by the TOCC
+computer, running DOS, the science CCD by the PI computer running 
+Windows 3.11, and the guider CCD by the SPEC computer running DOS.
+
+An original version of the alt-az control system running on the TOCC
+computer was written by the AutoScope corporation, but this had many
+problems and large portions of it have been rewritten (by Jon Holtzman) 
+to form the current version. This software also controls the dome
+and dome shutter, as well as commandable fill system for the CCD dewar.
+
+The science CCD is controlled by software provided by Princeton Instruments.
+
+The guide CCD is controlled by software written by Jon Holtzman using
+library routines provided by SpectraSource.
+
+All three programs look, in addition to input from the local keyboard(s),
+for input in specified files which are visible over the network. This
+allows for complete remote operation.
+
+For remote operation, a suite of programs (tcomm) is run from a UNIX
+workstation. Basically, a program is run which talks with each of the
+three computers in the dome. In addition, there is a master command
+program which is the user interface and sends commands to the UNIX client
+programs. There is also a status program which monitors status files sent
+back from the telescope and the CCD programs and displays a status
+window with the current pointing of the telescope, exposure/filter 
+information, etc.  Finally there is a program which controls the power
+to various devices in the dome via a network power switching device.
+
+\subsection{Notes on pointing software}
+
+\begin{htmlonly}
+See postscript version; HTML version is garbled!
+\end{htmlonly}
+\begin{latexonly}
+We define the rotator coordinate system to be a right-handed coordinate
+system centered on the rotator center, with axes which will be defined
+to run parallel to NS and EW when the rotator position angle is set to 0.
+Call rotator coordinates $(x^\prime,y^\prime)$. Right ascension and 
+declination (sky coordinates) are related by the fact that the sky
+coordinates are left-handed and by the rotator position angle ($\omega$):
+
+$$-\alpha = x^\prime \cos\omega - y^\prime \sin\omega$$
+$$\delta = x^\prime \sin\omega + y^\prime \cos\omega$$
+
+where the sign convention for the position angle is that a positive
+position angle rotates N counter clockwise on the detector when viewed
+in sky orientation.
+
+Any instrument will then be defined by its pixel scale ($S_x, S_y$), rotation
+of the pixels relative to the rotator coordinate system ($\theta$),
+and the location of the detector center in the rotator coordinate system
+$(c_x,c_y)$. If instrument coordinates are represented by $(x,y)$, then
+
+$$x^\prime = (x-x_c) S_x \cos\theta + (y-y_c) S_y \sin\theta + c_x$$
+$$y^\prime = (x-x_c) S_x \sin\theta - (y-y_c) S_y \cos\theta + c_y$$
+
+$S$ and $\theta$ are determined by moving a star around in the detector
+(command INIT, GINIT). In general, $S_x$ and $S_y$ will be constrained
+to have the same absolute value (or to have a ratio of absolute values
+given by the ratio of pixel dimensions); if the detector has a left-handed
+orientation in sky coordinates (i.e. origin at upper left for sky
+orientation), the scales will have the same sign, but if right-handed,
+the convention is to make $S_x$ negative.
+
+$c_x$ and $c_y$ are related to the offset which
+is reqired to move a star from the center of the rotator to the center
+of the instrument; if a QM A B moves the star from the center of the
+rotator to the center of the instrument, then $c_x = A$ and $c_y = -B$,
+where there is a sign flip for right ascension since sky coordinates
+are left-handed while rotator coordinates are right-handed.
+
+Pointing models are determined to put stars at the rotator center.
+
+To place an object in the center of a desired instrument, one thus needs to
+add an instrument correction to the ($\alpha,\delta$) of the target. Since
+we need to move in the opposite direction of the offset, we add:
+
+$$\Delta\alpha = c_x \cos\omega - c_y \sin\omega$$
+$$\Delta\delta = -c_x \sin\omega - c_y \cos\omega$$
+
+To offset the telescope in instrument coordinates, one has
+
+$$\Delta x^\prime = \Delta x S_x \cos\theta + \Delta y S_y \sin\theta$$
+$$\Delta y^\prime = \Delta x S_x \sin\theta - \Delta y S_y \cos\theta$$
+
+or
+
+$$\Delta \alpha = - \Delta x S_x \cos(\theta+\omega) 
+                  - \Delta y S_y \sin(\theta+\omega)$$
+$$\Delta \delta = + \Delta x S_x \sin(\theta+\omega) 
+                  - \Delta y S_y \cos(\theta+\omega)$$
+
+Remember, if one wishes to move an object a desired number of pixels, one
+must move the telescope in the opposite direction.
+\end{latexonly}
+
+\subsection{Notes on guider software}
+\begin{htmlonly}
+See postscript version; HTML version is garbled!
+\end{htmlonly}
+\begin{latexonly}
+
+The guider has two parallel stages, a positioning stage and a focus stage.
+The positioning stage moves both the camera and the pickoff mirror, while
+the focus stage moves the pickoff mirror only. Hence, changing the focus
+also changes the position in the sky.
+
+Let $P$ be the radial position in the sky in arcsec, $x$ be the radial
+position in microns, $R$ the R-stage step position, and
+$F$ the F-stage step position. Let $dR/dF$ be the ratio of R-steps to F-steps
+which keeps $P$ constant. Let $dP/dR$ be the scale of R-stage, i.e.
+arcsec/steps; $dP/dR = S dx/dR$, where $S$ is the telescope focal plane
+scale. Then
+
+$$P = [(R-R_0)+(F-F_0){dR\over dF}]{dP\over dR} + P_0$$
+
+However, this is complicated by the fact that the guider focus changes with
+position in the sky because the focal plane is curved. If we parameterize
+this change by:
+
+$$F(P) = F_0 + k_1 P + k_2 P^2$$ 
+
+then
+
+$$P = [(R-R_0)+(k_1 P + k_2 P^2){dR\over dF}]{dP\over dR} + P_0$$
+
+Inverting to get $R(P)$,
+
+$$(R-R_0) {dP\over dR} = (P - P_0) - (k_1 P + k_2 P^2) {dR\over dF}{dP\over dR}$$
+
+or
+$$R = {(P-P_0) - (k_1 P + k_2 P^2) {dR\over dF}{dP\over dR} \over {dP\over dR}} + R_0$$
+
+\end{latexonly}
+
+\section{Telescope calibration items}
+
+After changing the optical configuration of the telescope, several calibration
+steps may need to be taken:
+\begin{enumerate}
+
+ \item Determine rotator center. Probably best done by going to star field,
+set position angle, disable rotator (ZDISABLE), change position angle by
+less than 180 degrees, avoiding cable wrap issues, do a long (300-600s) 
+integration and find the center.
+
+ \item Do a pointing model. Put rotator center in pm.pro and do model using
+recentering.  This creates pm???.fits files. Procedure posrecen.pro will
+turn these into TPOINT input file. TPOINT generates a pointing model:
+INDAT, CALL ALTAZ, USE NRX NRY, FIT, OUTMOD.
+
+ \item Do instrument blocks. Need to determine offset from rotator center
+to center of each instrument at PA=0 with QM commands. Guider CX coordinate
+currently needs to be compiled into ccd/gccd.c.  GINIT should determine
+scales and rotations, which together with offsets form instrument blocks.
+
+ \item Determine proper guider focus (at rotator==0?) and set guider
+home position accordingly.
+
+ \item  Focus offsets, with altitude and rotator position/stage location 
+for guider: foctesta.pro, foctestg.pro, focadj.pro. Focus offsets for filters.
+
+\end{enumerate}
+
+\section{Current telescope performance}
+
+\subsection{Pointing/tracking}
+
+The telescope after nominal mechanical optical alignment has poor
+pointing performance. However, the pointing can be fairly well modelled
+using standard terms for an alt-az telescope implemented, e.g., by the
+TPOINT software, which we use. When making a pointing model using 100-200
+stars around the sky, we typically achieve rms pointing performance 
+of $\sim$ 20 arcsec.
+
+Pointing accuracy appears to be limited by apparent small changes in
+scale (encoder steps/degree for alt and az, motor steps/degree) with
+time. The changes, at least in azimuth, do \textit{not} appear to
+be correlated with the temperature.
+
+In addition, we appear to very occasionally have major shifts in some
+component that require us to do an entirely new pointing model. This
+is not well understood, but it appears to happen very infrequently.
+
+Tracking performace directly comes from this pointing performance because
+we track using encoder information in the same way that we point.  The
+tracking performance varies with location in the sky. Typically, we
+estimate that moderately good tracking, i.e. image quality can be maintained,
+for roughly 3-5 minutes.
+
+\subsection{Guiding}
+
+We have implemented guiding software to allow for longer integrations.
+With the current system, we perform relatively slow guiding; we can
+update roughly once every 1-2 seconds fastest. Our usual mode of operation
+is to operate significantly slower, usually computing an offset every
+1-2 seconds but averaging five of these before sending a correction to
+the telescope.
+
+The performance of the guiding still depends on the quality of the
+pointing model because we only have position measurements of the guide
+star in two coordinates while the telescope is a three axis system.
+We currently assume that the rotator position is correct, and guide
+in alt-az alone. This appears to be sufficient so long as the pointing
+model is good; when it is not good, we get noticable rotation around the
+position of the guide camera when we are guiding. Better guiding can
+also be obtained if the observer is careful to rezero the coordinate
+pointing immediately before guiding (i.e. setting the pointing to be
+correct to first order).
+
+Our current guiding performance has yet to be fully quantified.
+
+\subsection{Image quality summary}
+
+We are continually working on image quality. In its original condition,
+the telescope never never achieved image quality much better than $\sim$ 1.7 arcsec,
+with a strong wavelength dependence such that the best images were achieved
+at the longest optical wavelengths, and significantly worse performace was seen
+at shorter wavelengths.
+
+Based on analysis of the images, we decided that the optics were likely
+the cause, and we sent all three mirrors to be refigured/repolished in June 2002
+to Rayleigh Optical Corporation in Baltimore. They found that the primary
+mirror indeed did not have a very good figure. The mirrors were returned in
+October 2003. 
+
+Since then the image quality is better, although still leaves some room
+for improvment. Our best images are now around 1.25 arcsec FWHM, with a
+moderate wavelength dependence in the same sense as before. However, we don't
+usually seem to be able to obtain this for longer exposures; currently,
+we are investigating focus drifts, collimation drifts, and seeing effects.
+
+%The image quality currently leaves quite a bit to be desired. We have
+
+%Several things could potentially contribute to the poor image quality, which
+%we summarize here; supporting data for some of these statements is
+%presented in the next section.
+%
+%\begin{itemize}
+%  \item misfigured optics: primary, secondary, and/or tertiary. We know
+%     from out-of-focus images that optics errors are significant, as there
+%     are strong non-uniformities that are very repeatable. The color
+%     dependence of the image quality may be consistent with mid-frequency
+%     errors.
+%  \item collimation errors. We adjust the secondary on the sky to remove
+%     obvious traces of coma. The procedure could leave some astigmatism;
+%     also, we might have some astigmatism if we are not observing on the
+%     optical axis (it is very difficult to adjust the tertiary). However,
+%     there's not an obviously large component of astigmatism in the images.
+%     We clearly have some spherical aberration; whether this is due to
+%     improper spacing of the primary and secondary (and thus improper location
+%     of the focal plane) or comes from optics not built to design specs
+%     is still TBD. The color dependence of the image quality could not
+%     be explained by collimation errors.
+%  \item seeing errors. The fact that the image quality is \textit{never}
+%     good suggests that seeing is not the dominant component, along with
+%     the repeatability of out-of-focus intensity patterns. However, seeing
+%     can be important at least at the beginning of the night; it is fairly
+%     clear that the best image quality (as poor as it is), can only be 
+%     achieved after the telescope has been opened for several \textit{hours}.
+%     This suggests that thermal problems may dominate the image quality
+%     at the beginning of the night.
+%  \item tracking errors. The amplitude of these is currently not well
+%     known.
+%\end{itemize}
+%
+%At this point, we need a clear and quantitative understanding of the relative
+%amplitudes of each of these problems, so we can determine which problem to
+%attack first.
+%
+\subsubsection{Image quality data}
+
+We have attempted to collimate the telescope several times. We have
+twice done mechanical collimation by 
+\begin{enumerate}
+\item positioning the secondary (decenter and tilt) based on an alignment 
+telescope mounted in the primary hole
+\item positioning the tertiary (tilt only) based on an alignment telescope
+mounted on the rotator mount
+\item positioning the primary based on stellar images
+\end{enumerate}
+
+From this initial mechanical alignment, we have refined the collimation
+using secondary tilts to minimize the apparent coma in the images. 
+The secondary can be tilted using motor control, but not decentered.
+
+\noindent{\textit{Comments from before mirror repolishing}}
+
+Out-of-focus images show no strong signs of coma or astigmatism. However,
+they do show very prominent, roughly azimuthally-symmetric, zonal
+errors. At the current time, we suspect that the poor image quality
+arises from one or more misfigured optics. The primary support system 
+is also a possible culprit, but it is not clear how it would produce
+azimuthally symetric features, as the primary support structure consists
+of a set of three ``tripod'' cup mounts.
+
+There is also some clear evidence of spherical aberation from 
+\htmladdnormallink{out-of-focus image pairs}{980312pairs.jpg}. 
+\latex{ This is shown in Figure \ref{fig:980312pairs}.} The various
+pairs shown here were taken on 12 March 1998 
+at 4 different back focal distances; the
+top pair was taken at the ``nominal'' CCD position (with the old guider),
+the next pair in 6 cm, the next pair in 3 cm, and the final pair
+out 1.5cm from the ``nominal'' CCD position. Note with the new guider,
+we are closest to the bottom position.
+
+\begin{latexonly}
+\begin{figure}
+\epsfbox{980312pairs.ps}
+\label{fig:980312pairs}
+\end{figure}
+\end{latexonly}
+
+The image quality appears to be rather strongly dependent on wavelength,
+despite all reflective optics (apart from the dewar window). Best image
+quality as a function of wavelength is given by the following table:
+
+\begin{tabular}{cc}
+Filter&FWHM(")\\
+Gunn Z& 1.7\\
+I & 1.9\\
+R & 2.1\\
+V & 2.4\\
+B & 2.7
+\end{tabular}
+
+The primary mirror was removed from the telescope in February 2000 to be
+realuminized; the tertiary had to be removed at the same time, but was
+not realuminzed, and the secondary was not removed at all. Upon reinsertion
+of the primary, we redid the collimation being more careful about the
+positioning of the secondary mirror. However, after several attempts at
+collimation, it appears clear that the image quality \textbf{degraded}
+since before the primary was removed. This is currently a large puzzle.
+Focus data from October 2001 give:
+
+\begin{tabular}{cc}
+Filter&FWHM(")\\
+I & 2.0\\
+R & 2.2\\
+B & 2.6
+\end{tabular}
+
+\begin{htmlonly}
+Coarse focus run data obtained on 15 March 2000 is shown 
+\htmladdnormallink{here.}{000315coarse.jpg}
+\end{htmlonly}
+
+\begin{latexonly}
+Coarse focus run data obtained on 15 March 2000 is shown in Figure
+\ref{fig:000315coarse}
+\begin{figure}
+\epsfbox{000315coarse.ps}
+\label{fig:000315coarse}
+\end{figure}
+\end{latexonly}
+
+Note that the vertical streaking seen in stars near focus is from the
+CCD which was being operated with the shutter continually open.
+
+Careful measurements have not yet been made on these images as compared
+with previous images (not clear if sufficient archival data exists), but
+by eye, it seems that the spherical \textit{might} be a bit worse now
+than before; of course, this would be rather hard to understand.
+
+\subsubsection{Sensitivity to collimation errors}
+
+Errors in primary-secondary spacing will lead to the introduction of spherical
+aberration. From Schroeder, we have
+$$ASA = {m (m^2-1)\over 16 F^3} \left[1+{2\over (m-1)(m-\beta)}\right] {ds_2\over f_1}$$
+For the 1m, we have $F_1$=2.5, $F=6$, giving $m=2.4$, 
+$k=\rho (m-1)/m  = 0.37$, $\beta = k(m+1)-1 = 0.26$. So we have
+$$ASA = 0.0055 {ds_2\over f_1}$$
+or $ASA = 11.35$  arcsec per inch of secondary motion.
+
+Note that the shift in the focal plane is given by $(m^2+1)ds_2 = 6.76 ds_2$.
+
+%\subsubsection{Measuring aberrations from out of focus images}
+%
+%Spherical aberration. Idea is to compare ratio of diameter of obscurations
+%inside and outside of focus where each image has the same image size for
+%marginal rays, so we can imagine the images spaced equally around marginal
+%focus. The location of focus for rays at the edge of the secondary is given
+%by:
+%$${D_{s2}\over D_{s1}} = {r_2\over r_1}$$
+%where $r_1$ is the distance from the first image to the focus of the
+%secondary edge rays, and $r_2$ is the distance from the second image to the
+%focus of the secondary edge rays. We also have:
+%$$r=r_1+r_2 \approx 2 F D_m$$
+%where $D_m$ is the diameter of the marginal rays in the images 
+%(same for both images, by construction). From these, we get the distance
+%between marginal focus and focus of the secondary edge rays, which we will
+%call $x$:
+%$$x = r_1 - {r\over 2} = F D_m \left[{2\over (1+{D_{s2}\over D_{s1}})} - 1\right]$$
+%
+%We can relate this distance $x$ to the amount of spherical aberration (TSA)
+%by:
+%$${y^\prime\over TSA} \approx {y_2\over y_1}$$
+%where $y$ is the ray height in the pupil, and $y^\prime$ is the ray height
+%at paraxial focus. We also have:
+%$${y^\prime \over x^\prime} = {TSA\over s}$$
+%where $s$ is the distance between marginal and paraxial focus and
+%$x^\prime = s-x$. Combining these gives:
+%$$x=s-x^\prime = s (1-{y_2\over y_1})$$
+%
+%Note that
+%$${2 TSA\over s} \approx {1\over F}$$.
+%
+%Combine results to get:
+%$$ TSA = {x\over 2 F (1-{y_2\over y_1})} = 
+%{D_m\over 2 (1-{y_2\over y_1})} \left[{ 2\over (1+{d_{s2}\over d_{s1}})} -1\right] $$
+%
+\end{document}

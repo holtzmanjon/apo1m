@@ -1,0 +1,4 @@
+#!/bin/csh -f 
+tcomm_xterm -fn 6x10 -sb -sl 1000 -geometry 80x10-25+380 -T "Leach CCD Control" -e \
+  ssh -l tcomm ccd1m.apo.nmsu.edu lccd &
+

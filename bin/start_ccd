@@ -1,0 +1,5 @@
+#!/bin/csh -f 
+tcomm_xterm -fn 6x10 -sb -sl 1000 -geometry 78x9-10-270 -T "PI CCD Control" -e \
+  /usr/local/bin/ccd com2ccd ccd2com /export/pi/picmd /export/pi/pirespon /export/tocc/statr \
+  /export/pi/temp.spe ccdstatus port2com com2port /export/spec/restart &  
+

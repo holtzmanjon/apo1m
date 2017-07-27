@@ -1,0 +1,1 @@
+cmd_/home/tcomm/1m/tcomm/astropciV1.7/fedora4/astropci.ko := ld -m elf_i386 -m elf_i386 -r -o /home/tcomm/1m/tcomm/astropciV1.7/fedora4/astropci.ko /home/tcomm/1m/tcomm/astropciV1.7/fedora4/astropci.o /home/tcomm/1m/tcomm/astropciV1.7/fedora4/astropci.mod.o

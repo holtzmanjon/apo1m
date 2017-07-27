@@ -1,0 +1,5 @@
+#!/bin/csh -f
+
+ssh -a -l tcomm ccd1m touch /export/rvideo/quit
+ssh -a -l tcomm ccd1m 'rm' /export/rvideo/*
+ssh -a -l tcomm -f ccd1m rvideo2

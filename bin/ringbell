@@ -1,0 +1,23 @@
+#!/bin/tcsh
+set nbell = 30
+if ( $#argv < 1 ) then
+  set nbell = 30
+else
+  set nbell = $1
+endif
+set sleep = 0
+if ( $#argv >= 2 ) then
+  sleep $2
+endif
+set i = 0
+while ( $i < $nbell )
+  echo -n 
+  usleep 300000
+  echo -n 
+  usleep 300000
+  echo -n 
+  sleep 1
+  @ i = $i + 1
+end
+
+exit

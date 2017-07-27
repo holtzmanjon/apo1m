@@ -1,0 +1,56 @@
+easy/fast items, high priority:
+
+ - o-ring for filter wheel/CCD interface. Document correct size and order a 
+   couple.
+
+ - find a place you can get a 4-way 25-pin switchbox from that will accept
+   credit card and order
+
+ - get plate built for Nasmyth port to hold alignment telescope
+
+ - clean up dome
+
+ - lubricate dome VERY thoroughly (don't have to worry about contamination
+   of optics!)
+
+harder items, don't require significant APO support, in priority order:
+
+ - redo guider/filter wheel wiring. Cut off current ends and put connectors
+   further down. Build a set of connectors to go between long cables and
+   the guider/filter boxes, building extras for easy replacement. Reroute
+   cables out along axis to reduce stress on connectors.
+
+ - diagnose and fix filter wheel (assuming cabling problems weren't the
+   culprit)
+
+ - rewire limit "chooser" switch, with better connections and a cover over
+   the connections
+
+ - determine whether it is possible to replace guider pickoff mirror
+   with larger mirror. Actually, should probably first determine whether
+   mirror really is undersized. Note if we went to larger detector for
+   guider, we might require a larger mirror.
+
+ - figure out nicer way to install fans in front of louvers. Consider
+   getting larger fans?
+
+ - investigate whether Apogee could be used as guide camera. If located
+   outside the box, does it have sufficient clearence? If this is feasible,
+   investigate design and purchase of transfer optics
+
+ - do a Nasmyth baffle design, and install correct baffles in proper
+   locations using RTV
+
+bigger jobs requiring support, listed in priority order:
+
+ - design/construct/implement improved mirror cover system
+
+ - get lower dome functioning reliably
+
+ - investigate dome motor/dome interface, redesign as necessary
+
+ - investigate redesign of tertiary mount, allowing for easier adjustment
+
+ - investigate solutions for excess heat in rack: replace current AC unit,
+   replace entire rack with better unit, venting of heat out of the dome,
+   etc.

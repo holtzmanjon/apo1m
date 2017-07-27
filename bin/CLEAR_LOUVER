@@ -1,0 +1,2 @@
+touch /home/export/tocc/louver.dat
+chmod 666 /home/export/tocc/louver.dat

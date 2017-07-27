@@ -1,0 +1,9 @@
+VISTALIB=/usr/local/src/xvista/lib
+rvideo: rvideo.o xgets.o
+	cc -o rvideo rvideo.o xgets.o $(VISTALIB)/xtv.linux.a \
+	-L/usr/X11R6/lib -lX11 -lreadline -lhistory -lcurses
+install:
+	cp rvideo /usr/local/bin
+	chmod 4755 /usr/local/bin/rvideo
+clean:
+	-rm *.o rvideo

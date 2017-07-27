@@ -1,0 +1,22 @@
+Various versions of pwc and pwcx:
+
+On RHEL4, the camera works fine at all resolutions just with built-in
+  modules, nothing else is necessary.
+
+I got things to run with RHEL3 kernel 2.4.21-32.0.1 by recompiling
+  kernel using the configs/kernel-2.4.21-i686-smp.config file; even
+  though this is supposed to match the distributed kernel, the distributed
+  kernel did not have pwc included, but my custom one did!
+
+With pwc, the camera only works at the minimum 160x120 resolution, for
+  more than the pwcx is needed. I got the module from pwcx-8.4.tar.gz
+  and it works! Need to modprobe pwcx first, however, or use something like
+   post-install pwc /sbin/insmod --force /lib/modules/2.4.21-32.0.1.ELcustom/kernel/drivers/usb/pwcx.o >/dev/null 2>&1
+  in /etc/modules.conf
+
+Clearly, using compiled code is preferable, but I failed on that:
+  I could not get pwc-9.0.2, nor pwc-10.0.7a to compile
+    under 2.4.21-32.0.1
+  The pwcx-9.0.2 source needs a pwc-9 to be compiling, but the version
+    in the kernel source tree is 8.10
+

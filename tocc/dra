@@ -1,0 +1,1582 @@
+command.cpp:      G->verbose = !G->verbose ;
+command.cpp:        ra = G->current_lasth - ra;
+command.cpp:			   G->current_mean_ra,G->current_mean_dec,
+command.cpp:			   G->current_mean_epoch,G->current_mean_pmra,
+command.cpp:			   G->current_mean_pmdec,G->current_mean_parallax,
+command.cpp:			   G->current_mean_radial_velocity,
+command.cpp:			   G->current_mean_eff_wavelength,G->current_tlr,pa);
+command.cpp:			   G->current_mean_ra,G->current_mean_dec,
+command.cpp:			   G->current_mean_epoch,G->current_mean_pmra,
+command.cpp:			   G->current_mean_pmdec,G->current_mean_parallax,
+command.cpp:			   G->current_mean_radial_velocity,
+command.cpp:      pa = G->current_pa + (desired_rot - rot);
+command.cpp:			   G->current_mean_ra,G->current_mean_dec,
+command.cpp:			   G->current_mean_epoch,G->current_mean_pmra,
+command.cpp:			   G->current_mean_pmdec,G->current_mean_parallax,
+command.cpp:			   G->current_mean_radial_velocity,
+command.cpp:			   G->current_mean_eff_wavelength,G->current_tlr,pa);
+command.cpp:        slaDh2e(az*DD2R, alt*DD2R, G->latitude, &ra, &dec);
+command.cpp:        ra = G->current_mean_ra;
+command.cpp:        dec = G->current_mean_dec;
+command.cpp:          G->current_mean_epoch = 1950.;
+command.cpp:          istat=getsao(ra,dec,G->current_mean_epoch,vmin,vmax,
+command.cpp:      G->dra = rarate*DAS2R/cos(G->current_mean_dec)*24;
+command.cpp:      G->ddec = decrate*DAS2R*24;
+command.cpp:      G->epoch0 = timeRec.mjd_utc;
+command.cpp:      sprintf(outbuf,"rarate: %f decrate %f G->dra: %f G->ddec: %f G->epoch0: %f",rarate,decrate,G->dra, G->ddec, G->epoch0);
+command.cpp:      G->apply_rates = TRUE;
+command.cpp:      dra = rasec / 15. / cos(G->current_mean_dec);
+command.cpp:      daz = azsec / cos(G->current_obs_alt*DD2R);
+command.cpp:		sscanf(commandline+4,"%d",&G->current_inst);
+command.cpp:      int cur_inst = G->current_inst;
+command.cpp:      double theta = G->current_pa;
+command.cpp:      if (!G->tracking_on) {
+command.cpp:      G->ref_rot += drot ;
+command.cpp:      sprintf(outbuf,"Current PA reading: %f\r\n",G->current_pa*DR2D);
+command.cpp:      double old_pa = G->current_pa;
+command.cpp:      sscanf(inputline,"%lf",&G->current_pa);
+command.cpp:      G->current_pa *= DD2R ;
+command.cpp:      G->ref_rot = G->ref_rot + (G->current_pa - old_pa)*DR2D ; 
+command.cpp:      if (G->tracking_on) {
+command.cpp:		     G->tracking_on = !G->tracking_on;
+command.cpp:		     G->current_mean_ra = G->current_obs_ra;
+command.cpp:		     G->current_mean_dec = G->current_obs_dec;
+command.cpp:		     G->tracking_on = !G->tracking_on;
+command.cpp:      G->y_axis_separate = !G->y_axis_separate;
+command.cpp:      sprintf(outbuf,"y_axis_separate: %d\n",G->y_axis_separate);
+command.cpp:      G->use_encoders = !G->use_encoders;
+command.cpp:          G->x_encoder_tracking = npts;
+command.cpp:          G->x_encoder_error = error;
+command.cpp:          G->y_encoder_tracking = npts;
+command.cpp:          G->y_encoder_error = error;
+command.cpp:          G->z_encoder_tracking = npts;
+command.cpp:          G->z_encoder_error = error;
+command.cpp:	if (axis == 1) G->x_encoder_tracking = npts;
+command.cpp:	else if (axis == 2) G->y_encoder_tracking = npts;
+command.cpp:	else if (axis == 3) G->z_encoder_tracking = npts;
+command.cpp:	G->x_encoder_tracking = npts;
+command.cpp:	G->y_encoder_tracking = npts;
+command.cpp:	G->z_encoder_tracking = npts;
+command.cpp:      sscanf(inputline,"%d",&G->tracking_dtime);
+command.cpp:      sscanf(inputline,"%lf",&G->max_rate_change);
+command.cpp:      G->const_tracking = !G->const_tracking;
+command.cpp:      sscanf(inputline,"%d",&G->x_tracking_factor);
+command.cpp:      G->y_tracking_factor = G->x_tracking_factor;
+command.cpp:      G->z_tracking_factor = G->x_tracking_factor;
+command.cpp:      G->move_file = fopen("e:\\tocc\\moves.dbx", "a");
+command.cpp:      if (G->move_file == NULL) {
+command.cpp:      G->track_file = fopen("e:\\tocc\\track.dbx", "a");
+command.cpp:      G->pcx_file = fopen("e:\\tocc\\pcx.dbx", "a");
+command.cpp:      G->debug_file = fopen("e:\\tocc\\debug.dbx", "a");
+command.cpp:      fclose(G->move_file);
+command.cpp:      fclose(G->track_file);
+command.cpp:      fclose(G->pcx_file);
+command.cpp:      fclose(G->debug_file);
+command.cpp:      G->debug_file = NULL;
+command.cpp:             G->current_out_temp,G->current_cab_temp,G->current_aux_temp);
+command.cpp:             G->current_out_temp,G->current_cab_temp,G->current_aux_temp);
+command.cpp:      G->ref_alt = autoGlobal->home_alt;
+command.cpp:      G->ref_az = autoGlobal->home_az;
+command.cpp:      G->ref_rot = autoGlobal->home_rot;
+command.cpp:      G->mc_enabled = autoGlobal->mc_enabled;
+command.cpp:      G->telescope_session_init = FALSE;
+command.cpp:       G->soft_limits_disabled=0;
+command.cpp:       G->soft_limits_disabled=1;
+command.cpp:      G->dome_initialized = TRUE;
+command.cpp:        if (G->mirror_covers_open) {
+command.cpp:        if (G->mirror_covers_open) {
+command.cpp:	if (G->lower_dome_open) {
+command.cpp:      G->mc_enabled = !G->mc_enabled;
+command.cpp:      G->check_35m_closed = TRUE;
+command.cpp:      G->check_35m_closed = FALSE;
+command.cpp:      G->shutdown_state = 0;
+command.cpp:		   G->current_mean_ra,G->current_mean_dec,
+command.cpp:		   G->current_mean_epoch,G->current_mean_pmra,
+command.cpp:		   G->current_mean_pmdec,G->current_mean_parallax,
+command.cpp:		   G->current_mean_radial_velocity,
+command.cpp:		   G->current_mean_eff_wavelength,G->current_tlr,pa);
+command.cpp:	 G->handpaddle = 2;
+command.cpp:	 rasec = rasec / 15. / cos(G->current_mean_dec);
+command.cpp:	 rasec = rasec / 15. / cos(G->current_mean_dec);
+command.cpp:	 sscanf(commandline+3,"%d",&G->tracking_dtime);
+command.cpp:	   G->guide_factor = guide_factor;
+command.cpp:	 G->x_tracking_factor_new = G->x_tracking_factor;
+command.cpp:	 G->y_tracking_factor_new = G->y_tracking_factor;
+command.cpp:	 G->z_tracking_factor_new = G->z_tracking_factor;
+command.cpp:	 G->tracking_factor_mod = TRUE;
+command.cpp:	   G->x_tracking_factor_new = tracking_factor;
+command.cpp:	   if (tracking_factor < 0) G->x_tracking_rate = tracking_factor;
+command.cpp:	   G->y_tracking_factor_new = tracking_factor;
+command.cpp:	   if (tracking_factor < 0) G->y_tracking_rate = tracking_factor;
+command.cpp:	   G->z_tracking_factor_new = tracking_factor;
+command.cpp:	   if (tracking_factor < 0) G->z_tracking_rate = tracking_factor;
+command.cpp:	   G->x_tracking_factor_new = tracking_factor;
+command.cpp:	   G->y_tracking_factor_new = tracking_factor;
+command.cpp:	   G->z_tracking_factor_new = tracking_factor;
+command.cpp:   G->dome_open = autoGlobal->shutter_opened;
+command.cpp:   G->lower_dome_open = autoGlobal->lower_shutter_opened;
+command.cpp:   G->dome_slaved = autoGlobal->dome_slaved;
+command.cpp:   G->mirror_covers_open = autoGlobal->mirror_covers_open;
+command.cpp:   gethms(G->current_obs_ra*DR2H,h,m,s,sign);
+command.cpp:   gethms(fabs(G->current_obs_dec*DR2D),h,m,s,sign);
+command.cpp:   if (G->current_mean_dec >= 0)
+command.cpp:   ha = slaDrange(G->current_lasth*DH2R - G->current_obs_ra)*DR2H;
+command.cpp:   sprintf(buf,"EPOCH:   %6.1f",G->current_mean_epoch);
+command.cpp:   sprintf(buf,"PA:      %6.1f",G->current_pa*DR2D);
+command.cpp:   if (G->x_encoder_installed) {
+command.cpp:     sprintf(buf,"Encoder AZ:   %7.3f",G->current_obs_az);
+command.cpp:     sprintf(buf,"Motor AZ:     %7.3f",G->current_obs_az);
+command.cpp:   if (G->y_encoder_installed) {
+command.cpp:     sprintf(buf,"Encoder ALT:  %7.3f",G->current_obs_alt);
+command.cpp:     sprintf(buf,"Motor ALT:    %7.3f",G->current_obs_alt);
+command.cpp:   if (G->z_encoder_installed) {
+command.cpp:     sprintf(buf,"Encoder ROT:  %7.3f",G->current_obs_rot);
+command.cpp:     sprintf(buf,"Motor ROT:    %7.3f",G->current_obs_rot);
+command.cpp:   gethms((G->current_utc - (long)G->current_utc)*24,h,m,s,sign);
+command.cpp:   gethms(G->current_lasth,h,m,s,sign);
+command.cpp:   if (G->telescope_at_home) {
+command.cpp:   else if (G->tracking_on) {
+command.cpp:   } else if (G->telescope_is_slewing) {
+command.cpp:   if (G->use_encoders) {
+command.cpp:   if (G->x_encoder_installed && G->y_encoder_installed) {
+command.cpp:   if (G->x_encoder_tracking || 
+command.cpp:       G->y_encoder_tracking ||
+command.cpp:       G->z_encoder_tracking) {
+command.cpp:     if (G->x_encoder_tracking) {
+command.cpp:     if (G->y_encoder_tracking) {
+command.cpp:     if (G->z_encoder_tracking) {
+command.cpp:   if (G->mc_enabled) 
+command.cpp:   sprintf(buf,"DOME AZ: %3d",G->dome_azimuth);
+command.cpp:   if (G->dome_initialized) {
+command.cpp:   if (G->dome_slaved) {
+command.cpp:   if (G->dome_open) {
+command.cpp:     G->dome_open = autoGlobal->shutter_opened;
+command.cpp:     G->lower_dome_open = autoGlobal->lower_shutter_opened;
+command.cpp:     G->mirror_covers_open = autoGlobal->mirror_covers_open;
+command.cpp:       G->current_obs_ra, G->current_obs_dec, G->current_pa,
+command.cpp:       G->current_mean_ra, G->current_mean_dec, 
+command.cpp:       G->current_mean_epoch, G->current_utc, G->current_lasth,
+command.cpp:       G->current_obs_az, G->current_obs_alt, G->current_obs_rot,
+command.cpp:       autoGlobal->tertiary_port, G->telescope_initialized, G->telescope_at_home,
+command.cpp:       G->tracking_on, G->telescope_is_slewing, G->use_encoders,
+command.cpp:       G->x_encoder_tracking, G->y_encoder_tracking, G->z_encoder_tracking,
+command.cpp:       G->last_x_rate, G->last_y_rate, G->last_z_rate,
+command.cpp://       G->x_encoder_installed, G->y_encoder_installed,G->z_encoder_installed,
+command.cpp:       G->nmove, G->ut1_minus_utc, G->dome_initialized, G->dome_slaved,
+command.cpp:       G->dome_open,G->lower_dome_open,G->dome_azimuth,G->mirror_covers_open,
+command.cpp:       G->last_az_error, G->last_alt_error, G->last_rot_error,
+command.cpp:       G->current_out_temp,G->current_cab_temp,G->current_aux_temp,
+command.cpp:       G->current_winddir, G->current_windspeed,G->check_35m_closed,
+command.cpp:       G->shutdown_state,
+command.cpp:       G->ccd_temp,
+command.cpp:       G->mc_enabled,autoGlobal->mc_file);
+command.cpp:  G->use_encoders = TRUE ;
+command.cpp:  G->x_encoder_tracking = sysGlobal->encoder_tracking;
+command.cpp:  G->y_encoder_tracking = sysGlobal->encoder_tracking;
+command.cpp:  G->z_encoder_tracking = sysGlobal->encoder_tracking;
+command.cpp:  G->mc_enabled = autoGlobal->mc_enabled;
+command.cpp:	G->dome_slaved = autoGlobal->dome_slaved;
+globals.cpp:  G->update = 0;
+globals.cpp:  G->handpaddle = 0;
+globals.cpp:  G->delaltaz = 0; 
+globals.cpp:  G->use_encoders = FALSE; 
+globals.cpp:  G->move_file = NULL;
+globals.cpp:  G->track_file = NULL;
+globals.cpp:  G->pcx_file = NULL;
+globals.cpp:  G->debug_file = NULL;
+globals.cpp:  G->check_35m_closed = sysGlobal->check_35m_closed;
+globals.cpp:  G->move_file = fopen("e:\\tocc\\moves.dbx", "w");
+globals.cpp:  setbuf(G->move_file,NULL);
+globals.cpp:  // G->track_file = fopen("e:\\tocc\\track.dbx", "w");
+globals.cpp:  G->track_file = fopen("track.dbx", "w");
+globals.cpp:  setbuf(G->track_file,NULL);
+globals.cpp:  G->pcx_file = fopen("e:\\tocc\\pcx.dbx", "w");
+globals.cpp:  setbuf(G->pcx_file,NULL);
+globals.cpp:  G->debug_file = fopen("e:\\tocc\\debug.dbx", "w");
+globals.cpp:  setbuf(G->debug_file,NULL);
+globals.cpp:  G->move_file = fopen("e:\\tocc\\track.dat", "w");
+guiding.cpp:  theta = G->current_pa + sysGlobal->rot[cur_inst];
+guiding.cpp:    desired_rot = G->current_obs_rot - G->last_rot_error;
+guiding.cpp:  dra*=G->guide_factor;
+guiding.cpp:  ddec*=G->guide_factor;
+guiding.cpp:  G->guide_err_ra += dra*DAS2R/ cos(G->current_mean_dec);
+guiding.cpp:  G->guide_err_dec += ddec*DAS2R;
+guiding.cpp:            G->guide_err_ra*DR2AS,G->guide_err_dec*DR2AS);
+guiding.cpp:    slaDe2h(slaDrange(timeRec.last-G->current_mean_ra), G->current_mean_dec,
+guiding.cpp:            G->latitude, &az, &alt);
+guiding.cpp:    slaDe2h(slaDrange(timeRec.last-(G->current_mean_ra+dra)), 
+guiding.cpp:                      G->current_mean_dec+ddec,
+guiding.cpp:                      G->latitude, &azobs, &altobs);
+guiding.cpp:    G->guide_err_az += (az - azobs)*guide_const;
+guiding.cpp:    G->guide_err_alt += (alt - altobs)*guide_const;
+guiding.cpp:            G->current_mean_ra,G->current_mean_dec,
+guiding.cpp:            G->current_mean_ra+dra,G->current_mean_dec+ddec);
+guiding.cpp:            G->guide_err_az,G->guide_err_alt,
+guiding.cpp:            G->guide_err_az*DR2AS,G->guide_err_alt*DR2AS);
+guiding.cpp:    G->guide_err_az += daz;
+guiding.cpp:    G->guide_err_alt += dalt;
+guiding.cpp:    G->guide_err_az = 0.;
+guiding.cpp:    G->guide_err_alt = 0.;
+guiding.cpp:    G->guide_err_ra = 0.;
+guiding.cpp:    G->guide_err_dec = 0.;
+guiding.cpp:    G->apply_rates = 0;
+guiding.cpp:    G->dra = 0;
+guiding.cpp:    G->ddec = 0;
+guiding.cpp:    az += G->guide_err_az;
+guiding.cpp:    alt += G->guide_err_alt;
+guiding.cpp://    fprintf(G->move_file,"applying guide_errs: %lf %lf %lf %lf\n",
+guiding.cpp://            G->guide_err_az,G->guide_err_alt,
+guiding.cpp://            G->guide_err_az*DR2AS,G->guide_err_alt*DR2AS);
+guiding.cpp:    *ra += G->guide_err_ra;
+guiding.cpp:    *dec += G->guide_err_dec;
+guiding.cpp://    fprintf(G->move_file,"applying radec guide_errs: %lf %lf %lf %lf\n",
+guiding.cpp://            G->guide_err_ra,G->guide_err_dec,
+guiding.cpp://            G->guide_err_ra*DR2AS,G->guide_err_dec*DR2AS);
+inst.cpp:  cur_inst = G->current_inst; 
+inst.cpp:  theta = G->current_pa + sysGlobal->rot[cur_inst];
+inst.cpp:  theta = G->current_pa;
+inst.cpp:  inst_ra = ra + dra * DAS2R / cos(G->current_mean_dec);
+inst.cpp:  theta = G->current_pa + sysGlobal->rot[cur_inst];
+inst.cpp:    desired_rot = G->current_obs_rot - G->last_rot_error;
+inst.cpp:  G->current_mean_ra += dra*DAS2R/cos(G->current_mean_dec);
+inst.cpp:  G->current_mean_dec += ddec*DAS2R;
+io.cpp:    if (G->move_file != NULL) fprintf(G->move_file,"%s%s\n",timestring,out);
+io.cpp:    if (G->track_file != NULL) fprintf(G->track_file,"%s%s\n",timestring,out);
+io.cpp:    if (G->pcx_file != NULL) fprintf(G->pcx_file,"%s%s\n",timestring,out);
+io.cpp:    if (G->debug_file != NULL) fprintf(G->debug_file,"%s%s\n",timestring,out);
+ioshort.cpp:    if (G->move_file != NULL) fprintf(G->move_file,"%s%s\n",timestring,outbuf);
+ioshort.cpp:    if (G->track_file != NULL) fprintf(G->track_file,"%s%s\n",timestring,outbuf);
+ioshort.cpp:    if (G->pcx_file != NULL) fprintf(G->pcx_file,"%s%s\n",timestring,outbuf);
+ioshort.cpp:    if (G->debug_file != NULL) fprintf(G->debug_file,"%s%s\n",timestring,outbuf);
+keypad.cpp:		if (!G->telescope_initialized || G->telescope_at_home)
+keypad.cpp:														if (G->telescope_at_home)
+keypad.cpp:                                if (G->handpaddle==1){
+keypad.cpp:                                if (G->handpaddle==1){
+keypad.cpp:                                             / cos(G->current_mean_dec);
+keypad.cpp:                                if (G->handpaddle==1){
+keypad.cpp:                                             / cos(G->current_mean_dec);
+keypad.cpp:                                if (G->handpaddle==1){
+newtcs.cpp:	     G->current_out_temp,G->current_cab_temp,G->current_aux_temp);
+newtcs.cpp:	       G->current_out_temp,G->current_cab_temp,G->current_aux_temp);
+newtcs.cpp:	     G->current_out_temp,G->current_cab_temp,G->current_aux_temp);
+newtcs.cpp:	       G->current_out_temp,G->current_cab_temp,G->current_aux_temp);
+newtcs.cpp:   sprintf(buffer, "AZ JG-%ld;", maxvel);
+newtcs.cpp:     sprintf(buffer, "AZ JG-%ld;", (long)(sysGlobal->z_max_velocity / 4));
+newtcs.cpp:	    G->latitude,&ha, &dec);
+newtcs.cpp:    G->current_mean_ra = slaDranrm(timeRec.last - ha);
+newtcs.cpp:    G->current_mean_dec = dec;
+newtcs.cpp:    G->current_mean_epoch = timeRec.equinox;
+newtcs.cpp:    G->telescope_at_home = FALSE;
+newtcs.cpp:    if (G->telescope_session_init)
+newtcs.cpp:    G->encoder_initialized = TRUE;
+newtcs.cpp:    G->telescope_at_home = TRUE;
+newtcs.cpp:      G->current_mean_ra = slaDranrm(timeRec.last - autoGlobal->home_ha*DH2R);
+newtcs.cpp:      G->current_mean_dec = autoGlobal->home_dec*DD2R;
+newtcs.cpp:	      G->latitude, &ha, &dec);
+newtcs.cpp:      G->current_mean_ra = slaDranrm(timeRec.last - ha);
+newtcs.cpp:      G->current_mean_dec = dec;
+newtcs.cpp:    G->current_mean_epoch = timeRec.equinox;
+newtcs.cpp:  G->telescope_initialized = TRUE;
+newtcs.cpp:  G->telescope_session_init = TRUE;
+newtcs.cpp:  G->tracking_on = TRUE;
+newtcs.cpp:  G->telescope_initialized = TRUE;
+newtcs.cpp:  G->telescope_session_init = TRUE;
+newtcs.cpp:  G->tracking_on = TRUE;
+newtcs.cpp:  G->telescope_at_home = TRUE;
+newtcs.cpp:  G->telescope_initialized = TRUE;
+newtcs.cpp:  G->telescope_session_init = TRUE;
+newtcs.cpp:  G->tracking_on = TRUE;
+newtcs.cpp:  G->telescope_at_home = TRUE;
+newtcs.cpp:   if (!G->telescope_initialized)
+newtcs.cpp:   G->telescope_at_home = FALSE;
+newtcs.cpp:   G->telescope_is_slewing = FALSE;
+newtcs.cpp:   G->current_mean_ra = ra;
+newtcs.cpp:   G->current_mean_dec = dec;
+newtcs.cpp:   G->current_mean_epoch = epoch;
+newtcs.cpp:   G->current_mean_pmra = pmra;
+newtcs.cpp:   G->current_mean_pmdec = pmdec;
+newtcs.cpp:   G->current_mean_parallax = parallax;
+newtcs.cpp:   G->current_mean_radial_velocity = radial_velocity;
+newtcs.cpp:   G->current_mean_eff_wavelength = eff_wavelength;
+newtcs.cpp:   slaMappa(epoch, timeRec.mjd_tt, G->mean_to_app_parms);
+newtcs.cpp:   slaAoppat(timeRec.mjd_utc, G->app_to_obs_parms);
+newtcs.cpp:   double out_temp = G->current_out_temp + 273.15;
+newtcs.cpp:   double humidity = G->current_humidity / 100.0;
+newtcs.cpp:   slaAoppa(timeRec.mjd_utc, G->ut1_minus_utc, G->longitude,
+newtcs.cpp:	     G->latitude, sysGlobal->altitude, G->polor_motion_x,
+newtcs.cpp:	     G->polor_motion_y, out_temp, G->current_barometer,
+newtcs.cpp:	     humidity, eff_wavelength, tlr, G->app_to_obs_parms);
+newtcs.cpp:   if (!G->telescope_initialized)
+newtcs.cpp:   if (G->telescope_at_home)
+newtcs.cpp:   to_ra = G->current_mean_ra + (DS2R * ra_sec);
+newtcs.cpp:   to_dec = G->current_mean_dec + (DAS2R * dec_arcsec);
+newtcs.cpp:		    G->current_mean_ra,G->current_mean_dec,
+newtcs.cpp:   if (G->handpaddle == 2) {
+newtcs.cpp:				 G->current_mean_epoch,
+newtcs.cpp:				 G->current_mean_pmra,    // radians
+newtcs.cpp:				 G->current_mean_pmdec,    // radians
+newtcs.cpp:				 G->current_mean_parallax,
+newtcs.cpp:				 G->current_mean_radial_velocity,
+newtcs.cpp:				 G->current_mean_eff_wavelength,
+newtcs.cpp:				 G->current_tlr,0);
+newtcs.cpp:			     G->current_mean_epoch,
+newtcs.cpp:			     G->current_mean_pmra,
+newtcs.cpp:			     G->current_mean_pmdec,
+newtcs.cpp:			     G->current_mean_parallax,
+newtcs.cpp:			     G->current_mean_radial_velocity,
+newtcs.cpp:			     G->current_mean_epoch,
+newtcs.cpp:			     G->current_mean_pmra,
+newtcs.cpp:			     G->current_mean_pmdec,
+newtcs.cpp:			     G->current_mean_parallax,
+newtcs.cpp:			     G->current_mean_radial_velocity,
+newtcs.cpp:			       G->current_mean_ra,
+newtcs.cpp:			       G->current_mean_dec,
+newtcs.cpp:			       G->current_mean_epoch,
+newtcs.cpp:			       G->current_mean_pmra,
+newtcs.cpp:			       G->current_mean_pmdec,
+newtcs.cpp:			       G->current_mean_parallax,
+newtcs.cpp:			       G->current_mean_radial_velocity,
+newtcs.cpp:       if (G->delaltaz==1) {
+newtcs.cpp:			       G->current_mean_ra,
+newtcs.cpp:			       G->current_mean_dec,
+newtcs.cpp:			       G->current_mean_epoch,
+newtcs.cpp:			       G->current_mean_pmra,
+newtcs.cpp:			       G->current_mean_pmdec,
+newtcs.cpp:			       G->current_mean_parallax,
+newtcs.cpp:			       G->current_mean_radial_velocity,
+newtcs.cpp:			     G->current_mean_ra,
+newtcs.cpp:			     G->current_mean_dec,
+newtcs.cpp:			     G->current_mean_epoch,
+newtcs.cpp:			     G->current_mean_pmra,
+newtcs.cpp:			     G->current_mean_pmdec,
+newtcs.cpp:			     G->current_mean_parallax,
+newtcs.cpp:			     G->current_mean_radial_velocity,
+newtcs.cpp:			     G->current_mean_ra,
+newtcs.cpp:			     G->current_mean_dec,
+newtcs.cpp:			     G->current_mean_epoch,
+newtcs.cpp:			     G->current_mean_pmra,
+newtcs.cpp:			     G->current_mean_pmdec,
+newtcs.cpp:			     G->current_mean_parallax,
+newtcs.cpp:			     G->current_mean_radial_velocity,
+newtcs.cpp:			       G->current_mean_epoch,
+newtcs.cpp:			       G->current_mean_pmra,
+newtcs.cpp:			       G->current_mean_pmdec,
+newtcs.cpp:			       G->current_mean_parallax,
+newtcs.cpp:			       G->current_mean_radial_velocity,
+newtcs.cpp:       if (G->delaltaz==1) {
+newtcs.cpp:			       G->current_mean_epoch,
+newtcs.cpp:			       G->current_mean_pmra,
+newtcs.cpp:			       G->current_mean_pmdec,
+newtcs.cpp:			       G->current_mean_parallax,
+newtcs.cpp:			       G->current_mean_radial_velocity,
+newtcs.cpp:   if (G->update==1 && G->delaltaz==0) {
+newtcs.cpp:	     G->current_mean_ra,G->current_mean_dec);
+newtcs.cpp:     G->current_mean_ra = to_ra;
+newtcs.cpp:     G->current_mean_dec = to_dec;
+newtcs.cpp:	     G->current_mean_ra,G->current_mean_dec);
+newtcs.cpp:   if (!G->telescope_initialized)
+newtcs.cpp:   if (G->telescope_at_home)
+newtcs.cpp:   ra1 = G->current_mean_ra;
+newtcs.cpp:   dec1 = G->current_mean_dec;
+newtcs.cpp:       slaDe2h(ha1, dec1, G->latitude, &az1, &alt1);
+newtcs.cpp:       slaDe2h(ha2, dec2, G->latitude, &az2, &alt2);
+newtcs.cpp:	   slaDe2h(ha2, dec2, G->latitude, &az2, &alt2);
+newtcs.cpp:   if (G->update==1) {
+newtcs.cpp:	     G->current_mean_ra,G->current_mean_dec);
+newtcs.cpp:     G->current_mean_ra = ra2;
+newtcs.cpp:     G->current_mean_dec = dec2;
+newtcs.cpp:	     G->current_mean_ra,G->current_mean_dec);
+newtcs.cpp:	   new_pos = long(G->x_enc_to_motor * (double)x_axis);
+newtcs.cpp:	   new_pos = long(G->y_enc_to_motor * (double)y_axis);
+newtcs.cpp:   slaDh2e(az, alt, G->latitude, &ha, &dec);
+newtcs.cpp:   if (!G->telescope_initialized)
+newtcs.cpp:			G->current_out_temp,
+newtcs.cpp:			 G->current_humidity,
+newtcs.cpp:			 G->current_barometer);
+newtcs.cpp:   if (G->telescope_at_home == 1)
+newtcs.cpp:     slaMappa(timeRec.equinox, timeRec.mjd_tt, G->mean_to_app_parms);
+newtcs.cpp:     slaMappa(G->current_mean_epoch, timeRec.mjd_tt, G->mean_to_app_parms);
+newtcs.cpp:	   (double *)malloc(sizeof(G->mean_to_app_parms));
+newtcs.cpp:   memcpy(save_mtoa_parms_from, G->mean_to_app_parms,
+newtcs.cpp:	     sizeof(G->mean_to_app_parms));
+newtcs.cpp:   if (epoch != G->current_mean_epoch && !G->telescope_at_home) {
+newtcs.cpp:     slaMappa(epoch, timeRec.mjd_tt, G->mean_to_app_parms);
+newtcs.cpp:	   (double *)malloc(sizeof(G->mean_to_app_parms));
+newtcs.cpp:   memcpy(save_mtoa_parms_to, G->mean_to_app_parms,
+newtcs.cpp:	     sizeof(G->mean_to_app_parms));
+newtcs.cpp:   slaAoppat(timeRec.mjd_utc, G->app_to_obs_parms);
+newtcs.cpp:   double out_temp = G->current_out_temp + 273.15;
+newtcs.cpp:   slaAoppa(timeRec.mjd_utc, G->ut1_minus_utc, G->longitude,
+newtcs.cpp:	     G->latitude, sysGlobal->altitude, G->polor_motion_x,
+newtcs.cpp:	     G->polor_motion_y, out_temp, G->current_barometer,
+newtcs.cpp:	     G->current_humidity, eff_wavelength, tlr,
+newtcs.cpp:	     G->app_to_obs_parms);
+newtcs.cpp:       slaDe2h(new_ha, new_dec, G->latitude, &new_az, &new_alt);
+newtcs.cpp:   // make sure that the G->mean_to_app_parms contains the parameters for
+newtcs.cpp:   memcpy(G->mean_to_app_parms, save_mtoa_parms_from,
+newtcs.cpp:	   sizeof(G->mean_to_app_parms));
+newtcs.cpp:       if (G->telescope_at_home != 1)
+newtcs.cpp:				 G->current_mean_ra,
+newtcs.cpp:				 G->current_mean_dec,
+newtcs.cpp:				 G->current_mean_epoch,
+newtcs.cpp:				 G->current_mean_pmra,
+newtcs.cpp:				 G->current_mean_pmdec,
+newtcs.cpp:				 G->current_mean_parallax,
+newtcs.cpp:				 G->current_mean_radial_velocity,
+newtcs.cpp:       if (G->use_encoders) {
+newtcs.cpp:	       G->current_enc_az,G->current_enc_alt,G->current_enc_rot,
+newtcs.cpp:       } else if (G->telescope_at_home != 1)
+newtcs.cpp:				 G->current_mean_ra,
+newtcs.cpp:				 G->current_mean_dec,
+newtcs.cpp:				 G->current_mean_epoch,
+newtcs.cpp:				 G->current_mean_pmra,
+newtcs.cpp:				 G->current_mean_pmdec,
+newtcs.cpp:				 G->current_mean_parallax,
+newtcs.cpp:				 G->current_mean_radial_velocity,
+newtcs.cpp:	   slaDe2h(curr_ha, curr_dec, G->latitude, &curr_az, &curr_alt);
+newtcs.cpp:   if (G->use_encoders) {
+newtcs.cpp:       steps_to_degrees(G->current_enc_az,G->current_enc_alt,G->current_enc_rot,
+newtcs.cpp:   } else if (G->telescope_at_home != 1)
+newtcs.cpp:			       G->current_mean_ra,
+newtcs.cpp:			       G->current_mean_dec,
+newtcs.cpp:			       G->current_mean_epoch,
+newtcs.cpp:			       G->current_mean_pmra,
+newtcs.cpp:			       G->current_mean_pmdec,
+newtcs.cpp:			       G->current_mean_parallax,
+newtcs.cpp:			       G->current_mean_radial_velocity,
+newtcs.cpp:			       G->current_mean_ra,
+newtcs.cpp:			       G->current_mean_dec,
+newtcs.cpp:			       G->current_mean_epoch,
+newtcs.cpp:			       G->current_mean_pmra,
+newtcs.cpp:			       G->current_mean_pmdec,
+newtcs.cpp:			       G->current_mean_parallax,
+newtcs.cpp:			       G->current_mean_radial_velocity,
+newtcs.cpp:     memcpy(G->mean_to_app_parms, save_mtoa_parms_to,
+newtcs.cpp:	   sizeof(G->mean_to_app_parms));
+newtcs.cpp:       slaDe2h(new_ha, new_dec, G->latitude, &new_az, &new_alt);
+newtcs.cpp:   G->telescope_is_slewing = TRUE;
+newtcs.cpp:       G->dome_azimuth = ocs_return_dome_azimuth();
+newtcs.cpp:       double dome_dif = slaDrange((new_dome_az - G->dome_azimuth) * DD2R);
+newtcs.cpp:   G->nmove = 1;
+newtcs.cpp:   G->telescope_at_home = FALSE;
+newtcs.cpp:   if (G->use_encoders && sysGlobal->mount_type) {
+newtcs.cpp:      G->current_mean_ra = ra;
+newtcs.cpp:      G->current_mean_dec = dec;
+newtcs.cpp:      G->current_mean_epoch = epoch;
+newtcs.cpp:      G->current_mean_pmra = pmra;
+newtcs.cpp:      G->current_mean_pmdec = pmdec;
+newtcs.cpp:      G->current_mean_parallax = parallax;
+newtcs.cpp:      G->current_mean_radial_velocity = radial_velocity;
+newtcs.cpp:      G->current_mean_eff_wavelength = eff_wavelength;
+newtcs.cpp:      G->current_tlr = tlr;
+newtcs.cpp:      G->telescope_is_slewing = FALSE;
+newtcs.cpp:   G->current_mean_ra = ra;
+newtcs.cpp:   G->current_mean_dec = dec;
+newtcs.cpp:   G->current_mean_epoch = epoch;
+newtcs.cpp:   G->current_mean_pmra = pmra;
+newtcs.cpp:   G->current_mean_pmdec = pmdec;
+newtcs.cpp:   G->current_mean_parallax = parallax;
+newtcs.cpp:   G->current_mean_radial_velocity = radial_velocity;
+newtcs.cpp:   G->current_mean_eff_wavelength = eff_wavelength;
+newtcs.cpp:   G->current_tlr = tlr;
+newtcs.cpp:   G->telescope_is_slewing = FALSE;
+newtcs.cpp:   G->telescope_initialized = TRUE;
+newtcs.cpp:   if (!G->telescope_session_init) {
+newtcs.cpp:   if (!G->telescope_initialized) {
+newtcs.cpp:     az = G->current_obs_az;
+newtcs.cpp:     slaDh2e(az*DD2R, alt*DD2R, G->latitude, &ra, &dec);
+newtcs.cpp:			   G->current_mean_ra,
+newtcs.cpp:			   G->current_mean_dec,
+newtcs.cpp:			   G->current_mean_epoch,
+newtcs.cpp:			   G->current_mean_pmra,
+newtcs.cpp:			   G->current_mean_pmdec,
+newtcs.cpp:			   G->current_mean_parallax,
+newtcs.cpp:			   G->current_mean_radial_velocity,
+newtcs.cpp:			   G->current_mean_ra,
+newtcs.cpp:			   G->current_mean_dec,
+newtcs.cpp:			   G->current_mean_epoch,
+newtcs.cpp:			   G->current_mean_pmra,
+newtcs.cpp:			   G->current_mean_pmdec,
+newtcs.cpp:			   G->current_mean_parallax,
+newtcs.cpp:			   G->current_mean_radial_velocity,
+newtcs.cpp:       G->ref_alt = home_el * DR2D;
+newtcs.cpp:       G->ref_az = home_az * DR2D;
+newtcs.cpp:             G->ref_az, G->ref_alt);
+newtcs.cpp:             G->ref_az, G->ref_alt);
+newtcs.cpp:	 autoGlobal->home_rot = G->ref_rot ;
+newtcs.cpp:	 slaDh2e(home_az, home_el, G->latitude,
+newtcs.cpp:   // do not set G->telescope_at_home to FALSE in here!!!
+newtcs.cpp:   G->telescope_initialized = FALSE;
+newtcs.cpp:   G->telescope_is_slewing = FALSE;
+newtcs.cpp:   G->x_tracking_rate = 0.0;
+newtcs.cpp:   G->y_tracking_rate = 0.0;
+newtcs.cpp:   G->z_tracking_rate = 0.0;
+newtcs.cpp:   G->x_tracking_factor = 1.0;
+newtcs.cpp:   G->y_tracking_factor = 1.0;
+newtcs.cpp:   G->z_tracking_factor = 1.0;
+newtcs.cpp:   if (!G->telescope_initialized)
+newtcs.cpp:   G->x_tracking_rate = x_steps_sec;
+newtcs.cpp:   G->y_tracking_rate = y_steps_sec;
+newtcs.cpp:   G->z_tracking_rate = z_steps_sec;
+newtcs.cpp:   if (!G->telescope_session_init) {
+newtcs.cpp:   G->telescope_is_slewing = FALSE;
+newtcs.cpp:   G->telescope_at_home = 4;
+newtcs.cpp://   G->tracking_on = FALSE;
+newtcs.cpp:   if (!G->telescope_session_init)
+newtcs.cpp:   G->telescope_is_slewing = FALSE;
+newtcs.cpp:   G->tracking_on = FALSE;
+newtcs.cpp:   if (!G->telescope_session_init)
+newtcs.cpp:   G->telescope_at_home = 2;
+newtcs.cpp:   G->telescope_at_home = 2;
+newtcs.cpp:   if (!G->telescope_initialized)
+newtcs.cpp:   if (G->telescope_at_home)
+newtcs.cpp:   G->current_mean_ra += (DS2R * ra_sec);
+newtcs.cpp:   G->current_mean_dec += (DAS2R * dec_arcsec);
+newtcs.cpp:    G->encoder_initialized = TRUE;
+ocs.cpp:  if ((!G->dome_initialized) || (sysGlobal->enclosure_type != 2)) {
+ocs.cpp:    G->dome_initialized = FALSE;
+ocs.cpp:    G->dome_initialized = FALSE;
+ocs.cpp:  if (!G->dome_initialized) {
+ocs.cpp:    G->dome_initialized = FALSE;
+ocs.cpp:  G->dome_azimuth = ocs_return_dome_azimuth();
+ocs.cpp:   G->dome_initialized = TRUE;
+ocs.cpp:     G->dome_initialized = FALSE;
+ocs.cpp:       G->dome_initialized = TRUE;
+ocs.cpp:        G->dome_initialized = TRUE;
+ocs.cpp:        G->dome_initialized = TRUE;
+ocs.cpp:  if (!G->dome_initialized) return TCSERR_DOMENOTINIT;
+ocs.cpp:      G->dome_initialized = FALSE;
+ocs.cpp:  if (!G->dome_initialized) {
+ocs.cpp:  if ((!og_move_counts) || (!G->dome_initialized) ||
+ocs.cpp:    // G->dome_initialized = FALSE;
+ocs.cpp:  if (G->shutdown_state) {
+ocs.cpp:  G->dome_open = TRUE;
+ocs.cpp:  G->lower_dome_open = TRUE;
+ocs.cpp:  G->dome_open = FALSE;
+ocs.cpp:  G->lower_dome_open = FALSE;
+ocs.cpp:  if (G->shutdown_state) {
+ocs.cpp:    G->dome_open = TRUE;
+ocs.cpp:    G->dome_part_open = TRUE;
+ocs.cpp:  G->dome_open = FALSE;
+ocs.cpp:  G->dome_part_open = FALSE;
+ocs.cpp:		if (!G->dome_open) {
+ocs.cpp:		  G->lower_dome_open = TRUE;
+ocs.cpp:		  G->lower_dome_part_open = TRUE;
+ocs.cpp:		if (!G->dome_open) {
+ocs.cpp:		G->lower_dome_open = FALSE;
+ocs.cpp:		G->lower_dome_part_open = FALSE;
+ocs.cpp:   G->ccd_fill_dtime = timeRec.mjd_utc - autoGlobal->last_fill_utc;
+ocs.cpp:   if (G->ccd_fill_dtime*24. > sysGlobal->ccd_hold_time ) {
+ocs.cpp:   } else if (G->ccd_fill_dtime*24. > 0.9 *sysGlobal->ccd_hold_time ) {
+ocs.cpp:       (int)(60.*(sysGlobal->ccd_hold_time - G->ccd_fill_dtime*24.)));
+ocs.cpp:  G->ccd_temp = (value-2048) * 5.0 / 2048 * sysGlobal->ccd_degrees_per_volt;
+ocs.cpp:    sysGlobal->ccd_degrees_per_volt, G->ccd_temp);
+oldtcs.cpp:	     G->current_out_temp,G->current_cab_temp,G->current_aux_temp);
+oldtcs.cpp:	       G->current_out_temp,G->current_cab_temp,G->current_aux_temp);
+oldtcs.cpp:	     G->current_out_temp,G->current_cab_temp,G->current_aux_temp);
+oldtcs.cpp:	       G->current_out_temp,G->current_cab_temp,G->current_aux_temp);
+oldtcs.cpp:   sprintf(buffer, "AZ JG-%ld;", maxvel);
+oldtcs.cpp:     sprintf(buffer, "AZ JG-%ld;", (long)(sysGlobal->z_max_velocity / 4));
+oldtcs.cpp:	    G->latitude,&ha, &dec);
+oldtcs.cpp:    G->current_mean_ra = slaDranrm(timeRec.last - ha);
+oldtcs.cpp:    G->current_mean_dec = dec;
+oldtcs.cpp:    G->current_mean_epoch = timeRec.equinox;
+oldtcs.cpp:    G->telescope_at_home = FALSE;
+oldtcs.cpp:    if (G->telescope_session_init)
+oldtcs.cpp:    G->encoder_initialized = TRUE;
+oldtcs.cpp:    G->telescope_at_home = TRUE;
+oldtcs.cpp:      G->current_mean_ra = slaDranrm(timeRec.last - autoGlobal->home_ha*DH2R);
+oldtcs.cpp:      G->current_mean_dec = autoGlobal->home_dec*DD2R;
+oldtcs.cpp:	      G->latitude, &ha, &dec);
+oldtcs.cpp:      G->current_mean_ra = slaDranrm(timeRec.last - ha);
+oldtcs.cpp:      G->current_mean_dec = dec;
+oldtcs.cpp:    G->current_mean_epoch = timeRec.equinox;
+oldtcs.cpp:  G->telescope_initialized = TRUE;
+oldtcs.cpp:  G->telescope_session_init = TRUE;
+oldtcs.cpp:  G->tracking_on = TRUE;
+oldtcs.cpp:  G->telescope_initialized = TRUE;
+oldtcs.cpp:  G->telescope_session_init = TRUE;
+oldtcs.cpp:  G->tracking_on = TRUE;
+oldtcs.cpp:  G->telescope_at_home = TRUE;
+oldtcs.cpp:   if (!G->telescope_initialized)
+oldtcs.cpp:   G->telescope_at_home = FALSE;
+oldtcs.cpp:   G->telescope_is_slewing = FALSE;
+oldtcs.cpp:   G->current_mean_ra = ra;
+oldtcs.cpp:   G->current_mean_dec = dec;
+oldtcs.cpp:   G->current_mean_epoch = epoch;
+oldtcs.cpp:   G->current_mean_pmra = pmra;
+oldtcs.cpp:   G->current_mean_pmdec = pmdec;
+oldtcs.cpp:   G->current_mean_parallax = parallax;
+oldtcs.cpp:   G->current_mean_radial_velocity = radial_velocity;
+oldtcs.cpp:   G->current_mean_eff_wavelength = eff_wavelength;
+oldtcs.cpp:   slaMappa(epoch, timeRec.mjd_tt, G->mean_to_app_parms);
+oldtcs.cpp:   slaAoppat(timeRec.mjd_utc, G->app_to_obs_parms);
+oldtcs.cpp:   double out_temp = G->current_out_temp + 273.15;
+oldtcs.cpp:   double humidity = G->current_humidity / 100.0;
+oldtcs.cpp:   slaAoppa(timeRec.mjd_utc, G->ut1_minus_utc, G->longitude,
+oldtcs.cpp:	     G->latitude, sysGlobal->altitude, G->polor_motion_x,
+oldtcs.cpp:	     G->polor_motion_y, out_temp, G->current_barometer,
+oldtcs.cpp:	     humidity, eff_wavelength, tlr, G->app_to_obs_parms);
+oldtcs.cpp:   if (!G->telescope_initialized)
+oldtcs.cpp:   if (G->telescope_at_home)
+oldtcs.cpp:   to_ra = G->current_mean_ra + (DS2R * ra_sec);
+oldtcs.cpp:   to_dec = G->current_mean_dec + (DAS2R * dec_arcsec);
+oldtcs.cpp:		    G->current_mean_ra,G->current_mean_dec,
+oldtcs.cpp:   if (G->handpaddle == 2) {
+oldtcs.cpp:				 G->current_mean_epoch,
+oldtcs.cpp:				 G->current_mean_pmra,    // radians
+oldtcs.cpp:				 G->current_mean_pmdec,    // radians
+oldtcs.cpp:				 G->current_mean_parallax,
+oldtcs.cpp:				 G->current_mean_radial_velocity,
+oldtcs.cpp:				 G->current_mean_eff_wavelength,
+oldtcs.cpp:				 G->current_tlr,0);
+oldtcs.cpp:			     G->current_mean_epoch,
+oldtcs.cpp:			     G->current_mean_pmra,
+oldtcs.cpp:			     G->current_mean_pmdec,
+oldtcs.cpp:			     G->current_mean_parallax,
+oldtcs.cpp:			     G->current_mean_radial_velocity,
+oldtcs.cpp:			     G->current_mean_epoch,
+oldtcs.cpp:			     G->current_mean_pmra,
+oldtcs.cpp:			     G->current_mean_pmdec,
+oldtcs.cpp:			     G->current_mean_parallax,
+oldtcs.cpp:			     G->current_mean_radial_velocity,
+oldtcs.cpp:			       G->current_mean_ra,
+oldtcs.cpp:			       G->current_mean_dec,
+oldtcs.cpp:			       G->current_mean_epoch,
+oldtcs.cpp:			       G->current_mean_pmra,
+oldtcs.cpp:			       G->current_mean_pmdec,
+oldtcs.cpp:			       G->current_mean_parallax,
+oldtcs.cpp:			       G->current_mean_radial_velocity,
+oldtcs.cpp:       if (G->delaltaz==1) {
+oldtcs.cpp:			       G->current_mean_ra,
+oldtcs.cpp:			       G->current_mean_dec,
+oldtcs.cpp:			       G->current_mean_epoch,
+oldtcs.cpp:			       G->current_mean_pmra,
+oldtcs.cpp:			       G->current_mean_pmdec,
+oldtcs.cpp:			       G->current_mean_parallax,
+oldtcs.cpp:			       G->current_mean_radial_velocity,
+oldtcs.cpp:			     G->current_mean_ra,
+oldtcs.cpp:			     G->current_mean_dec,
+oldtcs.cpp:			     G->current_mean_epoch,
+oldtcs.cpp:			     G->current_mean_pmra,
+oldtcs.cpp:			     G->current_mean_pmdec,
+oldtcs.cpp:			     G->current_mean_parallax,
+oldtcs.cpp:			     G->current_mean_radial_velocity,
+oldtcs.cpp:			     G->current_mean_ra,
+oldtcs.cpp:			     G->current_mean_dec,
+oldtcs.cpp:			     G->current_mean_epoch,
+oldtcs.cpp:			     G->current_mean_pmra,
+oldtcs.cpp:			     G->current_mean_pmdec,
+oldtcs.cpp:			     G->current_mean_parallax,
+oldtcs.cpp:			     G->current_mean_radial_velocity,
+oldtcs.cpp:			       G->current_mean_epoch,
+oldtcs.cpp:			       G->current_mean_pmra,
+oldtcs.cpp:			       G->current_mean_pmdec,
+oldtcs.cpp:			       G->current_mean_parallax,
+oldtcs.cpp:			       G->current_mean_radial_velocity,
+oldtcs.cpp:       if (G->delaltaz==1) {
+oldtcs.cpp:			       G->current_mean_epoch,
+oldtcs.cpp:			       G->current_mean_pmra,
+oldtcs.cpp:			       G->current_mean_pmdec,
+oldtcs.cpp:			       G->current_mean_parallax,
+oldtcs.cpp:			       G->current_mean_radial_velocity,
+oldtcs.cpp:   if (G->update==1 && G->delaltaz==0) {
+oldtcs.cpp:	     G->current_mean_ra,G->current_mean_dec);
+oldtcs.cpp:     G->current_mean_ra = to_ra;
+oldtcs.cpp:     G->current_mean_dec = to_dec;
+oldtcs.cpp:	     G->current_mean_ra,G->current_mean_dec);
+oldtcs.cpp:   if (!G->telescope_initialized)
+oldtcs.cpp:   if (G->telescope_at_home)
+oldtcs.cpp:   ra1 = G->current_mean_ra;
+oldtcs.cpp:   dec1 = G->current_mean_dec;
+oldtcs.cpp:       slaDe2h(ha1, dec1, G->latitude, &az1, &alt1);
+oldtcs.cpp:       slaDe2h(ha2, dec2, G->latitude, &az2, &alt2);
+oldtcs.cpp:	   slaDe2h(ha2, dec2, G->latitude, &az2, &alt2);
+oldtcs.cpp:   if (G->update==1) {
+oldtcs.cpp:	     G->current_mean_ra,G->current_mean_dec);
+oldtcs.cpp:     G->current_mean_ra = ra2;
+oldtcs.cpp:     G->current_mean_dec = dec2;
+oldtcs.cpp:	     G->current_mean_ra,G->current_mean_dec);
+oldtcs.cpp:	   new_pos = long(G->x_enc_to_motor * (double)x_axis);
+oldtcs.cpp:	   new_pos = long(G->y_enc_to_motor * (double)y_axis);
+oldtcs.cpp:   slaDh2e(az, alt, G->latitude, &ha, &dec);
+oldtcs.cpp:   if (!G->telescope_initialized)
+oldtcs.cpp:			G->current_out_temp,
+oldtcs.cpp:			 G->current_humidity,
+oldtcs.cpp:			 G->current_barometer);
+oldtcs.cpp:   if (G->telescope_at_home == 1)
+oldtcs.cpp:     slaMappa(timeRec.equinox, timeRec.mjd_tt, G->mean_to_app_parms);
+oldtcs.cpp:     slaMappa(G->current_mean_epoch, timeRec.mjd_tt, G->mean_to_app_parms);
+oldtcs.cpp:	   (double *)malloc(sizeof(G->mean_to_app_parms));
+oldtcs.cpp:   memcpy(save_mtoa_parms_from, G->mean_to_app_parms,
+oldtcs.cpp:	     sizeof(G->mean_to_app_parms));
+oldtcs.cpp:   if (epoch != G->current_mean_epoch && !G->telescope_at_home) {
+oldtcs.cpp:     slaMappa(epoch, timeRec.mjd_tt, G->mean_to_app_parms);
+oldtcs.cpp:	   (double *)malloc(sizeof(G->mean_to_app_parms));
+oldtcs.cpp:   memcpy(save_mtoa_parms_to, G->mean_to_app_parms,
+oldtcs.cpp:	     sizeof(G->mean_to_app_parms));
+oldtcs.cpp:   slaAoppat(timeRec.mjd_utc, G->app_to_obs_parms);
+oldtcs.cpp:   double out_temp = G->current_out_temp + 273.15;
+oldtcs.cpp:   slaAoppa(timeRec.mjd_utc, G->ut1_minus_utc, G->longitude,
+oldtcs.cpp:	     G->latitude, sysGlobal->altitude, G->polor_motion_x,
+oldtcs.cpp:	     G->polor_motion_y, out_temp, G->current_barometer,
+oldtcs.cpp:	     G->current_humidity, eff_wavelength, tlr,
+oldtcs.cpp:	     G->app_to_obs_parms);
+oldtcs.cpp:       slaDe2h(new_ha, new_dec, G->latitude, &new_az, &new_alt);
+oldtcs.cpp:   // make sure that the G->mean_to_app_parms contains the parameters for
+oldtcs.cpp:   memcpy(G->mean_to_app_parms, save_mtoa_parms_from,
+oldtcs.cpp:	   sizeof(G->mean_to_app_parms));
+oldtcs.cpp:       if (G->telescope_at_home != 1)
+oldtcs.cpp:				 G->current_mean_ra,
+oldtcs.cpp:				 G->current_mean_dec,
+oldtcs.cpp:				 G->current_mean_epoch,
+oldtcs.cpp:				 G->current_mean_pmra,
+oldtcs.cpp:				 G->current_mean_pmdec,
+oldtcs.cpp:				 G->current_mean_parallax,
+oldtcs.cpp:				 G->current_mean_radial_velocity,
+oldtcs.cpp:       if (G->use_encoders) {
+oldtcs.cpp:	       G->current_enc_az,G->current_enc_alt,G->current_enc_rot,
+oldtcs.cpp:       } else if (G->telescope_at_home != 1)
+oldtcs.cpp:				 G->current_mean_ra,
+oldtcs.cpp:				 G->current_mean_dec,
+oldtcs.cpp:				 G->current_mean_epoch,
+oldtcs.cpp:				 G->current_mean_pmra,
+oldtcs.cpp:				 G->current_mean_pmdec,
+oldtcs.cpp:				 G->current_mean_parallax,
+oldtcs.cpp:				 G->current_mean_radial_velocity,
+oldtcs.cpp:	   slaDe2h(curr_ha, curr_dec, G->latitude, &curr_az, &curr_alt);
+oldtcs.cpp:   if (G->use_encoders) {
+oldtcs.cpp:       steps_to_degrees(G->current_enc_az,G->current_enc_alt,G->current_enc_rot,
+oldtcs.cpp:   } else if (G->telescope_at_home != 1)
+oldtcs.cpp:			       G->current_mean_ra,
+oldtcs.cpp:			       G->current_mean_dec,
+oldtcs.cpp:			       G->current_mean_epoch,
+oldtcs.cpp:			       G->current_mean_pmra,
+oldtcs.cpp:			       G->current_mean_pmdec,
+oldtcs.cpp:			       G->current_mean_parallax,
+oldtcs.cpp:			       G->current_mean_radial_velocity,
+oldtcs.cpp:			       G->current_mean_ra,
+oldtcs.cpp:			       G->current_mean_dec,
+oldtcs.cpp:			       G->current_mean_epoch,
+oldtcs.cpp:			       G->current_mean_pmra,
+oldtcs.cpp:			       G->current_mean_pmdec,
+oldtcs.cpp:			       G->current_mean_parallax,
+oldtcs.cpp:			       G->current_mean_radial_velocity,
+oldtcs.cpp:     memcpy(G->mean_to_app_parms, save_mtoa_parms_to,
+oldtcs.cpp:	   sizeof(G->mean_to_app_parms));
+oldtcs.cpp:       slaDe2h(new_ha, new_dec, G->latitude, &new_az, &new_alt);
+oldtcs.cpp:   G->telescope_is_slewing = TRUE;
+oldtcs.cpp:       G->dome_azimuth = ocs_return_dome_azimuth();
+oldtcs.cpp:       double dome_dif = slaDrange((new_dome_az - G->dome_azimuth) * DD2R);
+oldtcs.cpp:   G->nmove = 1;
+oldtcs.cpp:   G->telescope_at_home = FALSE;
+oldtcs.cpp:   if (G->use_encoders && sysGlobal->mount_type) {
+oldtcs.cpp:      G->current_mean_ra = ra;
+oldtcs.cpp:      G->current_mean_dec = dec;
+oldtcs.cpp:      G->current_mean_epoch = epoch;
+oldtcs.cpp:      G->current_mean_pmra = pmra;
+oldtcs.cpp:      G->current_mean_pmdec = pmdec;
+oldtcs.cpp:      G->current_mean_parallax = parallax;
+oldtcs.cpp:      G->current_mean_radial_velocity = radial_velocity;
+oldtcs.cpp:      G->current_mean_eff_wavelength = eff_wavelength;
+oldtcs.cpp:      G->current_tlr = tlr;
+oldtcs.cpp:      G->telescope_is_slewing = FALSE;
+oldtcs.cpp:   G->current_mean_ra = ra;
+oldtcs.cpp:   G->current_mean_dec = dec;
+oldtcs.cpp:   G->current_mean_epoch = epoch;
+oldtcs.cpp:   G->current_mean_pmra = pmra;
+oldtcs.cpp:   G->current_mean_pmdec = pmdec;
+oldtcs.cpp:   G->current_mean_parallax = parallax;
+oldtcs.cpp:   G->current_mean_radial_velocity = radial_velocity;
+oldtcs.cpp:   G->current_mean_eff_wavelength = eff_wavelength;
+oldtcs.cpp:   G->current_tlr = tlr;
+oldtcs.cpp:   G->telescope_is_slewing = FALSE;
+oldtcs.cpp:   G->telescope_initialized = TRUE;
+oldtcs.cpp:   if (!G->telescope_session_init) {
+oldtcs.cpp:   if (!G->telescope_initialized) {
+oldtcs.cpp:     az = G->current_obs_az;
+oldtcs.cpp:     slaDh2e(az*DD2R, alt*DD2R, G->latitude, &ra, &dec);
+oldtcs.cpp:   G->telescope_at_home = 3;
+oldtcs.cpp:			   G->current_mean_ra,
+oldtcs.cpp:			   G->current_mean_dec,
+oldtcs.cpp:			   G->current_mean_epoch,
+oldtcs.cpp:			   G->current_mean_pmra,
+oldtcs.cpp:			   G->current_mean_pmdec,
+oldtcs.cpp:			   G->current_mean_parallax,
+oldtcs.cpp:			   G->current_mean_radial_velocity,
+oldtcs.cpp:			   G->current_mean_ra,
+oldtcs.cpp:			   G->current_mean_dec,
+oldtcs.cpp:			   G->current_mean_epoch,
+oldtcs.cpp:			   G->current_mean_pmra,
+oldtcs.cpp:			   G->current_mean_pmdec,
+oldtcs.cpp:			   G->current_mean_parallax,
+oldtcs.cpp:			   G->current_mean_radial_velocity,
+oldtcs.cpp:       G->ref_alt = home_el * DR2D;
+oldtcs.cpp:       G->ref_az = home_az * DR2D;
+oldtcs.cpp:	     G->ref_az, G->ref_alt);
+oldtcs.cpp:	     G->ref_az, G->ref_alt);
+oldtcs.cpp:	 autoGlobal->home_rot = G->ref_rot ;
+oldtcs.cpp:	 slaDh2e(home_az, home_el, G->latitude,
+oldtcs.cpp:   // do not set G->telescope_at_home to FALSE in here!!!
+oldtcs.cpp:   G->telescope_initialized = FALSE;
+oldtcs.cpp:   G->telescope_is_slewing = FALSE;
+oldtcs.cpp:   G->x_tracking_rate = 0.0;
+oldtcs.cpp:   G->y_tracking_rate = 0.0;
+oldtcs.cpp:   G->z_tracking_rate = 0.0;
+oldtcs.cpp:   G->x_tracking_factor = 1.0;
+oldtcs.cpp:   G->y_tracking_factor = 1.0;
+oldtcs.cpp:   G->z_tracking_factor = 1.0;
+oldtcs.cpp:   if (!G->telescope_initialized)
+oldtcs.cpp:   G->x_tracking_rate = x_steps_sec;
+oldtcs.cpp:   G->y_tracking_rate = y_steps_sec;
+oldtcs.cpp:   G->z_tracking_rate = z_steps_sec;
+oldtcs.cpp:   if (!G->telescope_session_init) {
+oldtcs.cpp:   G->telescope_is_slewing = FALSE;
+oldtcs.cpp:   G->telescope_at_home = 4;
+oldtcs.cpp://   G->tracking_on = FALSE;
+oldtcs.cpp:   if (!G->telescope_session_init)
+oldtcs.cpp:   G->telescope_is_slewing = FALSE;
+oldtcs.cpp:   G->tracking_on = FALSE;
+oldtcs.cpp:   if (!G->telescope_session_init)
+oldtcs.cpp:   G->telescope_at_home = 2;
+oldtcs.cpp:   G->telescope_at_home = 2;
+oldtcs.cpp:   if (!G->telescope_initialized)
+oldtcs.cpp:   if (G->telescope_at_home)
+oldtcs.cpp:   G->current_mean_ra += (DS2R * ra_sec);
+oldtcs.cpp:   G->current_mean_dec += (DAS2R * dec_arcsec);
+oldtcs.cpp:   //             G->last_az_error,G->last_alt_error, G->last_rot_error); 
+oldtcs.cpp:   } while ((fabs(G->last_az_error)  > xdead || 
+oldtcs.cpp:	     fabs(G->last_alt_error) > ydead || 
+oldtcs.cpp:	     fabs(G->last_rot_error) > zdead) &&
+oldtcs.cpp:    G->encoder_initialized = TRUE;
+shutdown.cpp:		if (G->shutdown_state)
+shutdown.cpp:				G->need_to_shutdown = TRUE;
+shutdown.cpp:				G->shutdown_state |= SDC_WDOG;
+shutdown.cpp:				G->need_to_shutdown = TRUE;
+shutdown.cpp:				G->shutdown_state |= SDC_RAIN;
+shutdown.cpp:	    if (G->shutdown_state != old_shutdown_state) {
+shutdown.cpp:	  	  sprintf(outbuf,"Shutdown state: 0x%x",G->shutdown_state);
+shutdown.cpp:	  	  sprintf(outbuf,"Shutdown state: 0x%x 0x%x",G->shutdown_state,old_shutdown_state);
+shutdown.cpp:		  old_shutdown_state = G->shutdown_state;
+shutdown.cpp:		  if (G->shutdown_state & SDC_RAIN)
+shutdown.cpp:		  if (G->shutdown_state & SDC_WIND)
+shutdown.cpp:		  if (G->shutdown_state & SDC_HUMIDITY)
+shutdown.cpp:		  if (G->shutdown_state & SDC_OUTTEMP)
+shutdown.cpp:		  if (G->shutdown_state & SDC_CABTEMP)
+shutdown.cpp:		  if (G->shutdown_state & SDC_WDOG)
+shutdown.cpp:		  if (G->shutdown_state & SDC_UPS_BATT)
+shutdown.cpp:		  if (G->shutdown_state & SDC_UPS_LINE)
+shutdown.cpp:	  	  if (G->shutdown_state & SDC_WSFAIL)
+shutdown.cpp:		  if (G->shutdown_state & SDC_35M_CLOSED)
+shutdown.cpp:		  if (G->shutdown_state & SDC_35M_NOT_OPEN)
+shutdown.cpp:		  if (G->shutdown_state & SDC_NO_NETWORK)
+shutdown.cpp:		G->need_to_shutdown = FALSE;
+shutdown.cpp:		// if (G->shutdown_state & SDC_SHUTDOWN) {
+shutdown.cpp:		    G->mirror_covers_open) tcs_dust(0);
+shutdown.cpp:		if (!G->shutdown_state) {
+shutdown.cpp:		if (G->dome_open && G->lower_dome_open ) 
+shutdown.cpp:		  if (G->lower_dome_open || G->lower_dome_part_open)
+shutdown.cpp:		  if (G->dome_open || G->dome_part_open )
+shutdown.cpp:		if (G->telescope_at_home !=4 && G->telescope_at_home !=3) tcs_telescope_park(0);
+shutdown.cpp:		// G->shutdown_state |= SDC_SHUTDOWN;
+shutdown.cpp:			if (G->shutdown_state & SDC_WDOG) {
+shutdown.cpp:					G->shutdown_state &= ~SDC_WDOG;
+shutdown.cpp:				  G->need_to_shutdown = TRUE;
+shutdown.cpp:				  G->shutdown_state |= SDC_WDOG;
+shutdown.cpp:			if (G->shutdown_state & SDC_RAIN) {
+shutdown.cpp:				  G->shutdown_state &= ~SDC_RAIN;
+shutdown.cpp:				G->need_to_shutdown = TRUE;
+shutdown.cpp:				G->shutdown_state |= SDC_RAIN;
+shutdown.cpp:		if (G->need_to_shutdown)
+shutdown.cpp:			G->weather_failures++;
+shutdown.cpp:			 status,G->weather_failures,
+shutdown.cpp:			if (G->weather_failures < 
+shutdown.cpp:			G->weather_failures = 0;
+shutdown.cpp:			G->shutdown_state &= ~SDC_WSFAIL;       
+shutdown.cpp:			G->current_aux_temp = weather.AuxTemp;
+shutdown.cpp:			G->current_cab_temp = weather.CabTemp;
+shutdown.cpp:			G->current_out_temp = weather.OutTemp;
+shutdown.cpp:			G->current_barometer = weather.Pressure;
+shutdown.cpp:			G->current_humidity = (double)weather.Humidity / 100.0;
+shutdown.cpp:			G->current_windspeed = weather.WindSpeed;
+shutdown.cpp:			G->current_winddir = weather.WindDir;
+shutdown.cpp:		if (G->weather_failures >= sysGlobal->max_wstation_failures) {
+shutdown.cpp:			G->need_to_shutdown = TRUE;
+shutdown.cpp:			G->shutdown_state |= SDC_WSFAIL;
+shutdown.cpp:			if (G->need_to_shutdown) {
+shutdown.cpp:		if (G->shutdown_state & SDC_HUMIDITY) {
+shutdown.cpp:				G->shutdown_state &= ~SDC_HUMIDITY;
+shutdown.cpp:				G->need_to_shutdown = TRUE;
+shutdown.cpp:				G->shutdown_state |= SDC_HUMIDITY;
+shutdown.cpp:		if (G->shutdown_state & SDC_WIND) {
+shutdown.cpp:				G->shutdown_state &= ~SDC_WIND;
+shutdown.cpp:				G->need_to_shutdown = TRUE;
+shutdown.cpp:				G->shutdown_state |= SDC_WIND;
+shutdown.cpp:		if (G->shutdown_state & SDC_OUTTEMP) {
+shutdown.cpp:				G->shutdown_state &= ~SDC_OUTTEMP;
+shutdown.cpp:				G->need_to_shutdown = TRUE;
+shutdown.cpp:				G->shutdown_state |= SDC_OUTTEMP;
+shutdown.cpp:		if (G->shutdown_state & SDC_CABTEMP) {
+shutdown.cpp:				G->shutdown_state &= ~SDC_CABTEMP;
+shutdown.cpp:				G->need_to_shutdown = TRUE;
+shutdown.cpp:				G->shutdown_state |= SDC_CABTEMP;
+shutdown.cpp:		if (G->need_to_shutdown)
+shutdown.cpp:          if (!G->check_35m_closed) return;
+shutdown.cpp:	  if (G->shutdown_state & SDC_35M_CLOSED) {
+shutdown.cpp:	      G->shutdown_state &= ~SDC_35M_CLOSED;
+shutdown.cpp:	    G->need_to_shutdown = TRUE;
+shutdown.cpp:	    G->shutdown_state |= SDC_35M_CLOSED;
+shutdown.cpp:	  if (G->shutdown_state & SDC_35M_NOT_OPEN) {
+shutdown.cpp:	      G->shutdown_state &= ~SDC_35M_NOT_OPEN;
+shutdown.cpp:	    G->need_to_shutdown = TRUE;
+shutdown.cpp:	    G->shutdown_state |= SDC_35M_NOT_OPEN;
+shutdown.cpp:	  if (G->need_to_shutdown) do_shutdown();
+shutdown.cpp:  if (G->shutdown_state & SDC_UPS_LINE) {
+shutdown.cpp:	      G->shutdown_state &= ~SDC_UPS_LINE;
+shutdown.cpp:      G->need_to_shutdown = TRUE;
+shutdown.cpp:      G->shutdown_state |= SDC_UPS_LINE;
+shutdown.cpp:  if (G->need_to_shutdown) do_shutdown();
+shutdown.cpp:  if (G->shutdown_state & SDC_NO_NETWORK) {
+shutdown.cpp:	      G->shutdown_state &= ~SDC_NO_NETWORK;
+shutdown.cpp:      G->need_to_shutdown = TRUE;
+shutdown.cpp:      G->shutdown_state |= SDC_NO_NETWORK;
+shutdown.cpp:  if (G->need_to_shutdown) do_shutdown();
+tcs.cpp:	     G->current_out_temp,G->current_cab_temp,G->current_aux_temp);
+tcs.cpp:	       G->current_out_temp,G->current_cab_temp,G->current_aux_temp);
+tcs.cpp:	     G->current_out_temp,G->current_cab_temp,G->current_aux_temp);
+tcs.cpp:	       G->current_out_temp,G->current_cab_temp,G->current_aux_temp);
+tcs.cpp:   sprintf(buffer, "AZ JG-%ld;", maxvel);
+tcs.cpp:     sprintf(buffer, "AZ JG-%ld;", (long)(sysGlobal->z_max_velocity / 4));
+tcs.cpp: G->ref_alt = autoGlobal->home_alt;
+tcs.cpp: G->ref_az = autoGlobal->home_az;
+tcs.cpp: G->ref_rot = autoGlobal->home_rot;
+tcs.cpp:	    G->latitude,&ha, &dec);
+tcs.cpp:    G->current_mean_ra = slaDranrm(timeRec.last - ha);
+tcs.cpp:    G->current_mean_dec = dec;
+tcs.cpp:    G->current_mean_epoch = timeRec.equinox;
+tcs.cpp:    G->telescope_at_home = FALSE;
+tcs.cpp:    if (G->telescope_session_init)
+tcs.cpp:    G->encoder_initialized = TRUE;
+tcs.cpp:    G->telescope_at_home = TRUE;
+tcs.cpp:      G->current_mean_ra = 
+tcs.cpp:      G->current_mean_dec = autoGlobal->home_dec*DD2R;
+tcs.cpp:	      G->latitude, &ha, &dec);
+tcs.cpp:      G->current_mean_ra = slaDranrm(timeRec.last - ha);
+tcs.cpp:      G->current_mean_dec = dec;
+tcs.cpp:    G->current_mean_epoch = timeRec.equinox;
+tcs.cpp:  G->telescope_initialized = TRUE;
+tcs.cpp:  G->telescope_session_init = TRUE;
+tcs.cpp:  G->tracking_on = TRUE;
+tcs.cpp:  G->telescope_initialized = TRUE;
+tcs.cpp:  G->telescope_session_init = TRUE;
+tcs.cpp:  G->tracking_on = TRUE;
+tcs.cpp:  G->telescope_at_home = TRUE;
+tcs.cpp:  slaMappa(timeRec.equinox, timeRec.mjd_tt, G->mean_to_app_parms);
+tcs.cpp:  double out_temp = G->current_out_temp + 273.15;
+tcs.cpp:  double humidity = G->current_humidity / 100.0;
+tcs.cpp:  slaAoppa(timeRec.mjd_utc, G->ut1_minus_utc, G->longitude,
+tcs.cpp:              G->latitude, sysGlobal->altitude, G->polor_motion_x,
+tcs.cpp:              G->polor_motion_y, out_temp, G->current_barometer,
+tcs.cpp:              humidity, 0.55, 0.0065, G->app_to_obs_parms);
+tcs.cpp:   if (!G->telescope_initialized)
+tcs.cpp:   G->telescope_at_home = FALSE;
+tcs.cpp:   G->telescope_is_slewing = FALSE;
+tcs.cpp:   G->current_mean_ra = ra;
+tcs.cpp:   G->current_mean_dec = dec;
+tcs.cpp:   G->current_mean_epoch = epoch;
+tcs.cpp:   G->current_mean_pmra = pmra;
+tcs.cpp:   G->current_mean_pmdec = pmdec;
+tcs.cpp:   G->current_mean_parallax = parallax;
+tcs.cpp:   G->current_mean_radial_velocity = radial_velocity;
+tcs.cpp:   G->current_mean_eff_wavelength = eff_wavelength;
+tcs.cpp:   slaMappa(epoch, timeRec.mjd_tt, G->mean_to_app_parms);
+tcs.cpp:   slaAoppat(timeRec.mjd_utc, G->app_to_obs_parms);
+tcs.cpp:   double out_temp = G->current_out_temp + 273.15;
+tcs.cpp:   double humidity = G->current_humidity / 100.0;
+tcs.cpp:   slaAoppa(timeRec.mjd_utc, G->ut1_minus_utc, G->longitude,
+tcs.cpp:	     G->latitude, sysGlobal->altitude, G->polor_motion_x,
+tcs.cpp:	     G->polor_motion_y, out_temp, G->current_barometer,
+tcs.cpp:	     humidity, eff_wavelength, tlr, G->app_to_obs_parms);
+tcs.cpp:   if (!G->telescope_initialized)
+tcs.cpp:   if (G->telescope_at_home)
+tcs.cpp:   to_ra = G->current_mean_ra + (DS2R * ra_sec);
+tcs.cpp:   to_dec = G->current_mean_dec + (DAS2R * dec_arcsec);
+tcs.cpp:		    G->current_mean_ra,G->current_mean_dec,
+tcs.cpp:   if (G->handpaddle == 2) {
+tcs.cpp:				 G->current_mean_epoch,
+tcs.cpp:				 G->current_mean_pmra,    // radians
+tcs.cpp:				 G->current_mean_pmdec,    // radians
+tcs.cpp:				 G->current_mean_parallax,
+tcs.cpp:				 G->current_mean_radial_velocity,
+tcs.cpp:				 G->current_mean_eff_wavelength,
+tcs.cpp:				 G->current_tlr,0.);
+tcs.cpp:			     G->current_mean_epoch,
+tcs.cpp:			     G->current_mean_pmra,
+tcs.cpp:			     G->current_mean_pmdec,
+tcs.cpp:			     G->current_mean_parallax,
+tcs.cpp:			     G->current_mean_radial_velocity,
+tcs.cpp:			     G->current_mean_epoch,
+tcs.cpp:			     G->current_mean_pmra,
+tcs.cpp:			     G->current_mean_pmdec,
+tcs.cpp:			     G->current_mean_parallax,
+tcs.cpp:			     G->current_mean_radial_velocity,
+tcs.cpp:			       G->current_mean_ra,
+tcs.cpp:			       G->current_mean_dec,
+tcs.cpp:			       G->current_mean_epoch,
+tcs.cpp:			       G->current_mean_pmra,
+tcs.cpp:			       G->current_mean_pmdec,
+tcs.cpp:			       G->current_mean_parallax,
+tcs.cpp:			       G->current_mean_radial_velocity,
+tcs.cpp:       if (G->delaltaz==1) {
+tcs.cpp:			       G->current_mean_ra,
+tcs.cpp:			       G->current_mean_dec,
+tcs.cpp:			       G->current_mean_epoch,
+tcs.cpp:			       G->current_mean_pmra,
+tcs.cpp:			       G->current_mean_pmdec,
+tcs.cpp:			       G->current_mean_parallax,
+tcs.cpp:			       G->current_mean_radial_velocity,
+tcs.cpp:			     G->current_mean_ra,
+tcs.cpp:			     G->current_mean_dec,
+tcs.cpp:			     G->current_mean_epoch,
+tcs.cpp:			     G->current_mean_pmra,
+tcs.cpp:			     G->current_mean_pmdec,
+tcs.cpp:			     G->current_mean_parallax,
+tcs.cpp:			     G->current_mean_radial_velocity,
+tcs.cpp:			     G->current_mean_ra,
+tcs.cpp:			     G->current_mean_dec,
+tcs.cpp:			     G->current_mean_epoch,
+tcs.cpp:			     G->current_mean_pmra,
+tcs.cpp:			     G->current_mean_pmdec,
+tcs.cpp:			     G->current_mean_parallax,
+tcs.cpp:			     G->current_mean_radial_velocity,
+tcs.cpp:			       G->current_mean_epoch,
+tcs.cpp:			       G->current_mean_pmra,
+tcs.cpp:			       G->current_mean_pmdec,
+tcs.cpp:			       G->current_mean_parallax,
+tcs.cpp:			       G->current_mean_radial_velocity,
+tcs.cpp:       if (G->delaltaz==1) {
+tcs.cpp:			       G->current_mean_epoch,
+tcs.cpp:			       G->current_mean_pmra,
+tcs.cpp:			       G->current_mean_pmdec,
+tcs.cpp:			       G->current_mean_parallax,
+tcs.cpp:			       G->current_mean_radial_velocity,
+tcs.cpp:   if (G->update==1 && G->delaltaz==0) {
+tcs.cpp:	     G->current_mean_ra,G->current_mean_dec);
+tcs.cpp:     G->current_mean_ra = to_ra;
+tcs.cpp:     G->current_mean_dec = to_dec;
+tcs.cpp:	     G->current_mean_ra,G->current_mean_dec);
+tcs.cpp:   if (!G->telescope_initialized)
+tcs.cpp:   if (G->telescope_at_home)
+tcs.cpp:   ra1 = G->current_mean_ra;
+tcs.cpp:   dec1 = G->current_mean_dec;
+tcs.cpp:       slaDe2h(ha1, dec1, G->latitude, &az1, &alt1);
+tcs.cpp:       slaDe2h(ha2, dec2, G->latitude, &az2, &alt2);
+tcs.cpp:	   slaDe2h(ha2, dec2, G->latitude, &az2, &alt2);
+tcs.cpp:   if (G->update==1) {
+tcs.cpp:	     G->current_mean_ra,G->current_mean_dec);
+tcs.cpp:     G->current_mean_ra = ra2;
+tcs.cpp:     G->current_mean_dec = dec2;
+tcs.cpp:	     G->current_mean_ra,G->current_mean_dec);
+tcs.cpp:	   new_pos = long(G->x_enc_to_motor * (double)x_axis);
+tcs.cpp:	   new_pos = long(G->y_enc_to_motor * (double)y_axis);
+tcs.cpp:   if (y_axis && !G->y_axis_separate)
+tcs.cpp:   if (G->y_axis_separate) 
+tcs.cpp:   if (G->y_axis_separate) {
+tcs.cpp:   slaDh2e(az, alt, G->latitude, &ha, &dec);
+tcs.cpp:   if (!G->telescope_initialized) {
+tcs.cpp:   if (G->shutdown_state) {
+tcs.cpp:			G->current_out_temp,
+tcs.cpp:			 G->current_humidity,
+tcs.cpp:			 G->current_barometer);
+tcs.cpp:   if (G->telescope_at_home == 1)
+tcs.cpp:     slaMappa(timeRec.equinox, timeRec.mjd_tt, G->mean_to_app_parms);
+tcs.cpp:     slaMappa(G->current_mean_epoch, timeRec.mjd_tt, G->mean_to_app_parms);
+tcs.cpp:	   (double *)malloc(sizeof(G->mean_to_app_parms));
+tcs.cpp:   memcpy(save_mtoa_parms_from, G->mean_to_app_parms,
+tcs.cpp:	     sizeof(G->mean_to_app_parms));
+tcs.cpp:   //if (epoch != G->current_mean_epoch && !G->telescope_at_home) {
+tcs.cpp:   //if (epoch != G->current_mean_epoch || G->telescope_at_home) {
+tcs.cpp:     slaMappa(epoch, timeRec.mjd_tt, G->mean_to_app_parms);
+tcs.cpp:	   (double *)malloc(sizeof(G->mean_to_app_parms));
+tcs.cpp:   memcpy(save_mtoa_parms_to, G->mean_to_app_parms,
+tcs.cpp:	     sizeof(G->mean_to_app_parms));
+tcs.cpp:   slaAoppat(timeRec.mjd_utc, G->app_to_obs_parms);
+tcs.cpp:   double out_temp = G->current_out_temp + 273.15;
+tcs.cpp:   double humidity = G->current_humidity / 100.0;
+tcs.cpp:   slaAoppa(timeRec.mjd_utc, G->ut1_minus_utc, G->longitude,
+tcs.cpp:	     G->latitude, sysGlobal->altitude, G->polor_motion_x,
+tcs.cpp:	     G->polor_motion_y, out_temp, G->current_barometer,
+tcs.cpp:	     G->app_to_obs_parms);
+tcs.cpp:	       G->current_enc_az,G->current_enc_alt,G->current_enc_rot,
+tcs.cpp:     G->current_pa = curr_rot + new_alt + parang;
+tcs.cpp:     G->current_pa = pa * DD2R;
+tcs.cpp:   sprintf(outbuf,"pa: %f %f %f %f %f",pa,curr_rot,new_alt,parang,G->current_pa);
+tcs.cpp:       slaDe2h(new_ha, new_dec, G->latitude, &new_az, &new_alt);
+tcs.cpp:   // make sure that the G->mean_to_app_parms contains the parameters for
+tcs.cpp:   memcpy(G->mean_to_app_parms, save_mtoa_parms_from,
+tcs.cpp:	   sizeof(G->mean_to_app_parms));
+tcs.cpp:       if (G->telescope_at_home != 1)
+tcs.cpp:				 G->current_mean_ra,
+tcs.cpp:				 G->current_mean_dec,
+tcs.cpp:				 G->current_mean_epoch,
+tcs.cpp:				 G->current_mean_pmra,
+tcs.cpp:				 G->current_mean_pmdec,
+tcs.cpp:				 G->current_mean_parallax,
+tcs.cpp:				 G->current_mean_radial_velocity,
+tcs.cpp:       if (G->use_encoders) {
+tcs.cpp:	       G->current_enc_az,G->current_enc_alt,G->current_enc_rot,
+tcs.cpp:       } else if (G->telescope_at_home != 1)
+tcs.cpp:				 G->current_mean_ra,
+tcs.cpp:				 G->current_mean_dec,
+tcs.cpp:				 G->current_mean_epoch,
+tcs.cpp:				 G->current_mean_pmra,
+tcs.cpp:				 G->current_mean_pmdec,
+tcs.cpp:				 G->current_mean_parallax,
+tcs.cpp:				 G->current_mean_radial_velocity,
+tcs.cpp:	   slaDe2h(curr_ha, curr_dec, G->latitude, &curr_az, &curr_alt);
+tcs.cpp:   if (G->use_encoders) {
+tcs.cpp:       steps_to_degrees(G->current_enc_az,G->current_enc_alt,G->current_enc_rot,
+tcs.cpp:   } else if (G->telescope_at_home != 1)
+tcs.cpp:			       G->current_mean_ra,
+tcs.cpp:			       G->current_mean_dec,
+tcs.cpp:			       G->current_mean_epoch,
+tcs.cpp:			       G->current_mean_pmra,
+tcs.cpp:			       G->current_mean_pmdec,
+tcs.cpp:			       G->current_mean_parallax,
+tcs.cpp:			       G->current_mean_radial_velocity,
+tcs.cpp:			       G->current_mean_ra,
+tcs.cpp:			       G->current_mean_dec,
+tcs.cpp:			       G->current_mean_epoch,
+tcs.cpp:			       G->current_mean_pmra,
+tcs.cpp:			       G->current_mean_pmdec,
+tcs.cpp:			       G->current_mean_parallax,
+tcs.cpp:			       G->current_mean_radial_velocity,
+tcs.cpp:   memcpy(G->mean_to_app_parms, save_mtoa_parms_to,
+tcs.cpp:	   sizeof(G->mean_to_app_parms));
+tcs.cpp:       slaDe2h(new_ha, new_dec, G->latitude, &new_az, &new_alt);
+tcs.cpp:   G->telescope_is_slewing = TRUE;
+tcs.cpp:       G->dome_azimuth = ocs_return_dome_azimuth();
+tcs.cpp:       double dome_dif = slaDrange((new_dome_az - G->dome_azimuth) * DD2R);
+tcs.cpp:   G->nmove = 1;
+tcs.cpp:   G->telescope_at_home = FALSE;
+tcs.cpp:   if (G->use_encoders && sysGlobal->mount_type) {
+tcs.cpp:      G->current_mean_ra = ra;
+tcs.cpp:      G->current_mean_dec = dec;
+tcs.cpp:      G->current_mean_epoch = epoch;
+tcs.cpp:      G->current_mean_pmra = pmra;
+tcs.cpp:      G->current_mean_pmdec = pmdec;
+tcs.cpp:      G->current_mean_parallax = parallax;
+tcs.cpp:      G->current_mean_radial_velocity = radial_velocity;
+tcs.cpp:      G->current_mean_eff_wavelength = eff_wavelength;
+tcs.cpp:      G->current_tlr = tlr;
+tcs.cpp:      G->telescope_is_slewing = FALSE;
+tcs.cpp:   G->current_mean_ra = ra;
+tcs.cpp:   G->current_mean_dec = dec;
+tcs.cpp:   G->current_mean_epoch = epoch;
+tcs.cpp:   G->current_mean_pmra = pmra;
+tcs.cpp:   G->current_mean_pmdec = pmdec;
+tcs.cpp:   G->current_mean_parallax = parallax;
+tcs.cpp:   G->current_mean_radial_velocity = radial_velocity;
+tcs.cpp:   G->current_mean_eff_wavelength = eff_wavelength;
+tcs.cpp:   G->current_tlr = tlr;
+tcs.cpp:   G->telescope_is_slewing = FALSE;
+tcs.cpp:   G->telescope_initialized = TRUE;
+tcs.cpp:   if (!G->telescope_initialized) {
+tcs.cpp:   if (!G->telescope_initialized) {
+tcs.cpp:     az = G->current_obs_az;
+tcs.cpp:     slaDh2e(az*DD2R, alt*DD2R, G->latitude, &ra, &dec);
+tcs.cpp:     G->mirror_covers_open = TRUE;
+tcs.cpp:     G->mirror_covers_open = FALSE;
+tcs.cpp:   G->telescope_at_home = 3;
+tcs.cpp:			   G->current_mean_ra,
+tcs.cpp:			   G->current_mean_dec,
+tcs.cpp:			   G->current_mean_epoch,
+tcs.cpp:			   G->current_mean_pmra,
+tcs.cpp:			   G->current_mean_pmdec,
+tcs.cpp:			   G->current_mean_parallax,
+tcs.cpp:			   G->current_mean_radial_velocity,
+tcs.cpp:			   G->current_mean_ra,
+tcs.cpp:			   G->current_mean_dec,
+tcs.cpp:			   G->current_mean_epoch,
+tcs.cpp:			   G->current_mean_pmra,
+tcs.cpp:			   G->current_mean_pmdec,
+tcs.cpp:			   G->current_mean_parallax,
+tcs.cpp:			   G->current_mean_radial_velocity,
+tcs.cpp:       G->ref_alt = home_el * DR2D;
+tcs.cpp:       G->ref_az = home_az * DR2D;
+tcs.cpp:	     G->ref_az, G->ref_alt);
+tcs.cpp:	     G->ref_az, G->ref_alt);
+tcs.cpp:	 autoGlobal->home_rot = G->ref_rot ;
+tcs.cpp:	 slaDh2e(home_az, home_el, G->latitude,
+tcs.cpp:   // do not set G->telescope_at_home to FALSE in here!!!
+tcs.cpp:   G->telescope_initialized = FALSE;
+tcs.cpp:   G->telescope_is_slewing = FALSE;
+tcs.cpp:   G->x_tracking_rate = 0.0;
+tcs.cpp:   G->y_tracking_rate = 0.0;
+tcs.cpp:   G->z_tracking_rate = 0.0;
+tcs.cpp:   G->x_tracking_factor = 1.0;
+tcs.cpp:   G->y_tracking_factor = 1.0;
+tcs.cpp:   G->z_tracking_factor = 1.0;
+tcs.cpp:   if (!G->telescope_initialized)
+tcs.cpp:   G->x_tracking_rate = x_steps_sec;
+tcs.cpp:   G->y_tracking_rate = y_steps_sec;
+tcs.cpp:   G->z_tracking_rate = z_steps_sec;
+tcs.cpp:   if (!G->telescope_initialized) {
+tcs.cpp:   G->telescope_is_slewing = FALSE;
+tcs.cpp:     G->telescope_at_home = 4;
+tcs.cpp:     G->telescope_at_home = 5;
+tcs.cpp://   G->tracking_on = FALSE;
+tcs.cpp:         G->current_enc_az,G->current_enc_alt,G->current_enc_rot,
+tcs.cpp:   if (!G->telescope_initialized) {
+tcs.cpp:   G->telescope_is_slewing = FALSE;
+tcs.cpp:   G->tracking_on = FALSE;
+tcs.cpp:   if (!G->telescope_initialized) {
+tcs.cpp:     G->telescope_at_home = 2;
+tcs.cpp:   G->telescope_at_home = 2;
+tcs.cpp:   if (!G->telescope_initialized)
+tcs.cpp:   if (G->telescope_at_home)
+tcs.cpp:   sprintf(outbuf,"before: %f %f\n",G->current_mean_ra,G->current_mean_dec);
+tcs.cpp:   G->current_mean_ra += (DS2R * ra_sec);
+tcs.cpp:   G->current_mean_dec += (DAS2R * dec_arcsec);
+tcs.cpp:   sprintf(outbuf,"after: %f %f\n",G->current_mean_ra,G->current_mean_dec);
+tcs.cpp:   //             G->last_az_error,G->last_alt_error, G->last_rot_error); 
+tcs.cpp:   } while ((fabs(G->last_az_error)  > xdead || 
+tcs.cpp:	     fabs(G->last_alt_error) > ydead || 
+tcs.cpp:	     fabs(G->last_rot_error) > zdead) &&
+tcs.cpp:    G->encoder_initialized = TRUE;
+tcs_math.cpp:		double mjd_ut1 = timeRec.mjd_utc + (G->ut1_minus_utc / 86400.0);
+tcs_math.cpp:		timeRec.last = slaDranrm(gmst + G->longitude + slaEqeqx(mjd_ut1));
+tcs_math.cpp:			slaDe2h(p1, p2, G->latitude, &az, &alt);
+tcs_math.cpp:		slaDh2e(az, alt, G->latitude, &ha, &dec);
+tcs_math.cpp:	slaDh2e(az1, el1, G->latitude, &ha1, &dec1);
+tcs_math.cpp:	slaDh2e(az1, el1+5.e-5, G->latitude, &ha2, &dec2);
+tcs_math.cpp:	rot = -el1 - atan2(dec2-dec1,(ha2-ha1)*cos(dec1)) + G->current_pa;
+tcs_math.cpp:	  rot = -el1 - atan2((az2-az1)*cos(el1),el2-el1) + G->current_pa;
+tcs_math.cpp:	  rot = el1 - atan2((az2-az1)*cos(el1),el2-el1) + G->current_pa;
+tcs_math.cpp:                if (G->apply_rates) {
+tcs_math.cpp:                  inst_ra += G->dra*(timeRec.mjd_utc-G->epoch0);
+tcs_math.cpp:                  inst_dec += G->ddec*(timeRec.mjd_utc-G->epoch0);
+tcs_math.cpp:		    mean_parallax, mean_radial_velocity, G->mean_to_app_parms,
+tcs_math.cpp:		slaAoppat(timeRec.mjd_utc, G->app_to_obs_parms);
+tcs_math.cpp:		slaAopqk(corrected_ra, corrected_dec, G->app_to_obs_parms,
+tcs_math.cpp:		double hour_angle = G->app_to_obs_parms[13] - corrected_ra;
+tcs_math.cpp:		  slaPa(slaDrange(hour_angle), corrected_dec, G->latitude);
+tcs_math.cpp:		  corrected_parm3 = -obs_el - parallactic_angle + G->current_pa ;
+tcs_math.cpp:		  corrected_parm3 = obs_el - parallactic_angle + G->current_pa ;
+tcs_math.cpp:		if (!G->mc_enabled) {
+tcs_math.cpp:			  equat_f(obs_az, obs_el, G->latitude, 
+tcs_math.cpp:				G->tpoint_me,
+tcs_math.cpp:				G->tpoint_ma, G->tpoint_ch, 
+tcs_math.cpp:				G->tpoint_np, G->tpoint_fo,
+tcs_math.cpp:				G->tpoint_tf, G->tpoint_ih, 
+tcs_math.cpp:				G->tpoint_id,
+tcs_math.cpp:				G->tpoint_an, G->tpoint_aw,
+tcs_math.cpp:				G->tpoint_ca, G->tpoint_npae, 
+tcs_math.cpp:				G->tpoint_tf,
+tcs_math.cpp:				G->tpoint_ia, G->tpoint_ie,
+tcs_math.cpp:				G->tpoint_an, G->tpoint_aw,
+tcs_math.cpp:				G->tpoint_nrx, G->tpoint_nry, 
+tcs_math.cpp:				G->tpoint_ca,
+tcs_math.cpp:				G->tpoint_npae, G->tpoint_tf, 
+tcs_math.cpp:				G->tpoint_ia, G->tpoint_ie,
+tcs_math.cpp:	    G->tpoint_an, G->tpoint_aw, G->tpoint_nrx, G->tpoint_nry, 
+tcs_math.cpp:	    G->tpoint_ca, G->tpoint_npae, G->tpoint_tf, 
+tcs_math.cpp:	    G->tpoint_ia, G->tpoint_ie);
+tcs_math.cpp:		slaDh2e(new_az,new_alt,G->latitude,&ha,&dec);
+tcs_math.cpp:		slaAltaz(ha,dec,G->latitude,&az,&azd,&azdd,&el,&eld,&eldd,
+tcs_math.cpp:                if (dec>G->latitude) increasing = 0;
+tcs_math.cpp:                if (dec>G->latitude) increasing = 0;
+tcs_math.cpp:		G->tpoint_npae = autoGlobal->tpoint_npae*DAS2R;
+tcs_math.cpp:		G->tpoint_nrx = autoGlobal->tpoint_nrx*DAS2R;
+tcs_math.cpp:		G->tpoint_nry = autoGlobal->tpoint_nry*DAS2R;
+tcs_math.cpp:		G->tpoint_tf = 0;
+tcs_math.cpp:		G->tpoint_ih = 0;
+tcs_math.cpp:		G->tpoint_id = 0;
+tcs_math.cpp:		G->tpoint_np = 0;
+tcs_math.cpp:		G->tpoint_ch = 0;
+tcs_math.cpp:		G->tpoint_me = 0;
+tcs_math.cpp:		G->tpoint_ma = 0;
+tcs_math.cpp:		G->tpoint_fo = 0;
+tcs_math.cpp:		G->tpoint_ie = autoGlobal->tpoint_ie*DAS2R;
+tcs_math.cpp:		G->tpoint_ia = autoGlobal->tpoint_ia*DAS2R;
+tcs_math.cpp:		G->tpoint_ca = autoGlobal->tpoint_ca*DAS2R;
+tcs_math.cpp:		G->tpoint_an = autoGlobal->tpoint_an*DAS2R;
+tcs_math.cpp:		G->tpoint_aw = autoGlobal->tpoint_aw*DAS2R;
+tcs_math.cpp:		       autoGlobal->tpoint_ia,G->tpoint_ia,
+tcs_math.cpp:		       autoGlobal->tpoint_ie,G->tpoint_ie,
+tcs_math.cpp:		       autoGlobal->tpoint_npae,G->tpoint_npae,
+tcs_math.cpp:		       autoGlobal->tpoint_ca,G->tpoint_ca,
+tcs_math.cpp:		       autoGlobal->tpoint_an,G->tpoint_an,
+tcs_math.cpp:		       autoGlobal->tpoint_aw,G->tpoint_aw,
+tcs_math.cpp:		       autoGlobal->tpoint_nrx,G->tpoint_nrx,
+tcs_math.cpp:		       autoGlobal->tpoint_nry,G->tpoint_nry);
+tcs_math.cpp:		G->tpoint_npae = 0;
+tcs_math.cpp:		G->tpoint_nrx = 0;
+tcs_math.cpp:		G->tpoint_nry = 0;
+tcs_math.cpp:		G->tpoint_tf = 0;
+tcs_math.cpp:		G->tpoint_ih = 0;
+tcs_math.cpp:		G->tpoint_id = 0;
+tcs_math.cpp:		G->tpoint_np = 0;
+tcs_math.cpp:		G->tpoint_ch = 0;
+tcs_math.cpp:		G->tpoint_me = 0;
+tcs_math.cpp:		G->tpoint_ma = 0;
+tcs_math.cpp:		G->tpoint_fo = 0;
+tcs_math.cpp:		G->tpoint_ie = 0;
+tcs_math.cpp:		G->tpoint_ia = 0;
+tcs_math.cpp:		G->tpoint_ca = 0;
+tcs_math.cpp:		G->tpoint_an = 0;
+tcs_math.cpp:		G->tpoint_aw = 0;
+tcs_math.cpp:					G->tpoint_npae = atof(term)*DAS2R;
+tcs_math.cpp:					G->tpoint_nrx = atof(term)*DAS2R;
+tcs_math.cpp:					G->tpoint_nry = atof(term)*DAS2R;
+tcs_math.cpp:				case 'TF': G->tpoint_tf = atof(term)*DAS2R; break;
+tcs_math.cpp:				case 'IH': G->tpoint_ih = atof(term)*DAS2R; break;
+tcs_math.cpp:				case 'ID': G->tpoint_id = atof(term)*DAS2R; break;
+tcs_math.cpp:				case 'NP': G->tpoint_np = atof(term)*DAS2R; break;
+tcs_math.cpp:				case 'CH': G->tpoint_ch = atof(term)*DAS2R; break;
+tcs_math.cpp:				case 'ME': G->tpoint_me = atof(term)*DAS2R; break;
+tcs_math.cpp:				case 'MA': G->tpoint_ma = atof(term)*DAS2R; break;
+tcs_math.cpp:				case 'FO': G->tpoint_fo = atof(term)*DAS2R; break;
+tcs_math.cpp:				case 'IE': G->tpoint_ie = atof(term)*DAS2R; break;
+tcs_math.cpp:				case 'IA': G->tpoint_ia = atof(term)*DAS2R; break;
+tcs_math.cpp:				case 'CA': G->tpoint_ca = atof(term)*DAS2R; break;
+tcs_math.cpp:				case 'AN': G->tpoint_an = atof(term)*DAS2R; break;
+tcs_math.cpp:				case 'AW': G->tpoint_aw = atof(term)*DAS2R; break;
+tcs_math.cpp:		       G->tpoint_ia,
+tcs_math.cpp:		       G->tpoint_ie,
+tcs_math.cpp:		       G->tpoint_npae,
+tcs_math.cpp:		       G->tpoint_ca,
+tcs_math.cpp:		       G->tpoint_an,
+tcs_math.cpp:		       G->tpoint_aw,
+tcs_math.cpp:		       G->tpoint_nrx,
+tcs_math.cpp:		       G->tpoint_nry,
+tcs_math.cpp:		       G->tpoint_tf);
+tcs_math.cpp:		  sysGlobal->x_encoder_encoder_steps_deg +  G->ref_az;
+tcs_math.cpp:	     deg_x = steps_x / sysGlobal->x_steps_degree +  G->ref_az;
+tcs_math.cpp:		  sysGlobal->y_encoder_encoder_steps_deg +  G->ref_alt;
+tcs_math.cpp:	     deg_y = steps_y / sysGlobal->y_steps_degree +  G->ref_alt;
+tcs_math.cpp:		  sysGlobal->z_encoder_encoder_steps_deg +  G->ref_rot;
+tcs_math.cpp:	     deg_z = steps_z / sysGlobal->z_steps_degree +  G->ref_rot;
+tcs_math.cpp:	     steps_x = (long)((deg_x - G->ref_az) *
+tcs_math.cpp:	     steps_x = (long)((deg_x - G->ref_az) * sysGlobal->x_steps_degree);
+tcs_math.cpp:	     steps_y = (long)((deg_y - G->ref_alt) * 
+tcs_math.cpp:	     steps_y = (long)((deg_y - G->ref_alt) * sysGlobal->y_steps_degree);
+tcs_math.cpp:	     steps_z = (long)((deg_z - G->ref_rot) *
+tcs_math.cpp:	     steps_z = (long)((deg_z - G->ref_rot) * sysGlobal->z_steps_degree);
+tertiary.cpp:   if (!G->telescope_initialized) {
+tertiary.cpp:     G->telescope_at_home = 3;
+toccauto.cpp:/*      of this for the TOCCAUTO variable G->longitude by taking the      */
+toccauto.cpp:  autoGlobal->saved_az = G->current_obs_az;
+toccauto.cpp:  autoGlobal->saved_alt = G->current_obs_alt;
+toccauto.cpp:  autoGlobal->saved_rot = G->current_obs_rot;
+toccauto.cpp:    steps_to_degrees(G->current_enc_az, G->current_enc_alt, G->current_enc_rot,
+toccauto.cpp:        G->current_obs_az, G->current_obs_alt, G->current_obs_rot);
+toccauto.cpp:    autoGlobal->z_axis_pos = G->current_enc_rot;
+toccauto.cpp:    G->current_utc = timeRec.mjd_utc ;
+toccauto.cpp:    G->current_lasth = timeRec.lasth ;
+toccauto.cpp:    if (G->telescope_is_slewing || 
+toccauto.cpp:        G->tracking_on == FALSE || 
+toccauto.cpp:        G->telescope_at_home ) {
+toccauto.cpp:      slaDh2e(G->current_obs_az*DD2R, G->current_obs_alt*DD2R, G->latitude, &ha, &dec);
+toccauto.cpp: slaDrange(timeRec.last-(G->current_mean_ra+G->dra*(timeRec.mjd_utc-G->epoch0))),
+toccauto.cpp: G->current_mean_dec+G->ddec*(timeRec.mjd_utc-G->epoch0),
+toccauto.cpp:            G->latitude, &az, &alt);
+toccauto.cpp:      az = slaDranrm(az + G->last_az_error*DD2R);
+toccauto.cpp:      alt = alt + G->last_alt_error*DD2R;
+toccauto.cpp:      slaDh2e(az, alt, G->latitude, &ha, &dec);
+toccauto.cpp:    G->current_obs_ra = slaDranrm(timeRec.last - ha);
+toccauto.cpp:    G->current_obs_dec = dec;
+toccauto.cpp:    if (G->telescope_at_home || G->tracking_on == FALSE) {
+toccauto.cpp:      G->current_mean_ra = G->current_obs_ra;
+toccauto.cpp:      G->current_mean_dec = G->current_obs_dec;
+toccauto.cpp:    if (!G->encoder_initialized) return;
+toccauto.cpp:            G->current_enc_az = enc_x ;
+toccauto.cpp:            G->current_enc_az = enc_x ;
+toccauto.cpp:            G->current_enc_alt = enc_y ;
+toccauto.cpp:            G->current_enc_alt = enc_y ;
+toccauto.cpp:            G->current_enc_rot = enc_z ;
+toccauto.cpp:            G->current_enc_rot = enc_z ;
+toccauto.cpp:    if (G->telescope_at_home) {
+toccauto.cpp:             G->current_enc_az, G->current_enc_alt, G->current_enc_rot);
+toccauto.cpp:                            G->current_mean_ra,
+toccauto.cpp:                            G->current_mean_dec,
+toccauto.cpp:                            G->current_mean_epoch,
+toccauto.cpp:                            G->current_mean_pmra,
+toccauto.cpp:                            G->current_mean_pmdec,
+toccauto.cpp:                            G->current_mean_parallax,
+toccauto.cpp:                            G->current_mean_radial_velocity,
+toccauto.cpp:             G->current_enc_az, G->current_enc_alt, G->current_enc_rot);
+toccauto.cpp:    if (!G->telescope_initialized)
+toccauto.cpp:        G->tracking_on = FALSE;
+toccauto.cpp:	!G->telescope_initialized ||
+toccauto.cpp:	!G->dome_initialized ||
+toccauto.cpp:	G->telescope_at_home)
+toccauto.cpp:    slaMapqk(G->current_mean_ra, G->current_mean_dec,
+toccauto.cpp:	      G->current_mean_pmra, G->current_mean_pmdec,
+toccauto.cpp:	      G->current_mean_parallax, G->current_mean_radial_velocity,
+toccauto.cpp:	      G->mean_to_app_parms, &app_ra, &app_dec);
+toccauto.cpp:    slaDe2h(ha, app_dec, G->latitude, &az, &alt);
+toccauto.cpp:    G->dome_azimuth = ocs_return_dome_azimuth();
+toccauto.cpp:    double dome_dif = slaDrange((az - G->dome_azimuth) * DD2R);
+toccauto.cpp:    if (G->telescope_at_home)
+toccauto.cpp:    if (!G->telescope_initialized)
+toccauto.cpp:       // slaDe2h(home_ha_r, home_dec_r, G->latitude, &home_az, &home_alt);
+toccauto.cpp:        G->ref_alt = autoGlobal->home_alt;
+toccauto.cpp:        G->ref_az = autoGlobal->home_az;
+toccauto.cpp:        G->ref_rot = autoGlobal->home_rot;
+toccauto.cpp:    sprintf(outbuf,"longitude: %f",G->longitude);
+toccauto.cpp:    slaMappa(timeRec.equinox, timeRec.mjd_tt, G->mean_to_app_parms);
+toccauto.cpp:    double out_temp = G->current_out_temp + 273.15;
+toccauto.cpp:    double humidity = G->current_humidity / 100.0;
+toccauto.cpp:    slaAoppa(timeRec.mjd_utc, G->ut1_minus_utc, G->longitude,
+toccauto.cpp:	      G->latitude, sysGlobal->altitude, G->polor_motion_x,
+toccauto.cpp:	      G->polor_motion_y, out_temp, G->current_barometer,
+toccauto.cpp:	      humidity, 0.55, 0.0065, G->app_to_obs_parms);
+toccauto.cpp:		    G->handpaddle = ++G->handpaddle % 3;
+toccauto.cpp:		    if (G->handpaddle == 0)
+toccauto.cpp:		    else if (G->handpaddle == 1)   
+toccauto.cpp:		    G->update = ++G->update % 2;
+toccauto.cpp:		    if (G->update == 0)
+toccauto.cpp:		    printf("\tX: %.4f\n", G->x_tracking_rate);
+toccauto.cpp:		    printf("\tY: %.4f\n", G->y_tracking_rate);
+toccauto.cpp:		      printf("\tZ: %.4f\n", G->z_tracking_rate);
+toccauto.cpp:		    printf("\tX: %.4f\n", G->x_tracking_factor);
+toccauto.cpp:		    printf("\tY: %.4f\n", G->y_tracking_factor);
+toccauto.cpp:		      printf("\tZ: %.4f\n", G->x_tracking_factor);
+toccauto.cpp:		    G->delaltaz = ++G->delaltaz % 2;
+toccauto.cpp:		    if (G->delaltaz == 0)
+toccauto.cpp:    G->tracking_on = FALSE;
+toccauto.cpp:         G->current_enc_az,G->current_enc_alt,G->current_enc_rot,
+toccauto.cpp:    autoGlobal->z_axis_pos = G->current_enc_rot;
+toccauto.cpp:    slaMappa(timeRec.equinox, timeRec.mjd_tt, G->mean_to_app_parms);
+toccauto.cpp:    double out_temp = G->current_out_temp + 273.15;
+toccauto.cpp:    double humidity = G->current_humidity / 100.0;
+toccauto.cpp:    slaAoppa(timeRec.mjd_utc, G->ut1_minus_utc, G->longitude,
+toccauto.cpp:	      G->latitude, sysGlobal->altitude, G->polor_motion_x,
+toccauto.cpp:	      G->polor_motion_y, out_temp, G->current_barometer,
+toccauto.cpp:	      humidity, 0.55, 0.0065, G->app_to_obs_parms);
+toccauto.cpp:    G->telescope_initialized = TRUE;
+toccauto.cpp:    G->telescope_at_home = TRUE;
+toccauto.cpp:	if (!G->soft_limits_disabled) check_limits();
+toccauto.cpp:        G->dome_open = autoGlobal->shutter_opened;
+toccauto.cpp:        G->lower_dome_open = autoGlobal->lower_shutter_opened;
+toccauto.cpp:        G->dome_slaved = autoGlobal->dome_slaved;
+toccauto.cpp:        G->mirror_covers_open = autoGlobal->mirror_covers_open;
+tracking.cpp:		if (!G->telescope_initialized) return;
+tracking.cpp:		if (G->shutdown_state) return;
+tracking.cpp:		if (!G->tracking_on) return;
+tracking.cpp:		if (G->telescope_is_slewing) return;
+tracking.cpp:  		if (G->telescope_at_home) return;
+tracking.cpp:		  G->x_tracking_factor = G->y_tracking_factor = G->z_tracking_factor = 1.0;
+tracking.cpp:                if (G->tracking_factor_mod && SysTimer[SYSTMR_TF].Expired()) {
+tracking.cpp:                   G->x_tracking_factor = G->x_tracking_factor_new;
+tracking.cpp:                   G->y_tracking_factor = G->y_tracking_factor_new;
+tracking.cpp:                   G->z_tracking_factor = G->z_tracking_factor_new;
+tracking.cpp:                   G->tracking_factor_mod = FALSE;
+tracking.cpp:		get_new_date_time_at_hund(d1, t1, G->tracking_dtime, d2, t2);
+tracking.cpp:					G->current_mean_ra, G->current_mean_dec,
+tracking.cpp:					G->current_mean_epoch,
+tracking.cpp:					G->current_mean_pmra, G->current_mean_pmdec,
+tracking.cpp:					G->current_mean_parallax,
+tracking.cpp:					G->current_mean_radial_velocity,
+tracking.cpp:					G->current_mean_ra, G->current_mean_dec,
+tracking.cpp:					G->current_mean_epoch,
+tracking.cpp:					G->current_mean_pmra, G->current_mean_pmdec,
+tracking.cpp:					G->current_mean_parallax,
+tracking.cpp:					G->current_mean_radial_velocity,
+tracking.cpp:					G->current_mean_ra, G->current_mean_dec,
+tracking.cpp:					G->current_mean_epoch,
+tracking.cpp:					G->current_mean_pmra, G->current_mean_pmdec,
+tracking.cpp:					G->current_mean_parallax,
+tracking.cpp:					G->current_mean_radial_velocity,
+tracking.cpp:                        x_pos, G->current_enc_az,
+tracking.cpp:                        y_pos, G->current_enc_alt, 
+tracking.cpp:                        z_pos, G->current_enc_rot);
+tracking.cpp:                steps_to_degrees(G->current_enc_az, G->current_enc_alt,
+tracking.cpp:                                 G->current_enc_rot, curr_az, curr_alt,
+tracking.cpp:                G->last_az_error = (0.0006*((float)rand()-RAND_MAX/2))/RAND_MAX;
+tracking.cpp:                G->last_alt_error = (0.0006*((float)rand()-RAND_MAX/2))/RAND_MAX;
+tracking.cpp:                G->last_rot_error = 0.;
+tracking.cpp:                G->last_az_error = slaDrange(curr_az - curr_desired_az)*DR2D;
+tracking.cpp:                G->last_alt_error = slaDrange(curr_alt - curr_desired_alt)*DR2D;
+tracking.cpp:                G->last_rot_error = slaDrange(curr_rot - curr_desired_rot)*DR2D;
+tracking.cpp:		if (G->x_encoder_tracking>1) {
+tracking.cpp:	          ipt = xpt %G->x_encoder_tracking;
+tracking.cpp:                  az_error[ipt+1] = G->last_az_error;
+tracking.cpp:                  if (xpt >= G->x_encoder_tracking) {
+tracking.cpp:	            fit(xx,az_error,G->x_encoder_tracking,sig,0,&a,&b,&siga,&sigb,&chi2,&q);
+tracking.cpp:                    for (i=1;i<=G->x_encoder_tracking;i++) {
+tracking.cpp:                    if (fabs(G->last_az_error)<fabs(az_corr)) az_corr = G->last_az_error;
+tracking.cpp:		if (G->y_encoder_tracking>1 ) {
+tracking.cpp:	          ipt = ypt %G->y_encoder_tracking;
+tracking.cpp:                  alt_error[ipt+1] = G->last_alt_error;
+tracking.cpp:                  if (ypt >= G->y_encoder_tracking) {
+tracking.cpp:	            fit(xx,alt_error,G->y_encoder_tracking,sig,0,&a,&b,&siga,&sigb,&chi2,&q);
+tracking.cpp:                    for (i=1;i<=G->y_encoder_tracking;i++) {
+tracking.cpp:                    if (fabs(G->last_alt_error)<fabs(alt_corr)) alt_corr = G->last_alt_error;
+tracking.cpp:                           alt_corr, G->last_alt_error);
+tracking.cpp:                double x_rate0 = slaDrange(new_az - curr_desired_az) / G->tracking_dtime * 100;
+tracking.cpp:                double y_rate0 = (new_alt - curr_desired_alt) / G->tracking_dtime * 100;
+tracking.cpp:                double z_rate0 = slaDrange(new_rot - curr_desired_rot) / G->tracking_dtime * 100;
+tracking.cpp:                double x_rate = slaDrange(new_az - curr_az) / G->tracking_dtime * 100 ;
+tracking.cpp:                double y_rate = (new_alt - curr_alt) / G->tracking_dtime * 100 ;
+tracking.cpp:                double z_rate = slaDrange(new_rot - curr_rot) / G->tracking_dtime * 100 ;
+tracking.cpp:		if (G->x_encoder_tracking==0 ) 
+tracking.cpp:                  G->x_tracking_rate = x_rate0 * DR2D * sysGlobal->x_steps_degree;
+tracking.cpp:                else if (G->x_encoder_tracking>0) 
+tracking.cpp:                  G->x_tracking_rate = x_rate * DR2D * sysGlobal->x_steps_degree;
+tracking.cpp:                  double x_rate_error = G->x_encoder_error * DAS2R / G->tracking_dtime * 100;
+tracking.cpp:                  G->x_tracking_rate = ( fabs(x_rate - x_rate0 ) / x_rate_error * x_rate + x_rate0 ) /
+tracking.cpp:                  G->x_tracking_rate *= DR2D * sysGlobal->x_steps_degree;
+tracking.cpp:                G->x_tracking_rate *= G->x_tracking_factor;
+tracking.cpp:		if (G->y_encoder_tracking==0 ) 
+tracking.cpp:                  G->y_tracking_rate = y_rate0 * DR2D * sysGlobal->y_steps_degree;
+tracking.cpp:                else if (G->y_encoder_tracking>0)
+tracking.cpp:                  G->y_tracking_rate = y_rate * DR2D * sysGlobal->y_steps_degree;
+tracking.cpp:                  double y_rate_error = G->y_encoder_error * DAS2R / G->tracking_dtime * 100;
+tracking.cpp:                  G->y_tracking_rate = ( fabs(y_rate - y_rate0 ) / y_rate_error * y_rate + y_rate0 ) /
+tracking.cpp:                  G->y_tracking_rate *= DR2D * sysGlobal->y_steps_degree;
+tracking.cpp:                G->y_tracking_rate *= G->y_tracking_factor;
+tracking.cpp:		if (G->z_encoder_tracking==0 ) 
+tracking.cpp:                  G->z_tracking_rate = z_rate0 * DR2D * sysGlobal->z_steps_degree;
+tracking.cpp:                else if (G->z_encoder_tracking>0)
+tracking.cpp:                  G->z_tracking_rate = z_rate * DR2D * sysGlobal->z_steps_degree;
+tracking.cpp:                  double z_rate_error = G->z_encoder_error * DAS2R / G->tracking_dtime * 100;
+tracking.cpp:                  G->z_tracking_rate = ( fabs(z_rate - z_rate0 ) / z_rate_error * z_rate + z_rate0 ) /
+tracking.cpp:                  G->z_tracking_rate *= DR2D * sysGlobal->z_steps_degree;
+tracking.cpp:                G->z_tracking_rate *= G->z_tracking_factor;
+tracking.cpp:  sprintf(outbuf,"%d:%d:%f  %10.7f %10.7f %10.7f %10.7f %10.7f %10.7f %8.2f %8.2f %8.2f",t.ti_hour,t.ti_min,secs,x_rate,y_rate,z_rate,x_rate0,y_rate0,z_rate0,G->x_tracking_rate,G->y_tracking_rate,G->z_tracking_rate);
+tracking.cpp:			  G->x_tracking_rate, G->y_tracking_rate, G->z_tracking_rate);
+tracking.cpp:			  G->x_tracking_factor, G->y_tracking_factor, G->z_tracking_factor);
+tracking.cpp:                     G->x_tracking_rate : -G->x_tracking_rate;
+tracking.cpp:                     G->y_tracking_rate : -G->y_tracking_rate;
+tracking.cpp:                               G->z_tracking_rate : -G->z_tracking_rate;
+tracking.cpp:                if (G->verbose) fprintf(G->move_file,"%f %f %f %f %f %f %f\n", 
+tracking.cpp:                   G->last_az_error*3600, G->last_alt_error*3600, G->last_rot_error*3600,
+tracking.cpp:                   G->last_az_error*3600, G->last_alt_error*3600, G->last_rot_error*3600,
+tracking.cpp:if ( fabs((x_rate-G->last_x_rate)/x_rate) > G->max_rate_change) {
+tracking.cpp:    if (x_rate > G->last_x_rate) 
+tracking.cpp:          x_rate = G->last_x_rate + (G->max_rate_change * fabs(G->last_x_rate));
+tracking.cpp:          x_rate = G->last_x_rate - (G->max_rate_change * fabs(G->last_x_rate));
+tracking.cpp:if ( fabs((y_rate-G->last_y_rate)/y_rate) > G->max_rate_change) {
+tracking.cpp:    if (y_rate > G->last_y_rate) 
+tracking.cpp:          y_rate = G->last_y_rate + (G->max_rate_change * fabs(G->last_y_rate));
+tracking.cpp:          y_rate = G->last_y_rate - (G->max_rate_change * fabs(G->last_y_rate));
+tracking.cpp:if ( fabs((z_rate-G->last_z_rate)/z_rate) > G->max_rate_change) {
+tracking.cpp:    if (z_rate > G->last_z_rate) 
+tracking.cpp:          z_rate = G->last_z_rate + (G->max_rate_change * fabs(G->last_z_rate));
+tracking.cpp:          z_rate = G->last_z_rate - (G->max_rate_change * fabs(G->last_z_rate));
+tracking.cpp:                if (G->last_x_rate*x_rate >= 0 )
+tracking.cpp:                if (G->last_y_rate*y_rate >= 0 )
+tracking.cpp:                if (G->last_z_rate*z_rate >= 0 )
+tracking.cpp:                G->last_x_rate = x_rate;
+tracking.cpp:                G->last_y_rate = y_rate;
+tracking.cpp:                G->last_z_rate = z_rate;
+tracking.cpp:                if (!G->const_tracking)
+weather.cpp:                G->current_aux_temp = weather.AuxTemp;
+weather.cpp:                G->current_cab_temp = weather.CabTemp;
+weather.cpp:                G->current_out_temp = weather.OutTemp;
+weather.cpp:                G->current_barometer = weather.Pressure;
+weather.cpp:                G->current_humidity = (double)weather.Humidity / 100.0;
+weather.cpp:                G->current_windspeed = weather.WindSpeed;
+weather.cpp:                G->current_winddir = weather.WindDir;

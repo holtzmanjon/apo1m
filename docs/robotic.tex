@@ -1,0 +1,99 @@
+A separate file can be prepared for each night's observing. The file should
+have the name \textit{yymmdd.inp} where yy, mm, and dd refer to the 
+\textbf{UT} date of the observation (i.e. the date after midnight).
+The observing file is used to customize what sort of observations will be
+made, various observational parameters, set of filters to use, and will
+provide a list of potential targets and exposure times for each target.
+
+A sample file can be viewed (in a separate browser window) 
+%\htmladdnormallink{here}{http://loki.apo.nmsu.edu/tcomm/default.inp" target="_example}.
+
+It is important to follow the correct file format. The first line is
+a header line that is ignored, but it should be used to label the values
+used in the second line.
+The second line has 9 numerical entries:
+\begin{enumerate}
+  \item DTFOC:  minimum time interval between refocussing, in hours (suggest 2 
+     hours?)
+  \item DTEMPFOC: temperature difference that will trigger a refocussing 
+     attempt, even if DTFOC has not elapsed, in degrees C (suggest 2?)
+  \item PHOTOM:  flag to trigger automatic observations of standard stars,
+     set to 0 for no standards, 1 to do standards
+  \item DTLOW:  if PHOTOM=1, sets time interval between observations of low
+     airmass standards with airmass between 1 and 1.3 
+     (a pair will be taken each time)
+  \item DTHIGH:  if PHOTOM=1, sets time interval between observations of high
+     airmass standards with airmass between 1.6 and 2.0 
+     (a pair will be taken each time)
+  \item LDOME:  flag to determine whether the lower dome slit will be opened
+     (1 to open, 0 to leave closed). The lower dome will begin to occult
+     the telescope at an airmass of about 2.0. The reason not to open the
+     lower dome shutter if you don't have to is because the lower dome
+     shutter is less robust to both computer and mechanical failures than
+     the upper dome, so there is a larger chance that it will not close if
+     something goes wrong.
+  \item NPM: number of pointing models to run before starting observations
+  \item NFOCTEST: number of focus tests to run before starting observations
+     (these are engineering tests, not normal focus runs, which are always
+     done).
+  \item DAYTEST: flag to use a test mode where dome is not actually opened,
+     allowing script to be run during daytime or bad weather for testing
+     purposes only; 0 for normal operation, 1 for test operation
+\end{enumerate}
+
+The third line is another header line, this time for filter information. The
+fourth line stars with a number that gives the total number of filters that 
+will be used for the night; each entry for each object will have to specify
+exposure times for each of these filters (although one can certainly specify
+0 length exposures to skip any desired filter for any desired object). After
+the number of filters, there should be nfilt entries giving the filter names,
+where the names are those as used by the control software for setting the
+filter (i.e., u, b, v, r, i, z, c); case is not important (although I prefer
+lowercase for consistency). For each of
+the specified filters, the program will attempt to get twilight flats, 
+and also observations of standard stars if the PHOTOM flag is set; 
+consequently, you don't want to include filters in this list that you
+won't need observations in.
+
+The fifth line is a header line again, this time for the remaining object lines.
+
+Starting with the sixth line, information is given for each desired
+object.  The software works by observing the first object in the list that
+satisfies a set of requirements. The requirements are that the object has
+not already been observed the requested number of times, that sufficient
+time (as defined by the observer) has elapsed to observe the object again,
+and that the object falls into a desired window in airmass, UT, or hour
+angle. If all conditions are met, then the object will be observed for
+the amount of time in each filter specified on the object line.
+
+\textbf{IMPORTANT: the object lines are parsed by looking for white space
+between columns. As a result, you must not include any ``extra'' white space,
+e.g. in an object name or in the coordinates!}
+
+For each object, there needs to be $14+nfilt$ entries on the line. The 
+entries for the object lines are:
+\begin{enumerate}
+  \item Object name. \textbf{No spaces are allowed!}
+  \item RA, in format hh:mm:ss (No spaces allowed)
+  \item DEC, in format +/-dd:mm:ss (No spaces allowed)
+  \item Epoch of coordinates
+  \item Minimum airmass to observe (at start of sequence)
+  \item Maximum airmass to observe (at start of sequence). To ignore 
+     airmass criterion, set minimum airmass to 0 and maximum airmass to 99.
+  \item Miminum UT to observe (at start of sequence)
+  \item Maximum UT to observe (at start of sequence). To ignore UT criterion,
+     set minimum UT to 0 and maximum UT to 24
+  \item Minimum HA to observe (at start of sequence)
+  \item Maximum HA to observe (at start of sequence). To ignore HA criterion,
+     set minimum HA to -12 and maximum HA to 12
+  \item Maximum number of visits, i.e. after this many sequences have been
+     obtained, this object will be skipped. To request ``infinite'' repeats,
+     set this to a very large number.
+  \item Minimum time between sequences, in hours. To request continuous
+     coverage, set this to 0.
+  \item Guide flag, 1 to use guiding during exposures, 0 for no guiding
+     (guiding recommended for sequences over 60s).
+  \item Exposure times in each of nfilt filters, in the order in which
+     they are specified in the filter line (4th line of file). 
+  \item Number of exposures to take in each filter during the sequence.
+\end{enumerate}

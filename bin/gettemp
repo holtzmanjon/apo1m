@@ -1,0 +1,26 @@
+#!/bin/csh
+set t = `tail -1 gettemp.dat | awk '{print $1}'`
+tail -120000 gettemp.dat | awk 'NF==7&&$1<'$t' {print $0}' >./gettemp.out
+sm << endsm
+  dev gif public_html/gettemp.gif
+  input gettemp.mon
+endsm
+#  data temp.out
+#  read {x 1 y 2}
+#  limits (x/3600) -150 40
+#  define xmin (\$fx2-72)
+##  define xmin (\$fx1)
+#  define xmax \$fx2
+#  limits \$xmin \$xmax -150 40
+#  box
+#  points (x/3600) y
+#  relocate \$fx1 -125
+#  draw \$fx2 -125
+#  ctype red
+#  relocate \$fx1 -110
+#  draw \$fx2 -110
+#  end
+#endsm
+#
+#xv gettemp.gif
+

@@ -1,0 +1,19 @@
+#!/bin/csh
+
+'rm' pysend.py
+
+
+echo "#!"/usr/bin/env python > pysend.py
+
+echo "from socket import *" >>pysend.py
+echo "s=socket(AF_INET,SOCK_DGRAM)" >>pysend.py
+echo "s.setsockopt(SOL_SOCKET,SO_BROADCAST,1)" >>pysend.py
+echo port=19999 >>pysend.py
+echo host=\"192.41.211.255\" >>pysend.py
+echo "addr=(host,port)" >>pysend.py
+#cat pysock > pysend.py
+echo command=\"command=$1\" >>pysend.py
+echo "s.sendto(command,addr)" >>pysend.py
+chmod +x pysend.py
+pysend.py
+

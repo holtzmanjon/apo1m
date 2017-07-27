@@ -1,0 +1,288 @@
+V3.0.3234 Released June 2016
+Added libapogee updates from latest unfuddle-zenith
+Rebuild for Debian 8
+Added ApexUI and pyWrapApg to apps/python
+
+
+V3.0.3179 Released September 2015
+Added 20 new variants to APN mnatrix
+
+V3.0.3079 Released March 2014
+
+Full Aspen camera support
+Bug fixes resolve error with guard code that ensures camera is in a
+good state after CloseConnection 
+Added support for 29050MLD9
+Updates to support AltaF cameras, including fan controls
+Added support for switching between single and dual readout on Kodak Ascents
+Implementation completed for AltaU serial ports
+Added configuration files
+Added the pyLibapogee subpackage to the autotools make system
+Added the jLibapogee subpackage to the autotools make system
+Bug fixes for connecting to AltaE cameras
+Bug fix that causes PRISM to crash on camera connection with v5.0-2 software
+Resolved an issue with IR pre-flash
+
+
+
+V3.0.2865 Released April 2013
+
+Added support for new Alta-F models
+Added support for upcoming Aspen models
+Added a Raspberry-Pi build
+Issue resolved with connecting two different cameras to two different applicat
+ions
+Updates to support AltaF cameras
+Fixed issue related to switching camera speeds when there is high column binni
+ng
+Resolved an issues with Ascent filter wheel report the incorrect status
+Fixed mismapping of USB filter wheel information
+Added ListUsbDevices property to the ICamDiscover COM interface
+
+
+V2.1.1931 Released May 2012
+
+Complete codebase refactor to match Apogee's
+Support for many new Ascent models
+Support for Ascent filter wheels
+Python test scripts
+Java archive added (untested as yet)
+
+
+NOTE NOTE NOTE
+Revised numbering was scheme introduced in May 2012
+NOTE NOTE NOTE
+
+
+
+V3.1.11 Released April 2009
+
+Synchronize version  naming with Apogee Windows DLL's
+Add support for new models
+First build for x64 platforms
+Added Filter Wheel test program and GUI
+
+V2.2 Released March 2008
+
+Add support for ASCENT0402ME model
+Add support for ASCENT0402ME2 model
+Add support for ASCENT0402ME3 model
+Add support for ASCENT0402ME4 model
+Add support for ASCENT16000 model
+Add support for ASCENT2000 model
+Add support for ASCENT340 model
+Add support for ASCENT4000 model
+Add support for S101401107 model
+Add support for S101401109 model
+Add Alta TDI test programs
+Add Alta TDI support to standard test_alta program
+Add Ascent configuration to USB installation scripts
+Add initial support for FilterWheel device
+Add support for HAL hardware configuration
+Rebuild with latest compilers (GCC 4.1.1)
+Modify build configuration scripts
+
+V2.1 Released July 2007
+
+Add build configuration scripts
+Autogenerate supported model lists and makefile
+
+V2.0 Released March 2007
+
+Update to support new firmware
+Unify Linux and OS X build strategies
+
+V1.9 Released November 2006
+
+Add support for KAF16803 model
+
+V1.8 Released October 2006
+
+Fixed bug with newer firmware
+versions.
+
+V1.7 Released September 2006
+
+New Features
+
+Add support for new ALTA models.
+Update codebase for 3.1.1 changes.
+
+V1.6 Released June 2006
+
+New Features
+
+Add support for new ALTA models.
+Update codebase for 2.0.72 changes.
+
+V1.5 Released July 2005
+
+New Features
+
+Add support for ApnCamData_CCD models
+Update codebase for 2.0.43_57 changes
+
+V1.4 Released May 2005
+
+New Features
+
+Add support for more KAI variants.
+Update codebase to match 2.0.43
+Add support for serial port comms
+
+V1.3 Released Dec 2004
+
+New Features
+
+Added support for KAI series ccd cameras
+Added multi ALTA-U camera on one PC support
+Improved accuracy of header timestamping
+
+V1.2 Released Aug 2004
+
+New Features
+
+Comprehensive client/server support
+Test script for client/server verification
+Kernel modules for Fedora Core 2
+Kernel modules for SuSE 9.1
+Added libusb based library for ALTA-U models
+Added C++ test programs for all models
+	test_apogeeisa, test_apogeepci, test_apogeeppi, 
+	alta_teste, alta_testu
+
+V1.1 Released May 2004
+
+New Features
+
+ALTA NET support
+Added Mandrake 10 kernel modules (kernel 2.6.x)
+Added Sun Java Desktop Linux support
+Added support for EEV chips
+Made IRAF imaging parts of libccd a compile-time option
+Updated documentation for ALTA
+
+V1.0 Released March 2004
+
+New Features
+
+ALTA USB support
+
+
+V0.9.1 Released November 2003
+
+New features
+
+Added kernel modules for Redhat 8.0
+Added client/server capabilites.
+
+V0.8 Released May 2003
+
+New features
+
+Added kernel modules for Redhat 9.0 and SuSE 8.2
+Added MODULE_LICENSE to kernel module sources.
+
+V0.7 Released November 2002
+
+New features
+
+Added subregion extraction to ccd library
+Added optional FIFO pipeline to BufferDriftScan command
+Updated external packages to latest versions on SDK
+
+Bug Fixes
+
+Upgraded max column and row counts to 16383 (Ap16 needed < 4096)
+
+
+V0.6 Released July 2002
+
+New features
+
+
+Added prebuilt kernel moules for 
+              RedHat 7.3 
+              SuSE 8.0 
+              Mandrake 8.2 
+Added option for computer control of timer (makes very long exposures possible) 
+Support for multiple camera "instances" 
+Added support for systems using the "devfs" filesystem 
+
+V0.5 Released December 2001
+
+
+New features
+
+Added a driver for the PCI interface card
+Converted all low level drivers to loadable kernel modules
+Updated DS9 version to latest
+Added GCCD to SDK distribution
+
+Bug Fixes
+
+Fixed problem with exposures longer than 655 seconds
+
+V0.4 Released July 2001
+
+New features
+
+Updated GIMP version to latest
+Updated VNC versions to latest
+Changed to tar only archives to avoid RPM 3/4 problems
+
+Bug Fixes
+
+Install no longer replaces tcl/tk shared libraries, uses private copies
+Missing symlink to libccd.so repaired
+
+
+V0.3-2 Released April 2001
+
+New features - 
+
+Pause/Resume exposures
+New Temperature control menu
+Added Restore full-frame to Observe menu
+Added IRQ masking options and GUI window (Alt-i to popup)
+Added auto-incrementing sequence counter
+Changed defaults for OBSTYPES to be single frame for every type
+Added telescope/instrument/equinox to GUI
+Added confirmation prompt to Exit option
+
+Bug fixes - 
+
+Close out DS9 on program exit
+Added prompt for filename when user chooses "do not overwrite"
+Fix default setpoint on graphic
+Fixed shared memory image transfer to DS9 (was broken for non-root users)
+
+V0.3-1 Released January 2001
+
+New features - 
+
+First version written to new API
+C++/tcl wrappers for all functions
+Preliminary LX200 library
+GUI for easy camera control
+First user/programmers manuals
+Fixed abort to handle single exposures
+Fixed time/date in FITS headers
+Fixed incorrect image type in FITS headers
+Fixed buildso script to use /opt/apogee as location for swig files
+
+V0.2 - Not released
+
+Early working version based on the now obsolete old Apogee API
+
+
+
+V0.1 - Not released
+
+This version was written prior to access to hardware, and was based 
+on the now obsolete old Apogee API.
+
+
+
+
+

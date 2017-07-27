@@ -1,0 +1,3 @@
+#!/bin/csh -f 
+tcomm_xterm -fn fixed -geometry 80x21-25+80 -T "Telescope and CCD Status" -e status &
+

@@ -1,0 +1,165 @@
+FC=g77
+CC=gcc
+CFLAGS=
+
+#MACHINE=osf1axp
+#F77LIBS=-lUfor -lfor -lFutil -lots
+##CFLAGS=-DDEBUG -DALPHA -DHAVECCD
+#CFLAGS=-DALPHA -DDISPLAY -DHAVECCD
+#CURSES=curses
+
+#MACHINE=solaris
+#F77LIBS=-lM77 -lF77 -L/opt/SUNWspro/SC4.0/lib -lsunmath -lcx
+#CFLAGS=-DLOKI -DDISPLAY -DHAVECCD 
+#CURSES=curses
+
+MACHINE=linux
+CFLAGS=-DHAVECCD -UMSBF -Dlinux
+CURSES=ncurses
+LDFLAGS=-L/usr/X11R6/lib
+
+VISTALIB=/usr/local/src/xvista/lib
+BINDIR=/usr/local/bin
+DSP_LIB_PATH = arc_camlib/astropciAPI_LIB/src
+
+all: command port status ccd accd gccd power comment
+command: io.o error.o send.o vector.o nrutil.o focus.o getresp.o \
+	powerutils.o filter.o socket.o
+	$(CC) -o command.$(MACHINE) $(CFLAGS) -DHAVETOCC -DAPOGEE -UHAVEPI -UCURSES \
+	command.c readstatus.c writeccdstatus.c io.o error.o powerutils.o \
+	filter.o send.o vector.o nrutil.o focus.o getresp.o socket.o \
+	-lslalib -lc -lm
+filt: filt.o filter.o
+	$(CC) -o filt filt.o filter.o
+port: getresp.o socket.o
+	$(CC) -o port.$(MACHINE) $(CFLAGS) -DHAVETOCC -UNEWCOM -DAPOGEE port.c \
+	getresp.o socket.o -lm -lc
+status: io.o vector.o nrutil.o focus.o getresp.o filter.o
+	$(F77) $(LDFLAGS) -o status.$(MACHINE) $(CFLAGS) -DHAVETOCC -DAPOGEE \
+	status.c readstatus.c io.o vector.o nrutil.o focus.o filter.o \
+	getresp.o -lslalib -lmongo -l$(CURSES) \
+        -lX11 $(F77LIBS) -lm -lc 
+rstatus: io.o vector.o nrutil.o focus.o getresp.o filter.o
+	$(F77) $(LDFLAGS) -o rstatus.$(MACHINE) $(CFLAGS) -DHAVETOCC -DAPOGEE -DRSTATUS \
+	status.c readstatus.c io.o vector.o nrutil.o focus.o filter.o \
+	getresp.o -lslalib -lmongo -l$(CURSES) \
+        -lX11 $(F77LIBS) -lm -lc 
+lccd: io.o send.o focus.o error.o \
+	vector.o nrutil.o fits.o getresp.o filter.o \
+	zap.o quick.o socket.o powerutils.o 
+	$(F77) $(LDFLAGS) -o lccd.$(MACHINE) $(CFLAGS) \
+	-DHAVETOCC -DCCD1M -DLCCD -DNEWCOM \
+	ccd.c  readstatus.c error.o \
+	writeccdstatus.c io.o send.o focus.o vector.o nrutil.o \
+	fits.o getresp.o writehtml.c filter.o zap.o quick.o \
+	socket.o powerutils.o arc_camlib/lccd/lccd.o $(VISTALIB)/xtv.$(MACHINE).a \
+	-L${DSP_LIB_PATH} -lastropciAPI -lslalib -lX11  -lc -lm 
+accd: io.o send.o focus.o error.o \
+	vector.o nrutil.o fits.o getresp.o filter.o \
+	zap.o quick.o apogee.o socket.o powerutils.o libapogee
+	$(F77) $(LDFLAGS) -o accd.$(MACHINE) $(CFLAGS) -DHAVETOCC \
+	-DCCD1M -DAPOGEE -DNEWCOM -USTANDALONE -UOFFSET \
+	ccd.c  readstatus.c error.o \
+	writeccdstatus.c io.o send.o focus.o vector.o nrutil.o \
+	fits.o getresp.o writehtml.c filter.o zap.o quick.o \
+	apogee.o socket.o powerutils.o $(VISTALIB)/xtv.$(MACHINE).a \
+	apogee/libapogee.a -lslalib -lX11  -lc -lm -lncurses
+apogee.o: apogee.c
+	$(CC) -O2 -g -Wall -fno-strength-reduce -c -DLINUX -D_APG_PPI apogee.c
+libapogee:
+	(cd apogee ; make)
+slitview: io.o send.o focus.o error.o \
+	vector.o nrutil.o fits.o getresp.o filter.o \
+	zap.o quick.o apogee2.o socket.o update.o
+	$(F77) $(LDFLAGS) -o slitview.$(MACHINE) $(CFLAGS) \
+	-DSLITVIEW -DAPOGEE -DNEWCOM -DSTANDALONE -DOFFSET -DCURSES \
+	ccd.c  readstatus.c error.o \
+	writeccdstatus.c io.o send.o focus.o vector.o nrutil.o \
+	fits.o getresp.o writehtml.c filter.o zap.o quick.o update.o \
+	apogee2.o socket.o $(VISTALIB)/xtv.$(MACHINE).a \
+	apogee/libapogee.a -lslalib -lX11  -lc -lm -lncurses
+apogee2.o: apogee.c
+	$(CC) -o apogee2.o -O2 -g -Wall -fno-strength-reduce -c -DLINUX -D_APG_PPI -DOFFSET apogee.c
+oldgccd: io.o send.o focus.o error.o readusno.o \
+	vector.o nrutil.o fits.o getresp.o filter.o \
+	zap.o quick.o socket.o
+	$(F77) $(LDFLAGS) -o gccd.$(MACHINE) $(CFLAGS) -DHAVETOCC \
+	-DSPEC -DGUIDER -DLYNXX -DNEWCOM -DREMOTE -USTANDALONE -UOFFSET \
+	ccd.c  readstatus.c error.o readusno.o \
+	writeccdstatus.c io.o send.o focus.o vector.o nrutil.o \
+	fits.o getresp.o writehtml.c filter.o zap.o quick.o \
+	socket.o $(VISTALIB)/xtv.$(MACHINE).a \
+	-lslalib -lX11  -lc -lm
+gccd: io.o send.o focus.o error.o readusno.o \
+	vector.o nrutil.o fits.o getresp.o filter.o \
+	zap.o quick.o socket.o
+	$(F77) $(LDFLAGS) -o gccd.$(MACHINE) $(CFLAGS) -DHAVETOCC \
+	-DGUIDER -DLYNXX -DNEWCOM -DREMOTE -USTANDALONE -UOFFSET \
+	ccd.c  readstatus.c error.o readusno.o \
+	writeccdstatus.c io.o send.o focus.o vector.o nrutil.o \
+	fits.o getresp.o writehtml.c filter.o zap.o quick.o \
+	socket.o $(VISTALIB)/xtv.$(MACHINE).a \
+	-lslalib -lX11  -lc -lm
+ccd: ccd.o io.o send.o focus.o vector.o error.o \
+	nrutil.o fits.o getresp.o filter.o \
+	zap.o quick.o socket.o
+	$(F77) $(LDFLAGS) -o ccd.$(MACHINE) $(CFLAGS) -DHAVETOCC \
+	-DPI -DREMOTE -USTANDALONE -UOFFSET \
+	ccd.c  readstatus.c error.o \
+	writeccdstatus.c io.o send.o  focus.o vector.o nrutil.o \
+	fits.o getresp.o writehtml.c filter.o zap.o quick.o \
+	socket.o $(VISTALIB)/xtv.$(MACHINE).a \
+	-lslalib -lX11 -lc -lm
+power: power.o powerutils.o
+	$(CC) $(LDFLAGS) -o power.$(MACHINE) power.c powerutils.c -lX11
+xlamps: power.o powerutils.o
+	$(CC) -DLAMPS $(LDFLAGS) -o xlamps.$(MACHINE) power.c powerutils.c -lX11
+comment: comment.o util.o 
+	$(CC) -o comment $(CFLAGS) -DHAVETOCC -DAPOGEE -UOFFSET \
+	comment.o util.o writehtml.c
+shortlog: shortlog.o
+	$(CC) -o shortlog $(CFLAGS) -DHAVETOCC -DAPOGEE -UOFFSET \
+	shortlog.o writehtml.c
+install:
+	cp command.$(MACHINE) $(BINDIR)/command
+	cp ccd.$(MACHINE) $(BINDIR)/ccd
+	cp gccd.$(MACHINE) $(BINDIR)/gccd
+	-rm $(BINDIR)/accd
+	cp accd.$(MACHINE) $(BINDIR)/accd
+	chmod 4755 $(BINDIR)/accd
+	cp status.$(MACHINE) $(BINDIR)/status
+	cp port.$(MACHINE) $(BINDIR)/port
+	cp power.$(MACHINE) $(BINDIR)/power
+	cp tcomm dotcomm killtcomm $(BINDIR)/
+	cp transfer dotransfer $(BINDIR)/
+	cp ms $(BINDIR)/
+	cp xfer doxfer $(BINDIR)/
+	cp alive copyscript $(BINDIR)/
+	cp comment /loki/httpd/cgi-bin/comment.pl
+	cp restart_ccd $(BINDIR)/
+	cp dorestart_ccd $(BINDIR)/
+	cp shutter35m $(BINDIR)/
+	cp shut35a $(BINDIR)/
+	cp CLEAR_LOUVER $(BINDIR)/
+	cp tcomm_xterm $(BINDIR)/
+
+clean:
+	-rm -f *.o *.$(MACHINE) comment
+	(cd apogee ; make clean)
+
+remote:
+	scp xfer ganymede.nmsu.edu:/usr/local/bin
+	scp doxfer ganymede.nmsu.edu:/usr/local/bin
+	scp gxfer ganymede.nmsu.edu:/usr/local/bin
+	scp dogxfer ganymede.nmsu.edu:/usr/local/bin
+	scp tcomm ganymede.nmsu.edu:/usr/local/bin
+	scp copyscript ganymede.nmsu.edu:/usr/local/bin
+	scp alive ganymede.nmsu.edu:/usr/local/bin
+getsao: getsao.o
+	cc -o getsao getsao.o -lm -lc
+apogee: apogee.o
+	cc -O2 -o apogee apogee.o apogee/libapogee.a
+client: client.o socket.o
+	cc -o client client.o socket.o
+server: server.o socket.o
+	cc -o server server.o socket.o

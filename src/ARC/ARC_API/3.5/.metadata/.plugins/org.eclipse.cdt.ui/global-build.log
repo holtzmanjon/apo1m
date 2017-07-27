@@ -1,0 +1,47 @@
+14:53:38 **** Incremental Build of configuration Release_x64 for project ArcImageJAPI ****
+make all 
+Building file: ../src/ArcImageJAPI.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/streit/Documents/ARC_API/3.5/CArcImage/src -I/home/streit/Documents/ARC_API/3.5/JavaJDK/x64/include -I/home/streit/Documents/ARC_API/3.5/JavaJDK/x64/include/linux -O3 -Wall -c -fmessage-length=0 -std=c++11 -fPIC -MMD -MP -MF"src/ArcImageJAPI.d" -MT"src/ArcImageJAPI.d" -o"src/ArcImageJAPI.o" "../src/ArcImageJAPI.cpp"
+Finished building: ../src/ArcImageJAPI.cpp
+ 
+Building file: ../src/DllMain.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/streit/Documents/ARC_API/3.5/CArcImage/src -I/home/streit/Documents/ARC_API/3.5/JavaJDK/x64/include -I/home/streit/Documents/ARC_API/3.5/JavaJDK/x64/include/linux -O3 -Wall -c -fmessage-length=0 -std=c++11 -fPIC -MMD -MP -MF"src/DllMain.d" -MT"src/DllMain.d" -o"src/DllMain.o" "../src/DllMain.cpp"
+Finished building: ../src/DllMain.cpp
+ 
+Building target: libArcImageJAPI.so
+Invoking: GCC C++ Linker
+g++ -L/home/streit/Documents/ARC_API/3.5/CArcImage/Release_x64 -shared -o "libArcImageJAPI.so"  ./src/ArcImageJAPI.o ./src/DllMain.o   -lCArcImage
+Finished building target: libArcImageJAPI.so
+ 
+make --no-print-directory post-build
+cp /home/streit/Documents/ARC_API/3.5/ArcImageJAPI/Release_x64/libArcImageJAPI.so /home/streit/Documents/ARC_API/3.5/Release/x64
+ 
+
+14:53:38 Build Finished (took 760ms)
+
+14:53:38 **** Clean-only build of configuration Release_x32 for project ArcImageJAPI ****
+make clean 
+rm -rf  ./src/ArcImageJAPI.o ./src/DllMain.o  ./src/ArcImageJAPI.d ./src/DllMain.d  libArcImageJAPI.so
+ 
+14:53:39 **** Incremental Build of configuration Release_x32 for project ArcImageJAPI ****
+make all 
+Building file: ../src/ArcImageJAPI.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/streit/Documents/ARC_API/3.5/CArcImage/src -I/home/streit/Documents/ARC_API/3.5/JavaJDK/x32/include -I/home/streit/Documents/ARC_API/3.5/JavaJDK/x32/include/linux -O3 -Wall -c -fmessage-length=0 -std=c++11 -m32 -fPIC -MMD -MP -MF"src/ArcImageJAPI.d" -MT"src/ArcImageJAPI.d" -o "src/ArcImageJAPI.o" "../src/ArcImageJAPI.cpp"
+Finished building: ../src/ArcImageJAPI.cpp
+ 
+Building file: ../src/DllMain.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/streit/Documents/ARC_API/3.5/CArcImage/src -I/home/streit/Documents/ARC_API/3.5/JavaJDK/x32/include -I/home/streit/Documents/ARC_API/3.5/JavaJDK/x32/include/linux -O3 -Wall -c -fmessage-length=0 -std=c++11 -m32 -fPIC -MMD -MP -MF"src/DllMain.d" -MT"src/DllMain.d" -o "src/DllMain.o" "../src/DllMain.cpp"
+Finished building: ../src/DllMain.cpp
+ 
+Building target: libArcImageJAPI.so
+Invoking: GCC C++ Linker
+g++ -L/home/streit/Documents/ARC_API/3.5/CArcImage/Release_x32 -m32 -shared -o "libArcImageJAPI.so"  ./src/ArcImageJAPI.o ./src/DllMain.o   -lCArcImage
+Finished building target: libArcImageJAPI.so
+ 
+make --no-print-directory post-build
+cp /home/streit/Documents/ARC_API/3.5/ArcImageJAPI/Release_x32/libArcImageJAPI.so /home/streit/Documents/ARC_API/3.5/Release/x32
+ 

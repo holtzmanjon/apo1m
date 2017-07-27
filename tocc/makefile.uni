@@ -1,0 +1,15 @@
+CFLAGS=-c -mh
+CPPFLAGS=-c
+LFLAGS=-mh
+.SUFFIXES: .cpp .o
+.cpp.o: 
+	c++ $(CPPFLAGS) $*.cpp
+
+tocc: scf.o toccauto.o altaz_c.o altaz_n.o command.o config.o \
+ equat_f.o error.o evtimer.o globals.o guiding.o io.o key_util.o \
+ keypad.o ocs.o pcx.o serial.o shutdown.o sounds.o \
+ sysscf.o systimer.o tcs.o tcs_math.o tech80.o toccscf.o \
+ tracking.o util.o uts10.o weather.o window.o 
+	ar r tocc.a *.o
+	ranlib tocc.a
+	c++ $(LFLAGS) -otocc toccauto.o tocc.a ../slalib_c/slalib_c.osf1axp.a

@@ -1,0 +1,118 @@
+#!/bin/csh
+
+set oldstate=0
+set state=0
+set jdold=0
+set nhung=0
+set ntemp=0
+while (1) 
+#  'rm' /home/export/tocc/35mclose.dat /home/export/tocc/35mopen.dat
+#  shut35a
+  kill -9 `ps auxww | grep shut35b | grep -v grep | awk '{print $2}'`
+  shut35b &
+  if ( -e /home/export/tocc/35mclose.dat & ! -e /home/export/tocc/louver.dat ) then
+     power1m off domefan
+     power1m off louvers
+     set state=-1
+  endif
+  if ( -e /home/export/tocc/35mopen.dat ) then
+    set state=1
+  endif
+  @ c = $state * $oldstate
+#  if ( $c == -1 ) then
+#    /usr/local/bin/ringbell 50 &
+#  endif
+  set oldstate = $state
+
+# Make sure fans are on if motors are on, depending on temperature
+
+  set motors = `power1m list motors | awk '{print $2}'`
+  set fans = `power1m list rackfan | awk '{print $2}'`
+  set computer = `power1m list tocc | awk '{print $2}'`
+  if ( -e /home/export/tocc/statr.doc & ! -e /home/export/tocc/init.doc ) then
+    set jd = `tail -2 /home/export/tocc/statr.doc | head -1 | awk '{print $8}'`
+    set domeopen = `tail -2 /home/export/tocc/statr.doc | head -1 | awk '{print $29}'`
+    set temp = `tail -2 /home/export/tocc/statr.doc | head -1 | awk '{print $40}' | awk -F. '{print $1}' `
+    if ( $jd == $jdold ) then
+      set tocc = hung
+      @ nhung = $nhung + 1
+    else
+      set tocc = ok
+      set nhung = 0
+    endif
+#    echo tocc: $tocc    domeopen: $domeopen     temp: $temp   jd: $jd   jdold: $jdold
+    if ( $tocc == hung ) then
+      echo tocc hung
+      if ( $nhung == 15 ) then
+        mail -s "tocc is hung" 5756217380@messaging.sprintpcs.com </dev/null
+        mail -s "tocc is hung" holtz@nmsu.edu </dev/null
+        echo turning motors off
+        power1m off motors
+        power1m off autofill
+        power1m off tocc
+        power1m on tocc
+      endif
+      if ( $nhung > 15 ) then
+        echo turning motors off
+        power1m off motors
+        power1m off autofill
+      endif
+#    power1m off tocc
+#    power1m off rackfan
+    else
+      set tlow = 18
+      set thigh = 40
+      if ( $domeopen == 0 && $temp < $tlow ) then
+        if ( $fans == On ) then
+          echo $temp is less than $tlow, turning fans off
+          power1m off rackfan
+        endif
+      else if ( $temp < $thigh ) then
+        if ( $fans == Off ) then
+          echo $temp is less than $thigh, turning fans on
+          power1m on rackfan
+        endif
+      else
+        if ( $computer == On ) then
+          echo $temp is greater than $thigh, turning computers off
+          umask 000
+          echo "QU" > /home/export/tocc/tocccmd.doc
+          touch /home/export/tocc/tocccmd.fin
+          echo "QU" > /home/export/spec/speccmd.doc
+          touch /home/export/spec/speccmd.fin
+          echo "QU" >> /home/tcomm/master2com
+          echo "y" >> /home/tcomm/master2com
+          echo "y" >> /home/tcomm/master2com
+          sleep 5
+          power1m off tocc
+          power1m off motors
+          head -1 /home/tcomm/com2master
+          sleep 5
+        endif
+      endif
+    endif
+    if ( -e /home/tcomm/ccdstatus.doc ) then
+      set ccdtemp = `awk 'NR==1 {print int($34)}'  /home/tcomm/ccdstatus.doc`
+      set nw = `echo $ccdtemp | wc | awk '{print $2}'`
+      if ( $nw == 1) then
+       if ( $ccdtemp > -90 ) then
+        @ ntemp = $ntemp + 1
+        if ( $ntemp == 1 ) then
+          mail -s "ccd is warming" 5756217380@messaging.sprintpcs.com </dev/null
+          mail -s "ccd is warming" holtz@nmsu.edu </dev/null
+        endif
+       else
+         set ntemp = 0
+       endif
+      endif
+    endif
+    set jdold = $jd
+  else
+    if ( $motors == On ) then
+      power1m on rackfan
+    endif
+  endif
+
+  sleep 50
+end
+

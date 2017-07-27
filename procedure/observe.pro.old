@@ -1,0 +1,332 @@
+! set things up command-wise
+call startup
+send -display
+send g-display
+
+send '-xfer'
+send 'g-xfer'
+
+daytest=0
+ldome=1
+photom=0
+!focus=-12600
+!goto loop
+
+! Comments for the log
+printf 'NMSU 1m auto-observing' >/home/tmp/{root}.program.comment
+printf 'NMSU 1m auto-observer' >/home/tmp/{root}.observer.comment
+string oroot '%i6.6' {root}-1 
+printf '<a href=http://galileo.apo.nmsu.edu/sky/irsc/data/mpegarchive/IRSCmpg-20{oroot}.mpg> MPEG archive </a> (<a href=http://galileo.apo.nmsu.edu/sky/irsc/data/Latest.mpg> latest </a>)' |
+  >/home/tmp/{root}.weather.comment
+
+! get 50 biases
+!call biasdark 0 50 sbiaseve
+
+! check dome and open when 3.5m is open
+call check
+
+! Initial focus guess
+call readstat
+focus=-12580-auxtemp*18
+string com 'fo %f12.3' focus
+send '{com}'
+
+! get some twilight flats pointing east if its not dark yet
+call time
+if (localtim>12&localtim<ntwieve-0.5)
+  call twiwait ntwieve -0.8
+  call flateve
+end_if
+
+! wait for nautical twilight-24 minutes
+if (localtim>12)
+  call twiwait ntwieve -0.40
+end_if
+
+! Initial focus guess
+call readstat
+focus=-12580-auxtemp*18
+string com 'fo %f12.3' focus
+send '{com}'
+
+! initial pointing correction
+call check
+call altaz 220 70
+saot
+
+! initial focus
+call readstat
+focus=-12580-auxtemp*18
+string com 'fo %f12.3' focus
+send '{com}'
+call getfoc focus 1
+
+! Rotator test
+send '-zencoder'
+call check
+!call altaz 220 70
+!send 'input rot.inp'
+
+! Pointing model
+call pmbig
+
+! Focus test: check some guider focus relative to Apogee
+!call foctest focus
+
+if localtim<12&localtim>ntwimorn
+  goto twimorn
+end_if
+
+if photom==1
+ ! do 2 high airmass standards
+ call dostan stan.apo 1.6 1.8 2 
+ ! do 2 low airmass standards
+ call dostan stan.apo 1 1.3 2 
+end_if
+
+if localtim<12&localtim>ntwimorn
+  goto twimorn
+end_if
+
+loop:
+! Loop through a bunch of sequences of Chris' objects + standards + refocus
+! Set rastart0 to be lst hours at beginning of sequence, so we will try
+! eastern objects first to allow us to track them as long as possible
+send 'noshutter'
+do i=1,20
+  send 'open'
+end_do
+call time
+rastart0=lst
+if rastart0<0
+  rastart0=rastart0+24
+else_if rastart0>24
+  rastart0=rastart0-24
+end_if
+nsmudge=0
+ntom=0
+ntriton=0
+ngrid=0
+nyz=0
+nvir=0
+nwz=0
+nsdss=0
+nn6853=0
+nlan101=0
+nlan104=0
+nlan109=0
+
+utday=mod[{root},100]
+utmonth=ifix[mod[{root},10000]/100.]
+if utmonth==1
+  string month 'jan'
+else_if utmonth==2
+  string month 'feb'
+else_if utmonth==3
+  string month 'mar'
+else_if utmonth==4
+  string month 'apr'
+else_if utmonth==5
+  string month 'may'
+else_if utmonth==6
+  string month 'jun'
+else_if utmonth==7
+  string month 'jul'
+else_if utmonth==8
+  string month 'aug'
+else_if utmonth==9
+  string month 'sep'
+else_if utmonth==10
+  string month 'oct'
+else_if utmonth==11
+  string month 'nov'
+else_if utmonth==12
+  string month 'dec'
+end_if
+
+ftest=0
+nfocdone=0
+do iloop=1,50
+  call time
+  if localtim<12&localtim>ntwimorn
+    goto twimorn
+  end_if
+
+  ! refocus after a low airmass object
+  send 'pa 0'
+  call altaz 220 70
+  fwhm=10
+  call getfoc focus 1
+  call dummy
+  if ftest<10&fwhm<2.5
+    ftest=ftest+1
+    call foctest focus
+    nfocdone=nfocdone+1
+  end_if
+!  call doobject jup-{month}00.apo 1 1.8 -1 -utday 0.05 0 0 0 0.5 1 1
+!  if nsmudge<1
+!    call doobject rene.apo 1 1.8 -1 -1 0 0 0 0 300 12 0
+!    nsmudge=nsmudge+ndone
+!  end_if
+
+  !call doobject 2mass.apo 1.05 1.7 rastart0 1 0 0 0 300 300 3 
+  !call doobject grb.apo 1 2.0 -1 -1 300 300 300 300 0 2 0
+  if iloop==1
+!    call doobject tom.apo 1.03 2.3 -1 -3 300 300 300 300 0 1 
+    call doobject 2mass-pri.apo 1.03 1.7 -1 1 0 0 0 300 0 3 
+  else
+!    if ntriton<1
+!      call doobject triton-{month}01.apo 1 1.8 -1 -utday 10 5 5 10 0 1 1
+!      if ndone>0
+!        ntriton=ntriton+1
+!      end_if
+!    end_if
+    if ntom<-1
+!      call doobject tom.apo 1.03 1.7 -1 -4 180 120 120 120 0 1201 
+!      call doobject tom.apo 1.03 1.7 -1 -4 0 120 0 0 0 55
+      call doobject tom.apo 1.03 1.7 -1 -7 0 300 0 0 0 15
+      if ndone>0
+        ntom=ntom+1
+      else
+        call doobject 2mass-pri.apo 1.03 1.7 -1 3 0 0 0 300 0 3 
+      end_if
+    else_if photom==1
+      call doobject 2mass-pri.apo 1.03 1.7 -1 2 0 0 0 300 0 3 
+    else
+      call doobject 2mass-pri.apo 1.03 1.7 -1 3 0 0 0 300 0 3 
+    end_if
+    if photom==1
+      if nyz==0
+        call doobject tom.apo 1.03 1.7 -1 -2 10 10 10 10 0 2
+        if ndone>0
+          call doobject tom.apo 1.03 1.7 -1 -2 120 120 120 120 0 2
+          nyz=nyz+1
+        end_if
+      end_if
+      if nwz==0
+        call doobject tom.apo 1.03 1.7 -1 -5 5 5 5 5 0 2
+        if ndone>0
+          call doobject tom.apo 1.03 1.7 -1 -5 60 60 60 60 0 2
+          nwz=nwz+1
+        end_if
+      end_if
+      if nvir==0
+        call doobject tom.apo 1.03 1.7 -1 -4 180 120 120 120 0 2
+        if ndone>0
+          nvir=nvir+1
+        end_if
+      end_if
+      if nn6853==0
+        call doobject tom.apo 1.03 1.7 -1 -6 10 10 10 10 0 2
+        if ndone>0
+          call doobject tom.apo 1.03 1.7 -1 -6 60 60 60 60 0 2
+          nn6853=nn6853+1
+        end_if
+      end_if
+      if nsdss==0
+        call doobject tom.apo 1.03 1.7 -1 -7 300 300 300 300 0 2
+	if ndone>0
+          nsdss=nsdss+1
+        end_if
+      end_if
+      if nlan101==0
+        call doobject tom.apo 1.03 1.7 -1 -8 10 10 10 10 0 2
+        if ndone>0
+          nlan101=nlan101+1
+        end_if
+      end_if
+      if nlan104==0
+        call doobject tom.apo 1.03 1.7 -1 -9 30 30 30 30 0 2
+        if ndone>0
+          nlan104=nlan104+1
+        end_if
+      end_if
+      if nlan109==0
+        call doobject tom.apo 1.03 1.7 -1 -10 10 10 10 10 0 2
+        if ndone>0
+          nlan109=nlan109+1
+        end_if
+      end_if
+    end_if
+  end_if
+  if photom==1
+   if mod[iloop,2]==0
+     ! do 2 high airmass standards
+     call dostan stan.apo 1.6 2.0 2 
+   end_if
+   ! do 2 low airmass standards
+   call dostan stan.apo 1 1.3 2 
+!   if ngrid<3
+!     send 'setfilt R'
+!     send 'input grid.inp'
+!     ngrid=ngrid+1
+!   end_if
+  end_if
+  call time
+! If we've hit nautical twilight, more on to flats
+  if localtim<12&localtim>ntwimorn
+    goto twimorn
+  end_if
+end_do
+
+! we're finished with objects, if its more than 1/2 hour past nautical, just
+!   close up, otherwise do flats
+call time
+if localtim<12&localtim>ntwimorn+0.5
+  goto alldone:
+end_if
+
+twimorn:
+call twiwait ntwimorn 0.4
+call time
+if localtim<12&localtim<ntwimorn+1
+  call flatmorn
+end_if
+
+alldone:
+call close
+
+! get some darks
+!call biasdark 0 50 sbiasmorn
+!call biasdark 1 5 dark001
+!call biasdark 5 5 dark005
+!call biasdark 30 5 dark030
+!call biasdark 60 5 dark060
+call biasdark 300 5 dark300
+! 300s darks at a variety of temperatures
+call readstat
+!if outtemp<10
+!  send 'settemp -45'
+!  $sleep 300
+!  call biasdark 300 5 dark300_45
+!end_if
+!call readstat
+!if outtemp<15
+!  send 'settemp -40'
+!  $sleep 300
+!  call biasdark 300 5 dark300_40
+!end_if
+!call readstat
+!if outtemp<20
+!  send 'settemp -35'
+!  $sleep 300
+!  call biasdark 300 5 dark300_35
+!end_if
+!call readstat
+!if outtemp<25
+!  send 'settemp -30'
+!  $sleep 300
+!  call biasdark 300 5 dark300_30
+!end_if
+
+! Shut everything down
+call shutdown
+
+! Start auto-sftp job
+$dosftp images/{root} now
+
+! try to make biases/darks/flats
+!call ../images/{root}/biasdark
+!call ../images/{root}/flat
+
+end

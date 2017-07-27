@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+# Simple script to fire up wish and run a per-user configuration.
+# The output of this process is a script in the users home directory
+# which will start up the Apogee camera GUI
+
+export LD_LIBRARY_PATH=/opt/apogee/lib
+sudo tar -C /etc -xf /opt/apogee/etc-Apogee-camera.tgz
+wish /opt/apogee/apps/tcl/scripts/modins.tcl
+
+
+

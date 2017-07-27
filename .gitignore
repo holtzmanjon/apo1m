@@ -1,0 +1,9 @@
+*.exe
+*.o
+*.tgz
+*.tar.gz
+*.tar.gz2
+CVS/*
+procedure.old/*
+tocc.old/*
+CVS

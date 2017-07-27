@@ -1,0 +1,47 @@
+#!/bin/bash
+#Load automatically MODULE to the kernel. You can specify the major number
+#values that you want, by calling this script whith major0=XXX ... till major4
+#(values from 1 to 255)
+#By default, it will asign a major number automatically.
+#This script will create the entrance in the /dev directory too.
+#The diference between both drivers is that the one with the _g extension
+#contens debug information, which will be written to the messages file
+
+#MODULE="astropci_g"
+MODULE="astropci.o"
+
+PREFIX=/dev/astropci
+
+echo "loading $MODULE"
+/sbin/insmod $MODULE $*
+
+BASE_NAME="astropci"
+MAJOR0=`cat /proc/devices | awk "\\$2==\"${BASE_NAME}0\" {print \\$1}"`
+
+if [ -z "$MAJOR0" ]; then
+    echo "astropci_load: Module not loaded."
+    exit 1
+fi
+
+for BOARD in 0 1 2 3; do
+  DEVICE=${PREFIX}${BOARD}
+  if [ -e $DEVICE ]; then
+      rm -f $DEVICE
+  fi
+done
+
+for BOARD in 0 1 2 3; do
+  DEVICE=${PREFIX}${BOARD}
+  
+  MAJOR=`cat /proc/devices | awk "\\$2==\"${BASE_NAME}$BOARD\" {print \\$1}"`
+  if [ -z "$MAJOR" ]; then
+    exit 0
+  fi
+  
+  echo "astropci_load: creating $DEVICE"
+  mknod $DEVICE c $MAJOR $BOARD
+  chmod 666 $DEVICE
+
+done
+
+exit 0

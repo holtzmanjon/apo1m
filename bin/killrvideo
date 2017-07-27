@@ -1,0 +1,6 @@
+#!/bin/sh
+PS=ps
+BIN=/usr/local/bin
+kill -KILL `$PS ax | grep "rvideo" | grep -v "grep" | \
+  awk '{print $1 }'` 
+

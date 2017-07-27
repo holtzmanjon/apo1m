@@ -1,0 +1,12 @@
+
+TOCC computer: 7in
+power strip 1.75
+power strip 1.75
+UPS: 3.5
+
+power strip: 1.75
+Guider/filter: 5.25
+Autoscope PCS: 7    Motor controllers: 10 (on shelf)
+TCS: 7
+OCS: 7 
+Weather station: 7

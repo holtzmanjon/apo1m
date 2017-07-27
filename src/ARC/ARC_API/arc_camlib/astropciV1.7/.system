@@ -1,0 +1,2 @@
+KFLAGS=-fomit-frame-pointer -D__KERNEL__ -DMODULE
+OS_DEP=astropci_main

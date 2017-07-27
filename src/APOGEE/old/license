@@ -1,0 +1,40 @@
+This document describes the distribution rights for the Apogee Camera Control
+Library in such a way as to permit legitimate distribution of source code to
+application end users, while protecting the copyright and financial interests
+of the original software developers. If you have any questions about this
+document, contact Apogee instruments, Inc. or GKR Computer Consulting before
+using the library source code in any way.
+
+All the source code included in this distribution is copyrighted by GKR Computer
+Consulting and Apogee Instruments, Inc. All rights are reserved.
+
+Application developers must be registered with GKR Computer Consulting before
+using the camera control library. A small fee license fee is assessed to pay
+for our outstanding developer support and technical assistance. If you received
+the source code from an application distribution, you may not redistribute
+the camera control library, in any form, without becoming a licensed developer.
+
+Licensed developers can distribute applications that include Apogee camera
+control by including one or more binary compilations of the library source
+code (that do not contain debug symbols), either statically linked into their
+applications, or as a separate binary object file, without any restrictions.
+
+Licensed developers that distribute their entire applications in source code
+form, may also include the source code for the camera control library, if the
+following restrictions are observed;
+
+1. The camera control source code files are stored in a separate subdirectory
+   which includes this license agreement.
+
+2. The camera control library documentation may not be distributed to application
+   end users.
+
+3. Application end users are explicitly informed of the restrictions on their
+   use of the camera control source code. An example might be a notice that
+   appears during application installation and/or compilation.
+
+GKR Computer Consulting
+apogee_support@gkrcc.com
+
+Apogee Instruments, Inc.
+support@apogee-ccd.com

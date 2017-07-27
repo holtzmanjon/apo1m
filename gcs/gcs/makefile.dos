@@ -1,0 +1,5 @@
+CFLAGS=-f -c -mh
+CPPFLAGS=-f -c -mh 
+LFLAGS=-f -mh
+spec: spec.obj io.obj fits.obj systimer.obj evtimer.obj
+	bcc $(LFLAGS) -espec spec.obj io.obj fits.obj systimer.obj evtimer.obj hbclynx.lib

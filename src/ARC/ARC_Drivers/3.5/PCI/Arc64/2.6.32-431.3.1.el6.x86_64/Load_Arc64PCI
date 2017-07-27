@@ -1,0 +1,94 @@
+#!/bin/bash
+# +-------------------------------------------------------------+
+#  Script for auto-loading PCI driver on every boot. Must be
+#  superuser to run this script. Verify driver installation with
+#  list printed at the end of installation.
+#
+#  Notes:  For debugging, use: /sbin/insmod -f Arc64PCI and
+#          /sbin/rmmod Arc64PCI
+# +-------------------------------------------------------------+
+
+if [ `id -u` -eq 0 ]; then
+        echo "Ah, welcome O' Mighty One."
+else
+        echo "You must be superuser to run this script!"
+        exit 1
+fi
+
+
+#  Kernel module directory
+# +-------------------------------------------------------------+
+modDir="/lib/modules/`uname -r`"
+
+
+#  Module name prefix
+# +-------------------------------------------------------------+
+mod="Arc64PCI"
+
+
+#  Kernel module link
+# +-------------------------------------------------------------+
+file=$modDir"/weak-updates/"$mod".ko"
+
+
+#  Permissions rule file
+# +-------------------------------------------------------------+
+rulesFile="/etc/udev/rules.d/52-"$mod".rules"
+
+
+#  Copy the module to the kernel module directory
+# +-------------------------------------------------------------+
+cp $mod.ko $modDir/extra
+
+
+#  Create the kernel module link
+# +-------------------------------------------------------------+
+if [ ! -L $file ]; then
+	echo "Creating module link ..."
+	ln -s $modDir/extra/$mod.ko $modDir/weak-updates/$mod.ko
+else
+	echo "Awesome! The module link already exists!"
+fi
+
+
+#  Resolve module dependencies - Prevents "FATAL: module not
+#  found" error.
+# +-------------------------------------------------------------+
+/sbin/depmod -a
+
+
+#  Install the module
+# +-------------------------------------------------------------+
+/sbin/modprobe $mod
+
+sleep 1.5
+
+
+#  Set the module permissions
+# +-------------------------------------------------------------+
+chmod a+rw /dev/$mod*
+
+if [ ! -e $rulesFile ]; then
+	echo KERNEL==\"$mod*\",NAME=\"%k\",MODE=\"0666\",OPTIONS=\"last_rule\" > $rulesFile
+else
+	echo "Awesome! Module permissions file already exists!"
+fi
+
+
+#  Print device list
+# +-------------------------------------------------------------+
+echo ""
+echo "  Device List  ( Should Not Be Empty )"
+echo "+--------------------------------------------------------+"
+ls -la /dev/$mod*
+echo ""
+
+
+#  Print device list
+# +-------------------------------------------------------------+
+echo ""
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+echo "!!! IMPORTANT !!! See READ_ME file for allocating image buffer memory  !!!!!!!"
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+echo ""
+

@@ -1,0 +1,2 @@
+skycalc < sunset.inp | grep Sunrise | awk '{print substr($0,51,6)}'
+

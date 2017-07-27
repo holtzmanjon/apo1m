@@ -1,0 +1,100 @@
+
+
+InitDriver
+ReadLine self SkipPixels Pixels pLineBuffer 
+Write self reg val 
+Read self reg val
+read_Status
+read_Shutter
+write_Shutter
+read_ForceShutterOpen
+write_ForceShutterOpen
+read_LongCable
+write_LongCable
+read_Mode
+write_Mode
+read_TestBits
+write_TestBits
+read_Test2Bits
+write_Test2Bits
+read_FastReadout
+write_FastReadout
+read_UseTrigger
+write_UseTrigger
+read_CoolerSetPoint
+write_CoolerSetPoint
+read_CoolerStatus
+read_CoolerMode
+write_CoolerMode
+read_Temperature 
+Reset
+Flush 
+AuxOutput
+RegWrite self reg val 
+RegRead
+FilterHome 
+FilterSet self Slot
+Expose self Duration Light 
+GetImage 
+BufferImage self bufferName
+DigitizeLine
+GetLine 
+Snap self Duration Light pImageData xSize ySize 
+LoadLineCounter self rows 
+LoadColumnLayout self aic bic pixels 
+LoadTimerAndBinning self Duration HBin VBin
+StartFlushing
+StopFlushing 
+InitDefaults
+
+
+BIC
+BIR 
+BaseAddress 
+BinX 
+BinY 
+Color 
+Columns 
+CoolerMode 
+CoolerSetPoint 
+CoolerStatus 
+DataBits 
+FilterPosition 
+FilterStepPos 
+Gain 
+GuiderRelays 
+HFlush 
+HighPriority 
+ImgColumns 
+ImgRows 
+Interface 
+LongCable 
+MaxBinX 
+MaxBinY 
+Mode 
+Noise 
+NumX 
+NumY 
+PixelXSize 
+PixelYSize 
+RegisterOffset 
+Rows 
+Sensor 
+SensorType 
+Shutter 
+SkipC 
+SkipR 
+StartX 
+StartY 
+Status 
+TDI 
+TempCalibration 
+TempControl 
+TempScale 
+Temperature 
+Test2Bits
+TestBits 
+Timeout 
+UseTrigger 
+VFlush
+

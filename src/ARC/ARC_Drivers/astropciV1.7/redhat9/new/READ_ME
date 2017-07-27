@@ -1,0 +1,60 @@
+Astropci Driver Version 1.7
+
+This driver uses a single large buffer for DMA transfer, unlike the previous
+version 1.4. This driver has been tested under Redhat 7.1 (kernel 2.4.2-2),
+Redhat 7.2 (kernel ?), and Redhat 9.0 (kernel 2.4.20-8). It WILL NOT work
+with older kernels.
+
+IMPORTANT:
+---------
+If you are using a kernel in the 2.4.20 series and it's less than 2.4.20-8,
+you may need to edit the driver mmap function to use the older remap
+function used by earlier kernels.
+
+In order for this driver to function, the following line must be set in
+LILO (/etc/lilo.conf): append="mem=xxxM", where xxx is the amount of RAM you
+DO NOT want to use for an image buffer. So, if your computer has 128Mb of
+RAM and you want to have a 28Mb image buffer, you must have the following line
+in LILO (/etc/lilo.conf): append="mem=100M".
+
+Example:
+-------
+1) Become superuser/root.
+
+2) Edit /etc/lilo.conf to have the append="mem=xxxM" line:
+
+image=/boot/vmlinuz-2.4.2-2
+	label=linux
+	read-only
+	root=/dev/hda5
+	append="mem=100M"
+
+3) From a tcsh, execute the command:  lilo -v
+
+4) Reboot the computer.
+
+To Load The Driver:
+------------------
+1) Become superuser/root.
+
+2) Run ./astropci_load
+
+The current directory contains the following files:
+astropci_main.c:	Main source file. 
+astriopci_defs.h: 	General variables and structures definitions
+astropci_io.h: 		Entry points for accesing the driver using user-code
+			(basically ioctl command definitions) 
+Makefile: 		Makefile ...
+astro_load: 		Simple script for loading the driver to the kernel.
+			It will create all the necessary entries for using
+	    		the driver. Read the little explanation on the script
+	    		itself.
+astro_unload: 		Script for unloading the driver from the kernel
+
+When you compile the source, you are going to get two modules: astropci.o and
+astropci_g.o . The only diference between this is that the last one generate
+some debug information to the messages file.
+
+
+
+

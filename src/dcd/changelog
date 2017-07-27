@@ -1,0 +1,16 @@
+2005-08-22 First public release of the Device Control Device.
+2005-08-23 Corrected error in textvector reception.
+2005-08-24 Added message window.
+2005-10-09 Added API
+2005-10-09 Added API documentation.
+2005-10-09 Fixed BLOB support
+2005-10-09 Added .fits BLOB support
+2005-10-09 Added .ccdpreview support
+2005-10-09 Added sliders and spinbutton
+2005-10-09 Added tutorials
+2005-10-09 Added .stream preview support
+2005-10-09 Added .ccdpreview support
+
+
+
+

@@ -1,0 +1,1 @@
+cmd_/home/streit/astropciV1.7/astropci_main.ko := ld -m elf_i386 -r -o /home/streit/astropciV1.7/astropci_main.ko /home/streit/astropciV1.7/astropci_main.o /home/streit/astropciV1.7/astropci_main.mod.o

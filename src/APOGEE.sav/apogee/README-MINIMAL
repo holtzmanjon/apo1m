@@ -1,0 +1,27 @@
+Apogee ALTA driver source kit
+-----------------------------
+
+This distribution is intended for use by people who are
+adding ALTA capability to other packages. It contains the
+minimal set of source code you need to accomplish this.
+To build the standard set of drivers and GUI's included
+in the more comprehensive archives you will also need the
+following packages :
+
+	tcl/tk 8.3 or later
+	curl 7.11 or later
+	SWIG 1.3a5
+	cfitsio
+	BWidget 1.2.1
+	Tix 4.1.0
+	BLT 2.4
+
+	libusb 0.1.8 or later (ALTA-U)
+
+If you simply wish to add expose/readout capablities to
+your own code, please study /opt/apogee/src/apogee/test_alta.cpp
+first.
+
+
+Dave Mills
+The Random Factory - 2016

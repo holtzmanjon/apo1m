@@ -1,0 +1,127 @@
+\documentclass{article}
+
+\usepackage{html}
+
+\begin{document}
+
+\begin{center}
+\textbf{Rapid Infrared and Visible Multi-Object Spectrograph (RIVMOS)}
+\end{center}
+
+\begin{htmlonly}
+Complete document in a single file
+(\htmladdnormallink{PostScript}{../rivmos.ps.gz})
+(\htmladdnormallink{PDF}{../rivmos.pdf})
+\end{htmlonly}
+
+\section{Overview}
+
+The infrared (IR) instrumentation capabilities of the ARC 3.5m are somewhat
+limited with the existing GRIM 2 instrument. In particular, this instrument
+has a 256x256 detector which has very high noise. This gives a small field
+of view, and makes it difficult to get observations of fainter objects in
+narrow-band imaging or spectroscopic mode. In addition, the spectroscopic
+modes either have very low resolution or have rather small slit widths at
+a bit higher resolution. As a result, we have considered alternative options
+for improving the IR instrumentation.
+
+Goddard (Moseley, Kutynev, Woodgate, et al.) is interested in building an IR instrument for
+use at the 3.5m. They have funding from NGST for a prototype instrument 
+to demonstrate the capabilities of a microshutter array, to
+be potentially used for fully configurable multi-object spectroscopy. The
+proposed instrument has both imaging and spectroscopic capability. They would
+like to use the instrument at the 3.5m, and in exchange, make it available
+to the ARC community. Scientifically, one of their motiviations for the
+instrument is to allow rapid followup, e.g., of gamma ray bursts. As
+a result, they would eventually like to see this instrument installed on
+a dedicated port (with associated rotator and guider) on the 3.5m. 
+
+Note that Bruce Woodgate has already built one instrument, a Fabry-Perot, which has
+been used at the 3.5m by himself and several others.
+
+The following information is taken directly from some of Bruce's presentations
+on the instrument, called RIVMOS.
+
+\section{Requirements}
+
+\begin{itemize}
+\item Spectral range 0.6-5 microns
+\item Use 1024x1024 InSb Aladdin I array detector
+\item Field of view: 6x6 arcmin at focal plane of APO 3.5m f10.3 telescope
+\item Use 512x512 microshutter array in cooled focal plane (may start with
+smaller array)
+\item Rapid change from imaging to selected spectroscopic mode ($<$30 sec)
+\item Modes: 
+  \begin{itemize}
+  \item spectroscopic modes, selecting by grism wheel ($\sim$ 6 positions)
+  near pupil
+   \begin{itemize}
+    \item R$\sim$ 50 with prism over 0.6-5 microns
+    \item R$\sim$ 2000 echelles with prism cross dispersers, 0.6-2.4 microns,
+      2.4-5 microns
+    \item R$\sim$ 5000 echelles with prism cross dispersers, 1.2-2.4 microns,
+      2.4-5 microns
+   \end{itemize}
+ \item Imaging mode with $\sim$ 12 filter positions on filter wheel
+ \end{itemize}
+\end{itemize}
+
+\section{RIVMOS Objectives}
+
+\begin{itemize}
+\item Technical goal (for which funding was obtained):
+  \begin{itemize}
+   \item Demonstrate scientific operations of GSFC microshutter array for
+    NGST NIRMOS
+  \end{itemize}
+
+\item Science goals
+  \begin{itemize}
+   \item General use infrared imaging and multi-object spectroscopy, e.g.
+   \begin{itemize}
+    \item Galaxy cluster redshifts, star formation rates, spectroscopy
+    \item Emission line nebulae
+    \item Circumstellar spectra
+    \item Any science of interest to APO members
+   \end{itemize}
+   \item Gamma Ray Burst afterglow spectra for redshifts, etc:
+    \begin{itemize}
+     \item within $\sim$ 5 minutes of alert with position to $<$3arcmin
+     \item supporting SWIFT and HETE2 missions
+    \end{itemize}
+   \item SN Type1A spectra across maximum
+    \begin{itemize}
+     \item supporting accelerating universe measurements
+     \item IR spectra to check for systematic effects in absolute brightness
+     \item Preparation for SNAP mission
+    \end{itemize}
+  \end{itemize} 
+\end{itemize}
+
+\section{RIVMOS Schedule}
+
+(From discussion on 2/15/01 between Ed Turner, Bruce Gillespie, Harvey
+Moseley, Alex Kutyrev, Bruce Woodgate, and subsequent engineering discussions):
+
+Funding and performance schedule drives 2 phases:
+
+\begin{itemize}
+ \item Phase 1:
+   \begin{itemize}
+    \item Demonstrate microshutter
+    \item Begin non-rapid observations, probably in campaign mode, because
+      of expense and complications of using liquid helium as a cryogen
+    \item 0.6-2.4 microns, 6 arcmin FOV for imaging, smaller for spectroscopy
+    \item Nasmyth mount
+   \end{itemize}
+ \item Phase 2:
+   \begin{itemize}
+    \item Include rapid spectroscopy
+    \item 2.4-5 microns, 6 armin FOV for imaging and spectroscopy
+    \item Mirror cell mount, including rotator and guider
+    \item Full remote user interface
+   \end{itemize}
+  
+\end{itemize}
+
+\end{document}

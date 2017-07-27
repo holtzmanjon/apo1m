@@ -1,0 +1,2 @@
+skycalc < sunset.inp | grep 12-deg | awk '{print substr($0,20,6), substr($0,35,6)}'
+

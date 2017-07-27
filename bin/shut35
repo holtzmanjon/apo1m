@@ -1,0 +1,53 @@
+#!/usr/bin/env python
+
+import socket, select
+import sys, string
+
+# Listen for UDP packets on port 19999
+#
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.bind("", 19999)
+MC_addr = socket.gethostbyname("mchost.apo.nmsu.edu")
+
+# Status packets should be coming in every 60 seconds. But since UDP
+# packets are not guaranteed to be reliable, allow one miss before considering
+# the 3.5m system software down.
+#
+import os
+
+server_status = "down"
+while 1:
+    # Wait for a packet, or get notified that we have waited too long for one.
+    #
+    input, output, exceptions = select.select([s], [], [], 65.0)
+
+    if input == []:
+        # A packet was missed.
+        #
+        if (server_status == "live"):
+            server_status = "suspect"
+        else:
+            server_status = "down"
+        print "time out -- 3.5m system is " + server_status
+
+    else:
+        # Read the packet, which should come from the MC host and
+        # contain "shutters=0" or "shutters=40"
+        #
+        data, address = s.recvfrom(1000)
+        if (address[0] != MC_addr):
+            print "ignoring packet received from somewhere strange! " + address[0]
+            continue
+            
+        keyword, value = string.split(data, "=")
+        
+        if (keyword == "shutters" and value == "0"):
+            print "The 3.5m enclosure is closed."
+        elif (keyword == "shutters" and value == "40"):
+            print "The 3.5m enclosure is open."
+        else:
+            print "========== unknown stuff! keyword=%s value=%s" % (keyword, value)
+
+        server_status = "live"
+        
+

@@ -1,0 +1,1 @@
+ssh -a -l tcomm loki.apo.nmsu.edu dorestart_ccd &

@@ -1,0 +1,9 @@
+#!/bin/csh
+foreach dir ($*)
+  echo $dir
+  set n = `find $dir -name \*.fits -size +256k | wc | awk '{print $1}'`
+  if ( $n > 0 ) then
+    bzip2 `find $dir -name \*.fits -size +256k`
+  endif
+#  zipg $dir/*.fits
+end

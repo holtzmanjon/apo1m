@@ -1,0 +1,10 @@
+*.o
+CVS
+Arc64PCI3.5_x64.tar.bz2
+ARCAPI3.0_x64_linux.tar.bz2
+ARCAPI3.0_x64src_linux.tar.bz2
+ARCAPI3.5_Examples_linux.tar.bz2
+ARCAPI3.5_src_linux.tar.bz2
+AstroPCI3.0_K26_x64.tar.bz2
+*.tgz
+#*.tar.gz

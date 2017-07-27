@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: pyds9
+Version: 1.7
+Summary: Python/DS9 connection via XPA (with numpy and pyfits support)
+Home-page: http://hea-www.harvard.edu/saord/ds9/
+Author: Bill Joye and Eric Mandel
+Author-email: saord@cfa.harvard.edu
+License: UNKNOWN
+Description: UNKNOWN
+Platform: UNKNOWN

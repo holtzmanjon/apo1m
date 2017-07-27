@@ -1,0 +1,28 @@
+#!/bin/csh
+set t = `tail -100 temp.dat | awk 'NF>1' | tail -1 temp.dat | awk '{print $1}'`
+echo t: $t
+tail -120000 temp.dat | awk 'NF>1&&$1<'$t' {print $1-'$t',$2}' >./temp.out
+sm << endsm
+  dev gif public_html/temp.gif
+  data temp.out
+  read {x 1 y 2}
+  limits (x/3600) -150 40
+  limits -200 5 -150 40
+  define xmin (\$fx2-72)
+#  define xmin (\$fx1)
+  define xmax \$fx2
+  limits \$xmin \$xmax -150 40
+  ylabel CCD temperature
+  xlabel hours from present
+  box
+  points (x/3600) y
+  relocate \$fx1 -125
+  draw \$fx2 -125
+  ctype red
+  relocate \$fx1 -110
+  draw \$fx2 -110
+  end
+endsm
+
+#xv temp.gif
+

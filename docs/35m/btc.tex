@@ -1,0 +1,209 @@
+\documentclass{article}
+
+\usepackage{html}
+
+\begin{document}
+
+\begin{Huge}
+\begin{center}
+BTC (Big Throughput Camera) at the APO 3.5m
+\end{center}
+\end{Huge}
+
+\section{Overview}
+
+  We are considering the possibility of making the Big Throughput
+Camera (BTC), built by Tony Tyson and previously available at the CTIO
+4m (e.g., see \htmladdnormallink{http://www.astro.lsa.umich.edu/btc/btc.html}
+{http://www.astro.lsa.umich.edu/btc/btc.html}), operational at the ARC 3.5m.
+
+  The motivation for this would be to increase the field-of-view for
+optical imaging at the 3.5m, which is currently limited to $\sim$
+290 arcsec on a side with SPICAM. For the long-term, we expect wide field
+imaging to be best provided by the large mosaic imager being constructed
+by Chris Stubbs et al. at the University of Washington, which will have a
+larger field-of-view than the BTC with better corrected images.  However,
+the timescale for the delivery of this complex instrument is still not
+totally clear. As a result, we consider that making the BTC available on
+the 3.5m may be worthwhile \textit{if} it can be done relatively quickly
+and a low expense, and \textit{if} there is interest among the ARC user
+community for using such an instrument.
+
+The BTC is currently not being used at any other telescope. In exchange
+for providing it for use at the 3.5m, it is likely that some telescope
+time would be provided to Tyson and/or collaborators.
+
+We solicit expressions of interest from the ARC user community, and
+in particular ask you to let us know if you would find this
+instrument useful for your scientific programs at the 3.5-m in the relatively
+near future. If we proceed to implement this, we would hope to do so by
+sometime in fall 2001.
+
+One clear issue with this and any imager on the 3.5m is the problem we
+experience with scattered light, which makes accurate quantitative photometric 
+measurements difficult. We anticipate that the demand for imaging, including
+wide field imaging, might be increased if this problem were solved. At the
+current time, we have a contract with a company that is investigating the
+problem, and we hope to have a baffling plan to implement during the summer
+shutdown; until this study and design are complete, however, we can't
+estimate whether any scattered light problem is likely to be present in
+the future.
+
+\section{General Instrument Parameters}
+
+The BTC is a 4 CCD mosaic camera, with each CCD being a thinned, backside
+illuminated 2048x2048 device with 24 micron pixels. The four CCDs are 
+\textit{not} butted against each other; there is a roughly one inch
+gap between each of the CCDs, which are roughly 2 inches square.
+See \htmladdnormallink{http://www.astro.lsa.umich.edu/btc/tech.html}
+{http://www.astro.lsa.umich.edu/btc/tech.html} for details.
+
+At the ARC 3.5m f/10 focus, the plate scale (5.87 arcsec/mm), would
+provide a field-of-view of $\sim$ 290 arcsec square on \textit{each}
+CCD, with a total field-of-view of $\sim$ 730 arcsec square, but this
+\textit{includes} the dead space between the detectors (roughly 150 arcsec),
+so multiple images would be required to image such a field contiguously.
+
+\section{Performance Issues}
+
+\subsection{Focus variations across field of view}
+
+The focal plane of the 3.5m is curved so one cannot get perfectly
+uniform focus in a flat focal plane. However, in the BTC, each CCD is
+individually adjustable in piston and tilt, so each CCD can be put 
+in the tangent plane at the center of its field-of-view. Hence, the
+focus variations across the field of each detector can be kept 
+small, comparable to that existing currently in SPICAM (which has the
+same size detector).
+
+The field curvature for a Ritchey-Chretien telescope can be derived
+(e.g., Schroeder ...). From this, we find a radius of curvature of
+1.4m for the 3.5m. The size of each CCD is 0.05m. Hence, the deviation
+of the edge of the CCD from the focal plane is about 0.22mm if the
+CCD is adjusted to be tangent to the focal plane at the center of the
+field. This corresponds to an image blur of 0.022mm, or 0.13 arcsec,
+confirming that this should not be a major contributor to image quality.
+
+%    CCDs can be individually adjusted in piston and tilt.
+%    a) Image blur from focal plane curvature:
+%       Radius of curvature, R = 1.4m
+%       CCD size is 0.05 m
+%       ==> deviation of edge of CCD from focal plane = 0.22 mm
+%	   and blur is about 0.022 mm, or 0.13 arcsec.
+
+\subsection{Off-axis astigmatism}
+
+In a Ritchey-Chretien, astigmatism increases as one moves off the optical
+axis. Again, the amplitude can be derived given the telescope parameters.
+We find that at the farthest corner of each CCD, which is roughly 530
+arcsec off-axis, we get an angular astigmatism (AAS) of 0.29 arcsec, or
+a total image blur of 0.58 arcsec. At the center of each CCD, however,
+we get AAS=0.1 arcsec, or a total image blur of 0.2 arcsec.
+
+Hence, some variation in image quality will probably be noticeable
+across the field-of-view, but it should not be terrible under normal
+conditions.
+
+Of course, one could build an astigmatism corrector to reduce this effect.
+Construction of such a corrector would probably be simplified because
+the field is not contiguous, so a separate corrector could probably
+be placed in front of each CCD, and such correctors might be relatively
+simple, correcting only for the mean of the astigmatism across the
+chip. However, initially we propose \textit{not} to build any corrector,
+especially considering the development of Chris Stubbs' large mosaic
+camera, which will have a corrector and supercede the BTC when it
+becomes available.
+
+\subsection{Waviness of the CCDs and field flatteners}
+
+Each CCD in the BTC is not perfectly flat, which would result in
+additional focus variations across the field in addition to
+those discussed above. However, field flatteners are incorporated into
+each camera already to correct for this effect, so it is not likely
+to cause a significant problem.
+
+At the current time, however, we need to confirm whether these field
+flatteners include correction for focal plane curvature of some other
+telescope. If so, then the results above would need to be modified.
+
+
+%    b) Astigmatism: (see Table 6.7 in Schroeder's Astronomical Optics)
+%       using m = 10.3/1.8 = 5.722, 
+%             beta = 0.4304, (using kappa = 0.21287)
+%             furthest corner of CCD from axis = 90 mm = 528 arcsec, 
+%             center of each CCD from axis = 54 mm = 317 arcsec,
+%       we get
+%       ==> AAS = 0.212*(theta^2) = 0.29 arcsec at the furthest corner
+%       ==> AAS =                 = 0.10 arcsec at the center of each CCD
+
+%    Questions:
+%    - are the corrector lenses in front of CCDs just for correcting
+%      wiggle of chips?
+
+\subsection{Filters}
+
+Filters for the BTC are placed inside a slide which can accomodate 4
+different filters.  Each filter is 5.8 inches and 10 mm thick. Tony has a set 
+including $B_J$,V,R,$I_{tyson}$.  The slide also has a 45 deg mirror for guider 
+camera pickoff, for what purpose we're not sure.  The slide is 2 inches thick.
+
+We need to understand the need for the mirror, and also how difficult it
+would be to change filters in the slide, to find out whether multiple
+slides exist and whether it is possible to rapidly switch between slides,
+and also investigate the cost of additional filters.
+
+\section{Mechanical Interface}       
+
+We would need to construct an adaptor to allow the BTC to be mounted
+on the 3.5m. Because of the need for a rotator and guider, we would
+mount the BTC at the Nasmyth port.
+
+The critical issue here is whether the BTC focal plane can be made 
+to coincide with the 3.5m focal plane. For this we still need the
+detailed mechanical specifications of the BTC. Qualitative description
+of these suggests that there will not be a problem, but this must
+be confirmed. 
+
+%2.  Hardware
+%    a) Adapter:
+%       Need to make detailed specs of adapter between camera and telescope;
+%       Questions:
+%       - Need to know how much space there will be in front of CCD.  Is
+%         it 2 inches, or more? 
+
+\section{Electronic interface}
+
+The camera/electronics combination mounts on the telescope.
+An optical fiber and one RS232 line connect the camera/electronics
+to the electronics rack which can be as far as 500 ft away.  A Sun
+workstation controls the camera functions, and can sit up to 100 ft
+from the rack. The camera can be fully controlled remotely by logging
+into this computer, so it does not need to be physically accessible
+to observers. Hence it should be straighforward to locate the
+electronics rack and controlling computer on the mid-level of the 3.5m.
+
+\section{Software interface}
+
+A complete user interface has been developed for the BTC by Gary
+Bernstein, which was used by observers at the CTIO 4m. More details
+can be seen at \htmladdnormallink{http://www.astro.lsa.umich.edu/btc/btc.html}
+{http://www.astro.lsa.umich.edu/btc/btc.html}, but this  should be a
+mature interface. No attempt would be made to control the BTC through
+Remark; in this respect, the BTC would be operated similarly to SPICAM,
+although the BTC interface is graphical.
+
+We would need to develop some additional software to allow the BTC
+software to communicate with the telescope to get pointing information
+at least, and possibly to allow for offsetting the telescope from within
+the BTC interface. At this point, we do not know how much work this
+would entail, but suspect that it would not be a major problem.
+
+\section{Additional information}
+
+For additional information on the BTC, see
+\htmladdnormallink{http://www.astro.lsa.umich.edu/btc/btc.html}
+       {http://www.astro.lsa.umich.edu/btc/btc.html}
+\htmladdnormallink{http://www.astro.lsa.umich.edu/btc/tech.html}
+       {http://www.astro.lsa.umich.edu/btc/tech.html}
+
+\end{document}

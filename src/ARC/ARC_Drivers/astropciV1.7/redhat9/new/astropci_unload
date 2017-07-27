@@ -1,0 +1,31 @@
+#!/bin/bash
+#This script will unload either MODULE or MODULE_G from the kernel.
+#It will delete the entrance in the /dev directory
+
+PREFIX=/dev/astropci
+DRIVER="astropci"
+DRIVER_G="astropci_g"
+
+MODULE=`cat /proc/modules | awk "\\$1==\"${DRIVER}\" {print \\$1}"` 
+MODULE_G=`cat /proc/modules | awk "\\$1==\"${DRIVER_G}\" {print \\$1}"` 
+
+if [ -z "$MODULE" ]; then
+    MODULE=$MODULE_G
+    if [ -z "$MODULE" ]; then
+    	echo "astropci_load: Module not loaded."
+    	exit 1
+    fi
+fi
+
+echo "unloading $MODULE" 
+/sbin/rmmod $MODULE $*
+
+for BOARD in 0 1 2 3; do
+  DEVICE=${PREFIX}${BOARD}
+  if [ -e $DEVICE ]; then
+      echo "deleting $DEVICE"
+      rm -f $DEVICE
+  fi
+done                                                                            
+
+exit 0

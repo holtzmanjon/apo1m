@@ -1,0 +1,203 @@
+\documentclass{article}
+
+\usepackage{epsfig}
+\usepackage{html}
+
+\begin{document}
+
+\begin{htmlonly}
+Get this entire report in \htmladdnormallink{Postscript}{../mar01.ps.gz}
+or \htmladdnormallink{PDF}{../mar01.pdf}.
+\end{htmlonly}
+
+\begin{center}
+\begin{LARGE}
+Throughput measurements on the ARC 3.5m, March 2001
+\end{LARGE}
+\end{center}
+
+\section{Summary}
+
+Throughput measurements made in March 2001 using SPICAM and DIS show that
+the throughput of the 3.5m has degraded over the past several years. DIS
+measurements suggest that the degradatation is strongly wavelength 
+dependent, with essentially no degradation in the near-IR, but a relative
+throughput today of $\sim$ 0.75 at 5000 \AA, $\sim$ 0.67 at 4000 \AA,
+and 0.5 at 3800\AA\  compared to values just after the last realuminization.
+SPICAM measurements are not as good, but show a clear degradation since
+1997, with a relative throughput today of $\sim$ 0.7 in the V band; there
+is too much discrepancy in available historic data to determine whether
+there is a wavelength dependence as seen in the DIS data.
+
+The gain in the DIS red channel appears to have changed from a previously
+measured value.
+
+\section{Introduction}
+
+Observations were made on the night of 6/7 March 2001 to attempt to measure
+the absolute throughput of the 3.5m+DIS combination and to look for relative
+changes in the system throughput over the past several
+years. Observations were made both with SPICAM (photometric
+standard fields) and with DIS (spectrophotometric standards,
+slitless). Previous measurements have been made with DIS before
+and after the last realuminization (\htmladdnormallink{old
+report in Postscript}{http://www.astro.princeton.edu/APO/970203.ps})
+and some SPICAM photometric zeropoints from 1997 were
+posted on a \htmladdnormallink{Web page of Gene Magnier}
+{http://www.apo.nmsu.edu/Instruments/APOzeropts.html}; these were the
+data used for differential comparison.
+
+The weather appeared to be photometric over the course of the observations
+described here. The seeing was also good.
+
+\section{DIS}
+
+Measurements were made of 4 spectrophotometric standards from the list
+of Massey et al. Measurements were made both with the 1.5'' slit as well
+as slitless; only the latter are described here. For the slitless
+measurements, no flat fielding was done.  All stars were placed at
+roughly the same location along the slit (had the slit been in place),
+so flat fielding corrections would be very minor.  Note that the slitless
+measurements have significant background which includes contributions
+from all wavelengths.
+
+System throughput was measured by comparing the observations to the
+published absolute fluxes. In order to do this comparison, the gain and
+the dispersion must be known. Gain was measured from a pair of flat fields,
+giving approximate gains of 0.99 and 1.44 e/DN in the blue and red channels,
+respectively. \textit{Note that the red gain of 1.44 e/DN represents a change
+over previously measured values. It appears that the gain on the red side
+may oscillate between two values, roughly 1.44 and 1.98 e/DN; the cause
+of such behavior is unknown!} The dispersion was measured from the
+wavelength solution performed using HeNeAr observations.
+
+The measured throughput is shown in Figure \ref{fig:t}, and can be compared
+with the throughput measured before and after the last realuminization in
+Figure \ref{fig:oldt}; both figures are plotted on approximately the same
+scale.  Unfortunately, I don't have the older data in tabular form to make
+a direct numerical comparison plot. 
+
+It is clear that the throughput is lower than just after the last 
+realuminization, but it is not as low as it was before the last aluminization.
+Comparing with the curve taken after the last realuminization, it appears that
+the throughput degradation becomes more severe as one goes to shorter
+wavelengths; it appears that one might get $\sim$ a 50\% improvement in 
+throughput at 4000 \AA, 33\% improvement at 5000 \AA,  20\% improvement at 
+7000 \AA, and very little change at 9000\AA.
+
+\begin{latexonly}
+\newpage
+\begin{figure}[h]
+\epsfxsize=3.5in
+\epsfbox{t.eps}
+\label{fig:t}
+\end{figure}
+\end{latexonly}
+\begin{htmlonly}
+\begin{center}
+\htmladdimg[width=400]{../t.jpg}
+\end{center}
+\end{htmlonly}
+
+\begin{latexonly}
+\begin{figure}[h]
+\epsfxsize=3.5in
+\epsfbox{oldt.eps}
+\label{fig:oldt}
+\end{figure}
+\end{latexonly}
+\begin{htmlonly}
+\begin{center}
+\htmladdimg[width=400]{../oldt.jpg}
+\end{center}
+
+\end{htmlonly}
+
+\section{SPICAM}
+
+Observations were made of four photometric standard fields from the list
+of Landolt (1993). Each field contained 4-8 different standard stars of
+a range of colors. The four fields were taken at different airmasses to
+allow the measurement of atmospheric extinction.
+
+Flat fielding was done using twilight flats. In general, the quality of
+the flat fielding was poor, probably because of the known scattered light
+problems of the telescope; these were particularly severe given that the
+observations were taken with very significant moonlight. Photometry was
+done using aperture photometry using an aperture radius of 5 arcsec with
+sky measured in an annulus between 10 and 15 arcsec radii. 
+
+Photometric zeropoints were derived, using the expression:
+$$ M = -2.5\log (DN/s) + k X + t \textrm{color} + Z $$
+where $M$ is the standard magnitude, $k$ the extinction coefficient, 
+$X$ the airmass, $t$ the transformation coefficient, and $Z$ the zeropoint;
+note that the zeropoints are defined relative to measured DN, not electrons.
+
+In fact, the gain was measured from some ``dome'' flats to be 3.35+/-0.05
+e/DN, identical to the 3.37 claimed on the APO SPICAM Web page, so there
+is no evidence for any variation in gain, and these numbers can be directly 
+compared with previously determined DN zeropoints.
+
+The following zeropoints were derived:
+
+\begin{tabular}{llllll}
+Filter&k&t&Z&color&$\sigma$\\
+U & -0.649 &  0.187  & 21.816 & (U-B)   &  0.094 \\
+B & -0.252 &  0.037  & 23.954 & (B-V)   &  0.032 \\
+V & -0.144 &  0.045  & 24.525 & (B-V)   &  0.019 \\
+R & -0.060 &  0.007  & 24.551 & (V-R)   &  0.043 \\
+I & -0.152 &  -0.221 & 24.441 & (V-I)   &  0.138
+\end{tabular}
+
+Note the relatively substantial scatter ($\sigma$), arising most likely
+from the poor flat fielding and scattered light problems. As a result, the
+accuracy of the derived zeropoints is not spectacular, with possible errors
+of 0.1 mag possible in some filters; still the measurements are useful to 
+look for large changes in throughput.
+
+These numbers can be compared with some results from 1997 by Ted Wyder
+(fall 1997) and Dan Zucker (10/19/97) from Gene Magnier's Web page;
+the claimed accuracies are about 3\% (but note the two sets don't always
+agree to this level, notably U and I!). Some confusion arises about the
+form of the transformation used; at the top of the page, Gene gives a
+transformation formula where the airmass correction is referenced to
+an airmass of one instead of zero as above (i.e. $M=-2.5\log (DN/s) + k
+(X-1) + t \textrm{color} + Z$).  However, inspection of Ted Wyder's plot
+suggests that the definition used above, and \textbf{not} the definition
+on the Web page, were actually used, and Dan's numbers appear roughly
+consistent with Ted's.
+
+\begin{tabular}{llll}
+Filter&Z(2001)&Z(1997A)&Z(1997B)\\
+U & 21.816 & 22.10 & 22.30 \\
+B & 23.954 & 24.43 & 24.39 \\
+V & 24.525 & 24.91 & 24.88 \\
+R & 24.551 & - & - \\
+I & 24.441 & 24.53 & 24.84 \\
+\end{tabular}
+
+These numbers clearly show throughput degradation, although the exact amount
+is hard to determine given the (apparently) poor flat-fielding/photometry.
+The following shows the throughput degradation (in magnitudes) relative to
+the two previous data sets.
+
+\begin{tabular}{lll}
+Filter&$\Delta$ Z&$\Delta$ Z\\
+U&-0.28&-0.48\\
+B&-0.48&-0.44\\
+V&-0.39&-0.36\\
+R&-&-\\
+I&-0.09&-0.40\\
+\end{tabular}
+
+A degration of 0.4 mag corresponds to 70\% relative throughput in 2001 
+relative to 1997.
+
+There is a possibility that the throughput degradation is worse at smaller 
+wavelengths, depending on which of the 1997 measurements at U and I are
+more accurate.  Better measurements or analysis of both current and past
+data would be required to know this for sure.
+
+
+
+\end{document}

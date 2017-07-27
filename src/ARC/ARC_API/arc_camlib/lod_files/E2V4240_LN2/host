@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#DOWNLOAD=ONCE for downloading the file pci.lod from the Motorola OnCE debugger
+#DOWNLOAD=ROM for generating a ROM for installation on the PCI board
+#DOWNLOAD=HOST for downloading the file pci.lod via the host computer
+
+DOWNLOAD=HOST
+
+/opt/asm56300/asm56300 -b -lpciboot.ls -d DOWNLOAD $DOWNLOAD pciboot.asm
+/opt/asm56300/dsplnk -bpci.cld -v pciboot.cln
+rm pci.lod
+/opt/asm56300/cldlod pci.cld > pci.lod
+rm pci.cld ; rm pciboot.cln 
+
+exit 0

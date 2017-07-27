@@ -1,0 +1,23 @@
+14:46:06 **** Build of configuration Release_x64 for project ArcDeviceJAPI ****
+make all 
+Building file: ../src/ArcDeviceJAPI.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/streit/Documents/ARC_API/3.5/CArcDevice/src -I/home/streit/Documents/ARC_API/3.5/JavaJDK/x64/include -I/home/streit/Documents/ARC_API/3.5/JavaJDK/x64/include/linux -O3 -Wall -c -fmessage-length=0  -std=c++11 -fPIC -MMD -MP -MF"src/ArcDeviceJAPI.d" -MT"src/ArcDeviceJAPI.d" -o"src/ArcDeviceJAPI.o" "../src/ArcDeviceJAPI.cpp"
+Finished building: ../src/ArcDeviceJAPI.cpp
+ 
+Building file: ../src/DllMain.cpp
+Invoking: GCC C++ Compiler
+g++ -I/home/streit/Documents/ARC_API/3.5/CArcDevice/src -I/home/streit/Documents/ARC_API/3.5/JavaJDK/x64/include -I/home/streit/Documents/ARC_API/3.5/JavaJDK/x64/include/linux -O3 -Wall -c -fmessage-length=0  -std=c++11 -fPIC -MMD -MP -MF"src/DllMain.d" -MT"src/DllMain.d" -o"src/DllMain.o" "../src/DllMain.cpp"
+Finished building: ../src/DllMain.cpp
+ 
+Building target: libArcDeviceJAPI.so
+Invoking: GCC C++ Linker
+g++ -L/home/streit/Documents/ARC_API/3.5/CArcDevice/Release_x64 -shared -o "libArcDeviceJAPI.so"  ./src/ArcDeviceJAPI.o ./src/DllMain.o   -lCArcDevice
+Finished building target: libArcDeviceJAPI.so
+ 
+make --no-print-directory post-build
+cp /home/streit/Documents/ARC_API/3.5/ArcDeviceJAPI/Release_x64/libArcDeviceJAPI.so /home/streit/Documents/ARC_API/3.5/Release/x64
+ 
+
+14:46:07 Build Finished (took 1s.262ms)
+

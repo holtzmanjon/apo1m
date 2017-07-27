@@ -1,0 +1,2 @@
+skycalc < airmass.inp | grep sec.z | awk '{print substr($0,25,8)}'
+

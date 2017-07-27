@@ -1,0 +1,4 @@
+#!/bin/csh -f 
+tcomm_xterm -fn 6x10 -sb -sl 1000 -geometry 80x10-25+620 -T "Telescope Control" -e \
+ sockport &
+

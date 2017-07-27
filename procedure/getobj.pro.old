@@ -1,0 +1,269 @@
+parameter uttest
+
+error goto definp
+open objinp ./{root}.inp
+goto readobj
+
+definp:
+open objinp ./default.inp
+
+readobj:
+eof goto noobj
+
+error goto noobj
+
+! Read header lines
+string line '{objinp}'
+string line '{objinp}'
+string line '{objinp}'
+string line '{objinp}'
+string line '{objinp}'
+
+iobj2=0
+nobj=0 nobj2=0
+nextobj:
+if iobj2>0&iobj2<nobj2
+  string line '{objinp2}'
+  iobj2=iobj2+1
+else
+  string line '{objinp}'
+  strcmp '{objinp.-1}' '+'
+  if strcmpok==1
+    iobjinp2=0
+    error goto nextobj
+    open objinp2 ./{objinp.-2}
+    stat nobj2=count[objinp2]
+    ! Header line
+    string line '{objinp2}'
+    nobj2=nobj2-1
+    string line '{objinp2}'
+    iobj2=iobj2+1
+  end_if
+end_if
+!printf 'LINE: {line}'
+error goto nextobj
+string name {line.1}
+strcmp {name} '#'
+if strcmpok==1
+  goto nextobj
+end_if
+nobj=nobj+1
+
+!xlow=@objinp.5
+!xhigh=@objinp.6
+!tlow=@objinp.7
+!thigh=@objinp.8
+!halow=@objinp.9
+!hahigh=@objinp.10
+!maxphase=@objinp.11
+!mindist=@objinp.12
+!nvisits=@objinp.13
+!dtvisit=@objinp.14
+!dofoc=@objinp.15
+!delfoc=@objinp.16
+!guide=@objinp.17
+!gloc=@objinp.18
+!nskip=@objinp.19
+!npar=19
+!do ifilt=1,nfilt
+!  string var 'objinp.%i2.2' npar+ifilt
+!  string t 'exp%i2.2' ifilt
+!  {t}=@{var}
+!end_do
+!string var 'objinp.%i2.2' npar+nfilt+1
+!nexp=@{var}
+!string var 'objinp.%i2.2' npar+nfilt+2
+!nset=@{var}
+!nobj=nobj+1
+
+! Have we done all the requested visits yet?
+nvisits={line.13}
+string var 'ndone%i3.3' nobj
+if {var}==nvisits
+  printf 'Object: %i3 ({name}) already done requested visits' nobj
+  goto nextobj
+end_if
+
+! Get current time
+call time uttest 0 1
+utnow=uttim
+
+! Has it been long enough since the last visit?
+string var 'ndone%i3.3' nobj
+if {var}>0
+  dtvisit={line.14}
+  string var 't%i3.3' nobj
+  if (uttim-{var}<dtvisit)
+    printf 'Object: %i3.3 ({name}) has been observed too recently to repeat (%f4.1)' |
+       nobj uttim-{var}
+    goto nextobj
+  end_if
+end_if
+
+! Is date acceptable?
+year={line.7}
+if (utyear<year|utyear>year)
+  printf 'Object: %i3 ({name}) out of UT year range' nobj
+  goto nextobj
+end_if
+mlow={line.8} mhigh={line.10}
+if (utmonth<mlow|utmonth>mhigh)
+  printf 'Object: %i3 ({name}) out of UT month range' nobj
+  goto nextobj
+end_if
+dlow={line.9} dhigh={line.11}
+if (utday<dlow|utday>dhigh)
+  printf 'Object: %i3 ({name}) out of UT day range' nobj
+  goto nextobj
+end_if
+
+! Is local time acceptable?
+tlow={line.12}
+thigh={line.13}
+if (uttim<tlow)|(uttim>thigh)
+  printf 'Object: %i3 ({name}) out of localtime range' nobj
+  goto nextobj
+end_if
+
+! Is airmass acceptable?
+printf '{line.1}	{line.2}	{line.3}	{line.4}' >./tmp.apo
+call airmass ./tmp.apo 1 uttest 1
+xlow={line.5}
+xhigh={line.6}
+if (airmass<xlow)|(airmass>xhigh)
+  printf 'Object: %i3 ({name}) out of airmass range (%f5.2) ' nobj airmass
+  goto nextobj
+end_if
+
+! Is moon acceptable?
+maxphase={line.16}
+mindist={line.17}
+if (phase>maxphase)&(dmoon<mindist)
+  printf 'Object: %i3 ({name}) too near to moon (phase: %f5.2  dmoon: %f5.2) ' nobj phase dmoon
+  goto nextobj
+end_if
+
+! Is hour angle acceptable for first observation?
+string var 'ndone%i3.3' nobj
+if {var}==0
+  string rra {line.2}
+  getcoord {rra}
+  rah=hh+mm/60+ss/3600
+  string ddec {line.3}
+  getcoord {ddec}
+  decd=sg*(abs[hh]+mm/60+ss/3600)
+  epoch0={line.4}
+  if epoch0>0
+    precess ra=rah dec=decd epoch0=epoch0 epoch=2005.
+    hha=lst-raf
+  else
+    hha=lst-rah
+  end_if
+  if hha>12
+    hha=hha-24
+  end_if
+  if hha<-12
+    hha=hha+24
+  end_if
+  halow={line.14}
+  hahigh={line.15}
+  if (hha<halow)|(hha>hahigh)
+    printf 'Object: %i3 ({name}) out of hour angle range (%f4.1) ' nobj hha
+    goto nextobj
+  end_if
+end_if
+
+! We have an acceptable object!
+printf 'OBSERVE: {name}'
+! Get focus and exposure information
+dofoc={line.20}
+delfoc={line.21}
+guide={line.22}
+gloc={line.23}
+nskip={line.24}
+npar=24
+do ifilt=1,nfilt
+  string var 'line.%i2.2' npar+ifilt
+  string t 'exp%i2.2' ifilt
+  {t}={{var}}
+end_do
+string var 'line.%i2.2' npar+nfilt+1
+nexp={{var}}
+string var 'line.%i2.2' npar+nfilt+2
+nset={{var}}
+
+! Get a guide star file
+epoch={line.4}
+if epoch<24
+  call getephem {name} epoch
+  goto newusno
+else
+  string ras {line.2}
+  string decs {line.3}
+  string epochs '{line.4}'
+end_if
+error goto newusno
+open usno ./{name}.usno
+close usno
+goto newobj
+
+newusno:
+$square {ras} {decs} 0.813333 {epochs} | head -4 >./{name}.usno
+$square {ras} {decs} 0.813333 {epochs} | tail +6 | sort -n +6 >>./{name}.usno
+
+newobj:
+if nobj==curobj
+  acquire=0
+else_if dofoc<0
+  acquire=-1
+else
+  acquire=1
+end_if
+string var 't%i3.3' nobj
+{var}=utnow
+
+if uttest>0
+  objerr=0
+  if acquire==0
+    testim=60
+  else
+    testim=600
+  end_if
+  do ifilt=1,nfilt
+    string var 'exp%i2.2' ifilt
+    testim=testim+nset*(5+nexp*({var}+10))
+  end_do
+else
+  ! Make the observation!!
+  call writesum 3 'OBSERVE: {name}'
+
+! Do we have a custom procedure to run?
+  if nexp<0
+    string var 'line.%i2.2' npar+nfilt+3
+    string proc '{{var}}'
+    call {proc}
+    objerr=0
+  else_if nexp>0
+    string var 'ndone%i3.3' nobj
+    guidemon=nobj*1000000+{var}*10000
+    call newobject {name} guide acquire gloc nskip guidemon
+  end_if
+end_if
+
+if objerr==0
+  curobj=nobj
+  string var 'ndone%i3.3' nobj
+  {var}={var}+1
+else
+  curobj=0
+end_if
+
+close objinp
+goto doneobj
+
+noobj:
+nobj=-1
+printf 'No acceptable object found'
+
+doneobj:
+end

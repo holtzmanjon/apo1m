@@ -1,0 +1,153 @@
+\documentclass{article}
+
+
+\textwidth 6.5in
+\hoffset -1in
+\textheight 9.5in
+
+\textheight 7.5in
+\hoffset -0.5in
+\voffset -1in
+\textwidth 9.5in
+
+\begin{document}
+
+\setcounter{section}{1}
+\setcounter{subsection}{0}
+\begin{center}
+\textbf{\large APO STAFF INFORMATION  :  NMSU 1M TELESCOPE}
+\end{center}
+\vskip 0.25in
+
+NMSU operates a robotic 1m telescope at Apache Point Observatory.
+Since the telescope is run robotically, APO staff are an 
+invaluable resource for noticing any problematic behavior
+that may affect the health and safety of the telescope and
+on-site personnel. 
+
+NMSU pays an annual fee to cover basic services at APO, and
+we reimburse various technical staff members on a per-hour
+basis when they work on the telescope.
+
+NMSU understands that APO observers/staff have no formal obligation
+regarding the NMSU 1m and that all 3.5m or 2.5m functions take
+precedence over any 1m function.
+
+Nonetheless, NMSU would strongly appreciate if APO staff would
+be alert to any possible issues with the telescope, and wants
+to make sure that all APO staff have access to contact information,
+as well as some very basic operational items.
+
+\subsection{Things to be alert for}
+
+We would appreciate if observers/staff note any peculiar
+behavior or items that might affect the health of the telescope. 
+In particular, it would be great if people could be alert for:
+\begin{itemize}
+\item dome open after 3.5m dome is closed (by more than several minutes)
+\item any especially loud noises from the telescope
+\end{itemize}
+
+In particular, we want to avoid:
+
+\begin{itemize}
+\item sunlight on the mirror, which could potentially be a fire
+hazard
+\item damage to telescope mirrors
+\item damage to telescope drive surfaces
+\end{itemize}
+
+\subsection{What to do}
+
+If something out of the ordinary is noted, but there is no obvious
+immediate threat to site or telescope, attempt to contact (in prioritized
+order):
+\begin{enumerate}
+\item Jon Holtzman, holtz@nmsu.edu, 575-646-8181 (work), 
+575-522-5065 (home), 575-621-7380 (cell)
+\item Tom Harrison, tharriso@nmsu.edu, 505-646-3628 (office) , 505-526-2990 (home)
+\item Jeff Coughlin, jlcough@nmsu.edu, (404) 617-6819 (cell)
+\item Mark Klaene
+
+\end{enumerate}
+
+If something threatens telescope or personnel safety, take action first, but
+please contact above after action has been taken.
+
+\subsubsection{Dome is open}
+
+\begin{itemize}
+  \item Keep sun off of mirror: close dome shutter(s) or if it doesn't close, 
+rotate away from sun (see operational instructions belwo)
+  \item Keep rain/weather off of telescope: close dome with motors. If that
+fails, close with crank. If that fails, cover telescope with tarp (one can
+be found in the bottom drawer of the toolchest in the 1m dome).
+\end{itemize}
+
+\subsubsection{Very loud noise from telescope drive}
+
+\begin{itemize}
+  \item Kill telescope power using emergency power off switch on pier inside
+door.
+\end{itemize}
+
+\subsubsection{Lights are on}
+
+Lights controlled by the power switches inside the door (outside light, and
+two sets of wall mounted lights) should NEVER be on, unless being used by
+people on site. There are two toggle switches, and one dimmer knob; please
+turn them off completely.
+
+There are two clamp lights that are remotely powered for use with remote
+webcam viewing. They are turned on during telescope initialization
+and if someone is trying to diagnose a problem. These lights can be
+turned off by computer control from newton using the command: power1m
+off lights. Ideally, contact Jon Holtzman before doing this, in case
+something important is being looked at.
+
+\subsubsection{Louvers are open}
+
+Louvers can be closed by computer control from newton, using the command:
+power1m off louvers. If big dome fan is running, this should be turned off
+before louvers are closed: power1m off domefan.
+
+\subsection{Basic operation}
+
+\subsubsection{Emergency power off}
+
+There is a red button on the telescope pier immediate in front of the
+door. If this is hit, all power to telescope motors will be killed. This
+will also trigger a watchdog circuit that will attempt to close the upper
+dome shutter (the lower dome shutter has no watchdog). If the emergency
+power switch is hit, please notify Jon Holtzman.
+
+\subsubsection{Dome control}
+
+There is a control box for the dome rotation and upper dome shutter
+inside on the N wall (to the left when you walk in).  Normally, the
+upper switch should be in "Automatic" mode, but manual operation can be
+achieved by putting it in "Manual" mode. Once in manual mode, the lower
+switches can be used to control dome rotation, and to raise/lower the
+upper dome shutter. In general, please return switch to "Automatic" mode.
+
+We have had some problems with fuses blowing in the upper dome circuit. 
+In the bottom of the control box, the left fuse is for the dome rotation;
+this is a spare next to it. In the right side, the fuse has been replaced
+by a circuit breaker; if the white button has popped out of the bottom of the
+box, the circuit breaker has been tripped, and pushing it in will reset it.
+If manual operation fails, the circuit breaker and fuse can be inspected and 
+reset/replaced if necessary.
+
+If the dome cannot be closed by motor control, it can usually be closed with
+the hand crank that is located in the dome. The hook goes around the small
+eyeloop at the top of the dome, and then the crank can be rotated to close
+the shutter. 
+
+The control box for the lower dome shutter is on the S wall (to the right
+when you walk again). There is a toggle switch for manual operation. To
+raise or lower the dome in manual mode, select raise/lower, then apply
+the power switch. The lower shutter opens and closes slowly. Note that
+the lower dome shutter cannot close fully if the upper dome shutter is
+closed; for complete closing, the lower dome shutter must be closed first.
+
+\end{document}

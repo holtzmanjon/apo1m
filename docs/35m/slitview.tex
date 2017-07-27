@@ -1,0 +1,477 @@
+\documentclass[10pt]{article}
+
+\usepackage{makeidx}
+\usepackage{epsf}
+\usepackage{html}
+
+\includeonly{%
+chap1,%
+chap2,%
+chap3,%
+chap4,%
+chap5,%
+chap6,%
+chap7,%
+chap8,%
+chap9,%
+refs,%
+index,%
+}
+
+\makeindex
+\renewcommand{\[}{\begin{eqnarray}}
+\renewcommand{\]}{\end{eqnarray}}
+
+\renewcommand{\tilde}{\~\space}
+
+\renewcommand{\floatpagefraction}{0}
+\setcounter{topnumber}{1}
+\setcounter{totalnumber}{1}
+
+\newenvironment{hanging}{
+        \begin{list}{}{
+                \labelsep=0pt
+                \labelwidth=0pt
+                \listparindent=0pt
+                \itemindent=-\leftmargini
+                \leftmargin=\leftmargini
+        }
+}{
+        \end{list}
+}
+\newenvironment{references}{
+        \begin{hanging}\raggedright
+}{
+        \end{hanging}
+}
+\newenvironment{url}{
+        \begin{list}{}{
+                \labelsep=0pt
+                \labelwidth=0pt
+                \listparindent=0pt
+                \leftmargin=\leftmargini
+        }\item\tt
+}{
+        \end{list}
+}
+\newenvironment{code}{
+        \begin{list}{}{
+                \labelsep=0pt
+                \labelwidth=0pt
+                \listparindent=0pt
+                \leftmargin=\leftmargini
+        }\item\tt
+}{
+        \end{list}
+}
+\newenvironment{example}{
+        \begin{list}{}{
+                \labelsep=0.25in
+                \labelwidth=2.0in
+                \leftmargin=2.75in
+                \itemindent=0in
+                \itemsep=0in
+                \parsep=0in
+        }
+}{
+        \end{list}
+}
+
+\newcommand{\note}[1]{\marginpar{\raggedright\scriptsize{#1}}}
+
+\makeindex
+
+\title{\Huge\bf DIS Slitviewer User's Manual}
+\author{\Large
+Jon Holtzman
+}
+\date{\Large November 2000}
+
+\begin{document}
+
+\setcounter{page}{1}
+\pagenumbering{roman}
+
+%\maketitle
+
+\begin{center}
+\textbf{DIS Slitviewer User's Manual}
+\end{center}
+\begin{center}
+Jon Holtzman, NMSU, 11/2000
+\end{center}
+
+\begin{htmlonly}
+Complete document in a single file 
+(\htmladdnormallink{PostScript}{../slitview.ps.gz})
+(\htmladdnormallink{PDF}{../slitview.pdf})
+\end{htmlonly}
+
+
+%\tableofcontents
+%\listoffigures
+%\listoftables
+
+%\clearpage
+
+\setcounter{page}{1}
+\pagenumbering{arabic}
+
+\section{Introduction}
+
+This manual describes how to operate the Apogee camera which is used as
+the slit viewing camera in DIS. This camera is operated by a separate
+program outside the normal Remark interface. For instructions on using
+DIS itself, see other documentation.
+
+The Apogee slit viewing camera is made by Apogee Instruments and uses
+an 512x512 thinned, back-side illuminated SITe CCD for imaging the
+DIS slit. The 24$\mu$ pixels give an angular pixel size of $\sim$ 0.31
+arcsec/pixel, with a total square field of view of $\sim$ 150 arcsec on
+a side.
+
+The reasons for switching from the old SBIG slit viewer to the new system are:
+\begin{enumerate}
+  \item The new camera has significanly less overhead for readout time and
+        image transfer time
+  \item Software for the new system should allow in most cases for remote
+        operation, which will hopefully lead to better efficiency
+  \item The new camera should have better sensitivity than the old one
+\end{enumerate}
+
+
+\section{Requirements and capabilities}
+
+To run the software and be able to see the images, you must be:
+\begin{enumerate}
+  \item working on a workstation running an X11 window server,
+  \item the X11 server must be running in 8-bit PseudoColor mode.
+\end{enumerate}
+
+The software will allow you to take images, with optional automatic dark
+subtraction, and will display these on your screen. You will be able to
+interact with the images to get pixel coordinates, values, etc., and 
+adjust the color map both by adjusting the color map or by redisplaying
+with different contrast/brightness. Simple image centroiding is possible
+which will suggest instrument offsets needed to place the object in
+the slit.  Images will be saved by default in /export/images/dis-slit,
+although the auto-saving may be turned off.  If desired, the images
+can be automatically copies to your local machine using the secure scp,
+if you set up an account which allows remote access without a password
+(instructions later).
+
+\section{Running/restarting the program}
+
+To start the program, you must first log onto tycho.apo.nmsu.edu using
+the visitor1 account (check with APO staff if you don't know the password).
+Once logged into tycho, execute:
+$$slitview$$
+to start the program. In reality, this will actually be running a program
+on another computer (offset.apo.nmsu.edu) to which the CCD is physically
+connected, but this is all transparent to you. A separate xterm window
+should appear on your screen with a status section in the top half, and
+a command section in the lower half. At the current time, you should not
+resize this window. Once you take your first exposure, a display window
+will appear with the image.
+
+Hopefully this won't ever happen, but if the program appears to be totally 
+hung up, you should be able to kill it using a CTRL-$\backslash$. Then 
+restart it as above.
+
+If you wish to interrupt an exposure (e.g., you entered an exposure time
+which is much too long), you should be able to do so using CTRL-C. This
+should stop the current exposure and return you to the command prompt.
+
+\section{Commands}
+
+All commands are \textbf{case insensitive}.
+The following commands are available:
+\begin{hanging}
+\item{EXP [$time$]}
+
+Take an exposure of length $time$ seconds.
+
+\item{REPEAT}
+
+Put program in never-ending loop of taking exposures of the last specified
+exposure time. Useful for guiding.
+
+\item{STOP}
+
+Stops the never-ending loop. CTRL-C serves the same purpose. The CTRL-C 
+stop is immediate, while the STOP command will wait for the current exposure
+to terminate.
+
+\item{WINDOW [\textit{x1 x2 y1 y2}]}
+
+Sets up a window region on the CCD to read out. If no arguments are
+specified, you will be prompted to mark the desired corners of the
+box on the display window. Move the cursor to the desired corners
+and hit \textit{any} key (although hitting reserved keys which also
+perform other functions (see below) may produce confusing results).
+Otherwise, if parameters are specified on the command line, the 
+window will be set to region (x1:x2,y1:y2).  When a
+subregion is read out, the overhead time for an exposure is shorter than
+for a full image. To restore to full-frame operation, use FULL command,
+or WINDOW FULL.
+
+\item{FULL}
+
+Restores full-frame operation if a WINDOW command has previously been
+issued.
+
+\item {Offset commands}
+
+You can get the program to print out instrument offsets from the cursor position
+or from a centroided position around the cursor by moving the cursor into
+the image display and using the C (centroid) or I (integer pixel) keys;
+see next section on image display window. Note that the program does NOT
+communicate at this time with the telescope, so it outputs instrument offsets
+\textit{which you will need to tell the telescope to make}.
+
+\item{NEWCENT xc yc}
+
+Changes the defined slit center to (xc,yc). Suggested offsets will be to
+this position. The currently defined slit center in shown in the status
+section in the upper part of the screen.
+
+\item{FILENAME [$name$]}
+
+Change the default root file name to $name$. Default file name will be of
+form \textit{yyyymmdd} where \textit{yyyy}, \textit{mm}, \textit{dd} will be
+the UT date when the software is started. The filename extension will be
+.nnn.fits, where nnn will be an automatically incrementing number thats
+initial value will be the first number for which no file exists when the
+program is started. The filename for the next exposure is shown in the
+status section in the upper part of the screen.
+
+\item{NEWEXT [$ext$]}
+
+Change the extension for the next file to be the number $ext$. If a filename
+with the new extension already exists, \textit{it will be written over}
+by the next exposure.
+
+\item{+DARK/-DARK}
+
+Turn on/off automatic dark subtraction for images. If automatic dark
+subtraction is on, then a dark exposure will be taken before the light
+exposure whenever the exposure time is changed. If subsequent exposures
+are taken with the same exposure time, the original dark frame is 
+re-used.
+
+\item{FITS}
+
+Set filetype for future image stores to be FITS. Actually, this is the
+only allowed filetype, so effectively, this command just turns on the
+automatic storage of images (in /export/images/dis-slit). This is ON
+by default.
+
+\item{-DISK}
+
+Turn off autosaving of images. Turn this back on using FITS.
+
+\item{+DISPLAY/-DISPLAY}
+
+Turn on/off autodisplay of images after they are taken. On by default.
+
+\item{+XFER/-XFER}
+
+Turn on/off auto-transfer of images to your home institution after they are 
+taken.  Before turning on +XFER, you must set up a host and account to
+use with the ???? command. Off by default.
+
+\item{SCALE $low\ high$}
+
+Redisplay the current image with greyscale scaling between $low$ and $high$.
+You can also adjust the current colormap by playing with the colorbar in
+the image display window - see next section.
+
+\item{NEWSCALE}
+
+Sets mode for autoscaling to be based on mean and variance within image.
+This is the default.
+
+\item{SKYSCALE}
+
+Sets mode for autoscaling to have black level somewhat below mean level in
+image, and white level above it. 
+
+\item{FULLSCALE}
+
+Sets mode for autoscaling of images to be from minimum pixel (black) to
+maximum pixel (white).
+
+\item{SAMESCALE}
+
+Sets scaling for future pixels to be identical to the current scale.
+
+\item{SETTEMP \textit{temp}}
+
+Changes the target temperature for the thermoelectric coolers. One must
+be a bit cautious not to set this too low or it will cause undue stress
+on the coolers. The coolers can probably reach 50 C below ambient. The
+default temperature is -30 C. It takes some time before a new temperature
+is reached after changing the set point.
+
+\item{QU}
+
+Exits the program.
+
+\end{hanging}
+
+\section{Image display window}
+
+The first time an image is taken, the program opens an Image Display
+window on the console, and loads a color map as well as displaying the
+image.  Once an image has been displayed, the Display window will accept
+interaction asynchronously of commands in the command window,
+provided that a wait for input, or any other I/O is not pending.  To
+interact with the image, simply move the mouse onto the display window.
+The current pixel location of the cursor will be displayed in a frame at
+the base of the image display along with the pixel intensity.  The arrow
+keys are used for find control (one pixel at a time) of the cursor
+position.
+
+\textit{Important. If the image display window fails to open after the
+first image, it may be  because of a problem with the program interacting
+with your X11 server. Make sure your X11 server is running in 8-bit 
+PseudoColor mode; this is the mode which is required, e.g., for IRAF/XIMTOOL.
+If insufficient colors are available in the default colormap, the program
+will allocate a private colormap to proceed, in which case you may see
+the colors on your display switch as you move the cursor into and out of
+the display window. If you are using a private colormap, you will need to
+move the cursor into the display window to see the images ``normally''. }
+
+By default, the image window comes up as a moderately small window which
+shows a view of the image at 1/2 resolution. With mouse keys (described
+below) you can zoom into any region at full resolution. Alternatively,
+you can resize the window to a larger size and the program will automatically
+display images at full resolution if your resized window is large enough.
+This can be done at any time and does not require re-starting the program.
+
+The image will come up with (1,1) in the lower left corner. With this
+convention, the image appears in the same orientation as it does on the
+sky. If the instrument is at 0 position angle, then N will be up and E to
+the left; obviously, if the instrument is rotated, this will no longer be
+true.
+
+The following mouse buttons and keyboard keys are active \textit{while the mouse
+is located on the image display}:
+
+\begin{center}
+{\bf Mouse Buttons}\\
+\begin{tabular}{ll}
+\hline
+Button & Function\\
+\hline
+LEFT  &ZOOM IN, centered on the cursor\\
+MIDDLE&ZOOM OUT, centered on the cursor\\
+RIGHT &PAN, move the pixel under the cursor to the center\\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+{\bf Keyboard Commands} (mouse in display window, commands are insensitive
+to case)\\
+\begin{tabular}{cl}
+\hline
+Key & Function\\
+\hline
+ R &RESTORE image to the original zoom/pan\\
+ C &CENTROID around cursor position, and print out instrument offset required
+    to put object at currently defined slit center\\
+ I &print out instrument offset required to put cursor position at currently
+    defined slit center\\
+ +/= &BLINK Forwards through the last 4 images.\\
+ -/\_ &BLINK Backwards through the last 4 images.\\
+ P &Find the PEAK pixel near the cursor \& jump the cursor there\\
+ V &Find the LOWEST pixel ("Valley") near the cursor \& jump the cursor there\\
+ \# &"Power Zoom" zoom at the cursor to the maximum zoom factor\\
+ H &Toggle between small and full-screen cross-hairs\\
+ ] &Clear boxes and stuff off the image display\\
+\hline
+\end{tabular}
+\end{center}
+\noindent{\bf Color Bar Adjustment:}
+
+If you place the mouse on the color bar, these commands are available
+to adjust the contrast of the image:
+\begin{example}
+  \item[LOW CONTRAST]{Hold down the LEFT Mouse button, drag the left
+       end of the color bar.}
+
+  \item[HIGH CONTRAST]{Hold down the RIGHT Mouse button, drag the right
+       end of the color bar.}
+
+  \item[ROLL COLOR MAP]{Hold the MIDDLE Mouse button, "roll" the
+       color bar left or right.}
+\end{example}
+The position of the mouse cursor displays the range of intensities
+represented by that color.
+
+Pressing the R key while the mouse is on the color bar restores the
+original color map (undoing any change of the contrast or "roll" changes
+made with the mouse buttons).
+
+
+\section{Details and what to do in case of problems}
+
+When you issue the slitview command from tycho, you are actually just
+starting a process on the computer to which the slit viewing camera
+is actually connected; this computer is offset.apo.nmsu.edu. As a result,
+you cannot kill the program on tycho itself. When slitview is started,
+it automatically kills any program which is currently talking to the
+camera before a new control program is started up. Only one user can
+connect to the camera at a given time. There is a command on tycho called
+killview which will attempt to kill any existing slitview processes on the
+remote machine.
+
+If you have problems with the program, it may be a good idea to directly
+log onto offset.apo.nmsu.edu, user arc (password known by on-site personnel).
+Check to see if any processes are running the program slitview.linux. If you
+kill these, any running versions of the program should exit. On offset,
+there is a script, killview which will automatically do this for you. Then
+you can try to start the program again using the slitview command.
+
+\section{To Do items}
+
+\begin{itemize}
+\item Implement a Gaussian fit/radial plot routine to allow for focus analysis
+   within slit viewer application. (HIGH priority but unfortunately may
+   require a fair bit of work!)
+
+\item put default target nighttime and daytime temperature, as well as 
+   default slit center position, in a configuration file which is read on
+   startup.
+
+\item Implement a "smoothing function" for temperature readout to avoid the
+   "noise" in temperature readout.
+
+\item note cooler load so one could adjust temperature accordingly
+
+\item Figure out how to get a blinking cursor in the right place in the command 
+   window.
+
+\item Figure out how to allow users to resize the command window without 
+   screwing things up too badly.
+
+\item Figure out how to get image automatically redrawn if display window is
+   resized.
+
+\item Implement communication with the telescope to put telescope parameters
+   in image headers.
+
+\item Implement communication with the telescope to allow offsets to be
+   directly implemented by the telescope
+
+\item If telescope communication is implemented, implement autoguiduing 
+   algorithm.
+
+\item If telescope communication is implemented, put a compass on the image
+   showing N and E given the current rotation.
+
+\end{itemize}
+
+\end{document}
+

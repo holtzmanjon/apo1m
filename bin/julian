@@ -1,0 +1,2 @@
+skycalc < lst.inp | grep Julian | awk '{print $3}' | head -1
+
