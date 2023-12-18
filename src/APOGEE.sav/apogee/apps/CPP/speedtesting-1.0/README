@@ -1,7 +1,0 @@
-BUILDING
-==========
-Since this is just an example application it is not being shipped as a full distribution.  Thus the user needs to run the autotools to build this code.  Here are the steps
-
-autoreconf -if
-./configure
-make

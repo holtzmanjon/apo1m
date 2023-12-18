@@ -1,8 +1,0 @@
-#!/bin/csh
-
-setenv LD_LIBRARY_PATH /opt/apogee/lib
-setenv TKAPOGEE  /opt/apogee
-setenv PATH ${PATH}:/opt/apogee/bin
-setenv LD_LIBRARY_PATH /opt/apogee/lib
-set LD_LIBRARY_PATH=/opt/apogee/lib
-wish -f /opt/apogee/apps/tcl/scripts/altaDiscover.tcl

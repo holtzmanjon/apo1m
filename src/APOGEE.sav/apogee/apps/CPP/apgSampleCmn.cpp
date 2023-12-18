@@ -1,1 +1,0 @@
-../../libapogee/examples/apgSampleCmn.cpp

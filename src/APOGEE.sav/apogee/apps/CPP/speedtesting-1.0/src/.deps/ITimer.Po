@@ -1,3 +1,0 @@
-ITimer.o: ITimer.cpp ITimer.h
-
-ITimer.h:

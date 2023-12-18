@@ -1,0 +1,44 @@
+NA2
+
+- Leach controller
+   dismount controller box with mounting bracket from filter wheel
+   remove power supply from shelf
+   cable between power supply and controller
+   power cable from power supply
+   remove fiber from controller to fiber junction on cone
+
+- APOGEE Alta
+  remove camera from focusser (hard to get out)
+  power supply and cable
+  USB cable
+
+- JMI Smart focus
+  remove from filter wheel, with mounting plate adapter
+  remove controller box/power supply (wasn't attached to focusser)
+
+- remove old power supply and parallel port cable (from APOGEE AP7P?)
+
+- remove guider stage from guider bos
+  remove 3 cables : R-stage, guider limits, focus motor, from extender cables
+
+- remove TempagerR with power supply and Ethernet cable to switch
+  remove temperature sensors from primary cell and secondary
+
+- remove Icron extender with fibers to fiber junction
+
+- remove vacuum hose by disconnecting from valve on cone
+
+
+NA1
+
+- remove PMT and photodiode from side of photometer, leave cables inside box
+  couldn't remove one because stage was mounted from inside
+
+- remove lid from photometer (to try to remove stages, but too hard on telescope,
+   but cuts down on weight)
+ 
+- remove screws holding photometer wooden box to platform
+
+- remove network power switch from box (less weight)
+
+

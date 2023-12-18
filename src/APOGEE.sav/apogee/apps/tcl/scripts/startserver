@@ -1,8 +1,0 @@
-#!/bin/csh
-
-echo "Preparing environment for Apogee camera driver in server mode"
-
-source /opt/apogee/apps/tcl/scripts/setupserver.env
-
-/usr/bin/wish  /opt/apogee/apps/tcl/scripts/apogeeserver.tcl
-

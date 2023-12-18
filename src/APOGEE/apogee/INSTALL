@@ -1,52 +1,13 @@
+#!/bin/sh
+#
+# Simple script to fire up wish and run a per-user configuration.
+# The output of this process is a script in the users home directory
+# which will start up the Apogee camera GUI
+#
 
-Installation notes 
-------------------
+export LD_LIBRARY_PATH=/opt/apogee/lib
 
-The user manual is on the cdrom in
- 
-        /opt/apogee/doc
- 
-in a variety of formats.
- 
- 
-
-NOTE: Refer to INSTALL-ALTA-E for ALTA network camera instructions.
-
-To install the driver runtime (as superuser aka root)
- 
-        mkdir /opt
-        cd /opt
-        tar -xvzpf /mnt/cdrom/apogee-x.y.z-[platform].tgz
- 
-        (if you will be developing software, install using the
-         apogee-devel-x.y.z-[platform].tgz archive instead)
-
-(where x.y.z is the version number)
-
-and if your are using any model except an ALTA-E series one
- 
-        /opt/apogee/modinstall
- 
-
-If you have a USB camera and the modinstall does NOT detect
-one of "udev" , "HAL" , or "hotplug" support, then you may
-need to use the runtime script /opt/apogee/apps/tcl/scripts/usbpermit.tcl
-to give normal user accounts permission to control the camera. 
- 
-Log in with your normal username
- 
- 
-        /opt/apogee/install
- 
-answer the questions about your camera model
- 
-        ~/startapogee
- 
-to run the camera control GUI.
- 
- 
-
-
+wish /opt/apogee/apps/tcl/scripts/install.tcl
 
 
 
