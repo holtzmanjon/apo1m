@@ -1763,11 +1763,20 @@ has inputs for the 3 poles, while the Tech 80 had the 3 poles plus
 their inverses (a support person at COP said it was OK to just hook
 up the 3 poles).
 
+Encoder has 8 pins : 1-8 are +5V, ground, Bbar, B, Zbar, Z, Abar, A.
+These go to DB9 pins 2, 8, 3, 7, 5, 9, 1, 6
+
 A new encoder was ordered and installed in November 2006. At this time,
 it was still left hooked to the CP4016. The dome was having some serious
 positioning problem, unclear if this was due to the encoder, the
 coupler with the dome motor, or the dome motor to dome interface. A
 new, longer coupler was installed with the new encoder.
+
+\subsection{Dome home}
+
+Dome homing uses a magnetic sensor. You supply a voltage to 2 pins,
+the 3rd pin shows this voltage when the home sensor is in proximity.
+Red/blk/grn are gnd/signal/+VDC
 
 \subsection{Dome control}
 
